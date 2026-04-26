@@ -1,7 +1,7 @@
 import type { LiveAdapter, LiveStatus } from './types';
 import { getTikTokLive } from './tiktok-store';
 
-const HANDLE = process.env.TIKTOK_HANDLE ?? 'eatsswithemm';
+const HANDLE = process.env.TIKTOK_HANDLE || 'eatsswithemm';
 
 /**
  * TikTok live adapter — primary live channel for Roblox streams.

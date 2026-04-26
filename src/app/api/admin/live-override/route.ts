@@ -17,7 +17,7 @@ export const runtime = 'nodejs';
  *   - You're testing or doing a "fake live" event
  */
 
-const HANDLE = process.env.TIKTOK_HANDLE ?? 'eatsswithemm';
+const HANDLE = process.env.TIKTOK_HANDLE || 'eatsswithemm';
 const SECRET = process.env.ADMIN_LIVE_SECRET;
 
 function authed(req: NextRequest) {

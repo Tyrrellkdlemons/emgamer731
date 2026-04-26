@@ -20,7 +20,7 @@ export const runtime = 'nodejs';
  *   Header: X-EMG731-Webhook-Secret: <TIKTOK_WEBHOOK_SECRET>
  */
 
-const HANDLE = process.env.TIKTOK_HANDLE ?? 'eatsswithemm';
+const HANDLE = process.env.TIKTOK_HANDLE || 'eatsswithemm';
 const SECRET = process.env.TIKTOK_WEBHOOK_SECRET;
 
 export async function POST(req: NextRequest) {

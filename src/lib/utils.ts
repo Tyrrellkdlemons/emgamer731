@@ -26,7 +26,9 @@ export const SITE = {
   alt: 'eatsswithemm',
   slogan: 'What did you guys eat for breakfast today?',
   tagline: 'Eat well. Game better.',
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://emgamer731.com',
+  // Use || (not ??) so empty-string env vars fall through to the default.
+  // Netlify sometimes sets keys to "" when imported from .env.example.
+  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://emgamer731.com',
   youtube: 'https://www.youtube.com/channel/UCnSbDaREAHiITX2UPjE44fA',
   tiktok: 'https://www.tiktok.com/@eatsswithemm',
 };
