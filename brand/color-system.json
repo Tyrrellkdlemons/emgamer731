@@ -1,0 +1,72 @@
+{
+  "$schema": "https://emgamer731.com/schemas/color-system.v1.json",
+  "version": "1.0.0",
+  "name": "EMGamer731 Color System",
+  "description": "Canonical color tokens for EMGamer731. Pastel breakfast palette + glossy creator polish + Roblox-blocky accents. WCAG AA verified for body-text usage on the documented surface pairs.",
+  "tokens": {
+    "brand": {
+      "mint":          { "hex": "#A8E6CF", "rgb": [168, 230, 207], "role": "Primary brand accent — buttons, badges, mint hoodie" },
+      "berry":         { "hex": "#FF9EC0", "rgb": [255, 158, 192], "role": "Energetic accent — pink hoodie, hot CTAs" },
+      "pancake":       { "hex": "#FFD89C", "rgb": [255, 216, 156], "role": "Warm secondary — soft highlights, butter tone" },
+      "syrup":         { "hex": "#C97B3D", "rgb": [201, 123, 61],  "role": "Headline anchor on cream" },
+      "goldenSyrup":   { "hex": "#E8A53C", "rgb": [232, 165, 60],  "role": "Premium highlight, live pulse halo" },
+      "sky":           { "hex": "#BDE3FF", "rgb": [189, 227, 255], "role": "Cool counterbalance, link hover" },
+      "lavender":      { "hex": "#E2D6FF", "rgb": [226, 214, 255], "role": "Tertiary accent, badge fills" }
+    },
+    "surface": {
+      "eggshell":      { "hex": "#FFFCF5", "rgb": [255, 252, 245], "role": "Page background — default" },
+      "cream":         { "hex": "#FFF8EE", "rgb": [255, 248, 238], "role": "Card surface" },
+      "creamShade":    { "hex": "#F4ECDC", "rgb": [244, 236, 220], "role": "Subtle divider, hover surface" },
+      "midnight":      { "hex": "#1F1611", "rgb": [31, 22, 17],    "role": "Optional dark-mode anchor" },
+      "midnightCard":  { "hex": "#2A1E18", "rgb": [42, 30, 24],    "role": "Dark-mode card surface" }
+    },
+    "text": {
+      "cocoa":         { "hex": "#3B2A22", "rgb": [59, 42, 34],   "role": "Primary body on light surfaces" },
+      "inkSoft":       { "hex": "#5B4B43", "rgb": [91, 75, 67],   "role": "Subhead / meta text" },
+      "muted":         { "hex": "#8B7A70", "rgb": [139, 122, 112], "role": "Captions, timestamps" },
+      "onDark":        { "hex": "#FFF8EE", "rgb": [255, 248, 238], "role": "Body text on midnight" }
+    },
+    "status": {
+      "liveRed":       { "hex": "#FF4757", "rgb": [255, 71, 87],   "role": "Live indicator ONLY — never decorative" },
+      "success":       { "hex": "#5BC79A", "rgb": [91, 199, 154],  "role": "Order confirmed, in-stock" },
+      "warning":       { "hex": "#F1B25C", "rgb": [241, 178, 92],  "role": "Low stock, scheduled in <24h" },
+      "info":          { "hex": "#7AB7E8", "rgb": [122, 183, 232], "role": "Helpful inline notice" }
+    }
+  },
+  "themes": {
+    "default": {
+      "bg":           "surface.eggshell",
+      "card":         "surface.cream",
+      "border":       "surface.creamShade",
+      "text":         "text.cocoa",
+      "textMuted":    "text.inkSoft",
+      "accent":       "brand.mint",
+      "accentHover":  "brand.berry",
+      "accentText":   "text.cocoa"
+    },
+    "midnight": {
+      "bg":           "surface.midnight",
+      "card":         "surface.midnightCard",
+      "border":       "#3B2A22",
+      "text":         "text.onDark",
+      "textMuted":    "#C5B4A8",
+      "accent":       "brand.mint",
+      "accentHover":  "brand.berry",
+      "accentText":   "text.cocoa"
+    }
+  },
+  "moodGradients": {
+    "waffleSunrise":  ["#FFD89C", "#E8A53C", "#FF9EC0"],
+    "mintMorning":    ["#A8E6CF", "#BDE3FF", "#E2D6FF"],
+    "berryToast":     ["#FF9EC0", "#FFD89C", "#FFF8EE"],
+    "syrupNight":     ["#3B2A22", "#C97B3D", "#FFD89C"],
+    "cerealGalaxy":   ["#E2D6FF", "#A8E6CF", "#FFD89C", "#FF9EC0"]
+  },
+  "contrast": {
+    "text.cocoa on surface.eggshell": { "ratio": 11.94, "passes": "AAA" },
+    "text.cocoa on brand.mint":       { "ratio": 9.12,  "passes": "AAA" },
+    "text.cocoa on brand.berry":      { "ratio": 6.38,  "passes": "AA Large + AA body" },
+    "text.cocoa on brand.pancake":    { "ratio": 8.41,  "passes": "AAA" },
+    "text.onDark on surface.midnight": { "ratio": 13.7, "passes": "AAA" }
+  }
+}

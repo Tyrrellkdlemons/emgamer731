@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" role="img" aria-label="Mint Breakfast dad cap">
+  
+  <defs>
+    <radialGradient id="floor" cx="50%" cy="100%" r="60%">
+      <stop offset="0%" stop-color="rgba(0,0,0,0.18)"/>
+      <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
+    </radialGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="14"/>
+      <feOffset dx="0" dy="14"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.18"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="1200" fill="#FFFFFF"/>
+  <ellipse cx="600" cy="1000" rx="420" ry="38" fill="url(#floor)"/>
+  <g filter="url(#soft)">
+    <!-- Crown -->
+    <path d="M280,580 Q300,300 600,290 Q900,300 920,580 Z" fill="#A8E6CF"/>
+    <!-- Crown panels (subtle stitch lines) -->
+    <g stroke="rgba(0,0,0,0.18)" stroke-width="1.6" fill="none">
+      <path d="M420,560 Q420,370 600,310"/>
+      <path d="M540,580 Q540,340 600,300"/>
+      <path d="M660,580 Q660,340 600,300"/>
+      <path d="M780,560 Q780,370 600,310"/>
+    </g>
+    <!-- Top button -->
+    <circle cx="600" cy="305" r="10" fill="#A8E6CF"/>
+    <circle cx="600" cy="305" r="5" fill="rgba(0,0,0,0.25)"/>
+    <!-- Brim -->
+    <path d="M180,580 Q600,700 1020,580 Q1020,620 980,680 Q600,760 220,680 Q180,620 180,580 Z" fill="#A8E6CF"/>
+    <!-- Brim stitch lines -->
+    <path d="M210,620 Q600,730 990,620" stroke="rgba(0,0,0,0.20)" stroke-width="1.6" fill="none"/>
+    <path d="M230,640 Q600,740 970,640" stroke="rgba(0,0,0,0.15)" stroke-width="1.4" fill="none"/>
+    <!-- Embroidered front logo -->
+    <g transform="translate(600,460)">
+      <text font-family="Inter, system-ui, sans-serif" font-weight="900" font-size="64" fill="#1F1611" text-anchor="middle">BREAKFAST</text>
+    </g>
+  </g>
+</svg>

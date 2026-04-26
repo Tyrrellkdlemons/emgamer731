@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="EMG cap mark">
+  <defs>
+    <linearGradient id="b" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#2A1E18"/>
+      <stop offset="100%" stop-color="#0F0905"/>
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="56" fill="url(#b)"/>
+  <g transform="translate(128,128) scale(3.4)">
+    <path d="M-26,-10 Q0,5 26,-10 L26,-6 Q0,9 -26,-6 Z" fill="#FFFCF5" opacity="0.85"/>
+    <path d="M-18,-14 Q-18,-30 0,-32 Q18,-30 18,-14 Z" fill="none" stroke="#FFFCF5" stroke-width="2" opacity="0.5"/>
+    <path d="M-10,-14 L-10,-30 L-6,-30 L0,-22 L6,-30 L10,-30 L10,-14 L6,-14 L6,-24 L0,-16 L-6,-24 L-6,-14 Z" fill="#FFFCF5"/>
+    <circle cx="0" cy="-32" r="2" fill="#E8A53C"/>
+  </g>
+  <circle cx="220" cy="216" r="12" fill="#E63946"/>
+</svg>

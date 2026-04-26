@@ -1,0 +1,16 @@
+{
+  "categories": [
+    { "id": "hero",       "label": "Hero banners",         "useCase": "Page-top heroes" },
+    { "id": "avatar",     "label": "Avatar + characters",  "useCase": "Avatar portraits and mascots" },
+    { "id": "breakfast",  "label": "Breakfast moments",    "useCase": "Avatar+breakfast mashups" },
+    { "id": "merch",      "label": "Merch mockups",        "useCase": "Product flat-lay + lifestyle" },
+    { "id": "wallpaper",  "label": "Wallpapers",           "useCase": "Phone + desktop downloads" },
+    { "id": "sticker",    "label": "Stickers",             "useCase": "Sticker pack designs" },
+    { "id": "overlay",    "label": "Stream overlays",      "useCase": "Going live, BRB, end-card" },
+    { "id": "social",     "label": "Social content",       "useCase": "Instagram + TikTok tiles + thumbnails" },
+    { "id": "mockup",     "label": "Lifestyle / UI mockups","useCase": "Lifestyle, splash, UI illustrations" },
+    { "id": "seasonal",   "label": "Seasonal variants",    "useCase": "Holiday, school, summer, etc." },
+    { "id": "icon",       "label": "Icon packs",           "useCase": "Icon system" },
+    { "id": "badge",      "label": "Badges",               "useCase": "Squad and live badges" }
+  ]
+}

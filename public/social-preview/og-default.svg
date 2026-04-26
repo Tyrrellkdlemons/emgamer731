@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="EMGamer731 — what did you guys eat for breakfast today?">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#FCE7F3"/>
+      <stop offset="50%" stop-color="#A8E6CF"/>
+      <stop offset="100%" stop-color="#FFD89C"/>
+    </linearGradient>
+    <linearGradient id="cap" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#2A1E18"/>
+      <stop offset="100%" stop-color="#0F0905"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFFBF0" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#FFE4B5" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <ellipse cx="900" cy="200" rx="500" ry="280" fill="url(#sun)"/>
+
+  <g transform="translate(80,90)">
+    <rect width="120" height="120" rx="28" fill="url(#cap)"/>
+    <g transform="translate(60,60) scale(2)">
+      <path d="M-26,-10 Q0,5 26,-10 L26,-6 Q0,9 -26,-6 Z" fill="#FFFCF5" opacity="0.85"/>
+      <path d="M-18,-14 Q-18,-30 0,-32 Q18,-30 18,-14 Z" fill="none" stroke="#FFFCF5" stroke-width="2" opacity="0.5"/>
+      <path d="M-10,-14 L-10,-30 L-6,-30 L0,-22 L6,-30 L10,-30 L10,-14 L6,-14 L6,-24 L0,-16 L-6,-24 L-6,-14 Z" fill="#FFFCF5"/>
+    </g>
+    <circle cx="100" cy="100" r="6" fill="#E63946"/>
+  </g>
+
+  <text x="240" y="180" font-family="ui-sans-serif, system-ui, sans-serif" font-weight="900" font-size="100" fill="#3B2A22" letter-spacing="-4">EMGamer<tspan fill="#E8A53C" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-weight="700">731</tspan></text>
+  <text x="80" y="320" font-family="ui-sans-serif, system-ui, sans-serif" font-weight="800" font-style="italic" font-size="58" fill="#3B2A22" letter-spacing="-2">"What did you guys eat for breakfast today?"</text>
+  <text x="80" y="380" font-family="ui-sans-serif, system-ui, sans-serif" font-weight="500" font-size="28" fill="#3B2A22" opacity="0.85">Roblox · breakfast · livestreaming · the cozy creator HQ</text>
+
+  <g transform="translate(0,560)">
+    <rect width="1200" height="70" fill="#3B2A22"/>
+    <text x="80" y="46" font-family="ui-monospace, monospace" font-size="22" fill="#FFFCF5" font-weight="700">@eatsswithemm</text>
+    <text x="1120" y="46" text-anchor="end" font-family="ui-sans-serif, sans-serif" font-size="22" fill="#FFD89C" font-weight="600">eat well · game better</text>
+  </g>
+</svg>

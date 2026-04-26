@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" role="img" aria-label="Pink waffle tee">
+  
+  <defs>
+    <radialGradient id="floor" cx="50%" cy="100%" r="60%">
+      <stop offset="0%" stop-color="rgba(0,0,0,0.18)"/>
+      <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
+    </radialGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="14"/>
+      <feOffset dx="0" dy="14"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.18"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="1200" fill="#FFFFFF"/>
+  <ellipse cx="600" cy="1140" rx="380" ry="32" fill="url(#floor)"/>
+  <g filter="url(#soft)">
+    <!-- Sleeves -->
+    <path d="M280,300 Q220,360 200,460 L340,520 Q360,440 400,400 Z" fill="#F4B7D6"/>
+    <path d="M920,300 Q980,360 1000,460 L860,520 Q840,440 800,400 Z" fill="#F4B7D6"/>
+    <!-- Body -->
+    <path d="M400,300 Q400,250 480,240 L720,240 Q800,250 800,300 L820,1020 Q600,1060 380,1020 Z" fill="#F4B7D6"/>
+    <!-- Crew neck -->
+    <path d="M520,240 Q600,200 680,240 Q600,280 520,240 Z" fill="#FFFFFF"/>
+    <path d="M520,240 Q600,200 680,240" stroke="rgba(0,0,0,0.18)" stroke-width="2" fill="none"/>
+    <!-- Sleeve hem stitch -->
+    <line x1="200" y1="460" x2="340" y2="520" stroke="rgba(0,0,0,0.10)" stroke-width="1.5"/>
+    <line x1="1000" y1="460" x2="860" y2="520" stroke="rgba(0,0,0,0.10)" stroke-width="1.5"/>
+    <!-- Bottom hem stitch -->
+    <line x1="395" y1="1010" x2="805" y2="1010" stroke="rgba(0,0,0,0.10)" stroke-width="1.5"/>
+  </g>
+  <g transform="translate(600,580)">
+    <g transform="scale(0.85)" text-anchor="middle">
+      <!-- Base waffle -->
+      <g transform="translate(0,80)">
+        <rect x="-110" y="-40" width="220" height="80" rx="14" fill="#E8A53C"/>
+        <g stroke="#C97B3D" stroke-width="3" opacity="0.55">
+          <line x1="-110" y1="-12" x2="110" y2="-12"/>
+          <line x1="-110" y1="12" x2="110" y2="12"/>
+          <line x1="-50" y1="-40" x2="-50" y2="40"/>
+          <line x1="0" y1="-40" x2="0" y2="40"/>
+          <line x1="50" y1="-40" x2="50" y2="40"/>
+        </g>
+      </g>
+      <!-- Mid waffle -->
+      <g transform="translate(0,-20)">
+        <rect x="-115" y="-44" width="230" height="80" rx="14" fill="#E8A53C"/>
+        <g stroke="#C97B3D" stroke-width="3" opacity="0.55">
+          <line x1="-115" y1="-16" x2="115" y2="-16"/>
+          <line x1="-115" y1="8" x2="115" y2="8"/>
+          <line x1="-55" y1="-44" x2="-55" y2="36"/>
+          <line x1="0" y1="-44" x2="0" y2="36"/>
+          <line x1="55" y1="-44" x2="55" y2="36"/>
+        </g>
+      </g>
+      <!-- Top waffle -->
+      <g transform="translate(0,-130)">
+        <rect x="-105" y="-44" width="210" height="80" rx="14" fill="#FFD89C"/>
+        <g stroke="#C97B3D" stroke-width="3" opacity="0.55">
+          <line x1="-105" y1="-16" x2="105" y2="-16"/>
+          <line x1="-105" y1="8" x2="105" y2="8"/>
+          <line x1="-50" y1="-44" x2="-50" y2="36"/>
+          <line x1="0" y1="-44" x2="0" y2="36"/>
+          <line x1="50" y1="-44" x2="50" y2="36"/>
+        </g>
+      </g>
+      <!-- Butter pat -->
+      <g transform="translate(-10,-180)">
+        <rect x="-26" y="-12" width="52" height="22" rx="3" fill="#FFFBF0"/>
+        <rect x="-26" y="-12" width="52" height="6" rx="2" fill="#FFFFFF"/>
+      </g>
+      <!-- Syrup drips -->
+      <path d="M-110,-30 q-26,40 -8,72 q-2,8 -8,4 q4,-12 -2,-30 q-12,-22 18,-46 z" fill="#C97B3D" opacity="0.95"/>
+      <path d="M90,30 q24,40 -2,68 q-2,4 -6,2 q4,-10 -2,-22 q-6,-14 10,-48 z" fill="#C97B3D" opacity="0.9"/>
+    </g></g>
+</svg>

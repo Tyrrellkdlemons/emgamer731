@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" role="img" aria-label="Cream crewneck">
+  
+  <defs>
+    <radialGradient id="floor" cx="50%" cy="100%" r="60%">
+      <stop offset="0%" stop-color="rgba(0,0,0,0.18)"/>
+      <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
+    </radialGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="14"/>
+      <feOffset dx="0" dy="14"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.18"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="1200" fill="#FFFFFF"/>
+  <ellipse cx="600" cy="1140" rx="380" ry="32" fill="url(#floor)"/>
+  <g filter="url(#soft)">
+    <!-- Sleeves -->
+    <path d="M280,300 Q220,360 200,460 L340,520 Q360,440 400,400 Z" fill="#F4ECDC"/>
+    <path d="M920,300 Q980,360 1000,460 L860,520 Q840,440 800,400 Z" fill="#F4ECDC"/>
+    <!-- Body -->
+    <path d="M400,300 Q400,250 480,240 L720,240 Q800,250 800,300 L820,1020 Q600,1060 380,1020 Z" fill="#F4ECDC"/>
+    <!-- Crew neck -->
+    <path d="M520,240 Q600,200 680,240 Q600,280 520,240 Z" fill="#FFFFFF"/>
+    <path d="M520,240 Q600,200 680,240" stroke="rgba(0,0,0,0.18)" stroke-width="2" fill="none"/>
+    <!-- Sleeve hem stitch -->
+    <line x1="200" y1="460" x2="340" y2="520" stroke="rgba(0,0,0,0.10)" stroke-width="1.5"/>
+    <line x1="1000" y1="460" x2="860" y2="520" stroke="rgba(0,0,0,0.10)" stroke-width="1.5"/>
+    <!-- Bottom hem stitch -->
+    <line x1="395" y1="1010" x2="805" y2="1010" stroke="rgba(0,0,0,0.10)" stroke-width="1.5"/>
+  </g>
+  <g transform="translate(600,580)">
+    <g text-anchor="middle">
+      <rect x="-160" y="-50" width="320" height="100" rx="50" fill="#1F1611"/>
+      <text font-family="Inter,sans-serif" font-weight="900" font-size="64" fill="#FFFCF5" dy="22">EMG<tspan fill="#E8A53C">731</tspan></text>
+    </g></g>
+</svg>

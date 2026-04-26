@@ -1,0 +1,24 @@
+{
+  "version": "1.0.0",
+  "collections": [
+    { "id": "breakfast-boss",            "name": "Breakfast Boss",            "tagline": "Run the table.",                     "icon": "🥞", "accent": "#A8E6CF", "anchors": ["p001", "p009"], "order": 1 },
+    { "id": "waffle-stack",              "name": "Waffle Stack",              "tagline": "Crispy edges. Warm centers.",        "icon": "🧇", "accent": "#FFD89C", "anchors": ["p002", "p018", "p031"], "order": 2 },
+    { "id": "egg-drop",                  "name": "Egg Drop",                  "tagline": "Sunny side everything.",             "icon": "🍳", "accent": "#E8A53C", "anchors": ["p019", "p025", "p032"], "order": 3 },
+    { "id": "pancake-power-up",          "name": "Pancake Power-Up",          "tagline": "Stack high. Game higher.",           "icon": "🥞", "accent": "#FFD89C", "anchors": ["p005", "p015", "p027"], "order": 4 },
+    { "id": "cereal-chaos",              "name": "Cereal Chaos",              "tagline": "Marshmallow constellations.",        "icon": "🥣", "accent": "#E2D6FF", "anchors": ["p010", "p028"], "order": 5 },
+    { "id": "morning-spawn",             "name": "Morning Spawn",             "tagline": "Loaded. Logged in.",                 "icon": "🎮", "accent": "#A8E6CF", "anchors": ["p006", "p021", "p024"], "order": 6 },
+    { "id": "syrup-drip",                "name": "Syrup Drip",                "tagline": "Pour it on.",                        "icon": "🍯", "accent": "#E8A53C", "anchors": ["p003", "p022"], "order": 7 },
+    { "id": "cozy-breakfast-club",       "name": "Cozy Breakfast Club",       "tagline": "Soft fits, slow mornings.",          "icon": "☕", "accent": "#FFD89C", "anchors": ["p004", "p007", "p013", "p020", "p026"], "order": 8 },
+    { "id": "breakfast-gamer-essentials","name": "Breakfast Gamer Essentials","tagline": "Daily-driver squad gear.",           "icon": "🎒", "accent": "#A8E6CF", "anchors": ["p011", "p014", "p016", "p023", "p030", "p033", "p035", "p036"], "order": 9 },
+    { "id": "eat-with-emm",              "name": "Eat With EMM",              "tagline": "Avatar callbacks. Signature drops.", "icon": "🧢", "accent": "#FF9EC0", "anchors": ["p008", "p012", "p017", "p029", "p034", "p037", "p038", "p039", "p040"], "order": 10 }
+  ],
+  "drops": {
+    "always-on": ["p001", "p002", "p012", "p011", "p030", "p035"],
+    "monthly-rotation": ["p039", "p040", "p015", "p031"],
+    "seasonal": {
+      "back-to-school":   ["p016", "p017", "p014"],
+      "holiday":          ["p007", "p013", "p026"],
+      "summer":           ["p008", "p018", "p022"]
+    }
+  }
+}
