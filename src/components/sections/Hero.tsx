@@ -3,13 +3,12 @@
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { SITE } from '@/lib/utils';
 import { LiveHero } from '@/components/live/LiveHero';
 import { BreakfastWorldHero } from '@/components/sections/BreakfastWorldHero';
 
 export function Hero() {
-  const reduce = useReducedMotion();
   const bgRef = useRef<HTMLDivElement>(null);
 
   // Pause SVG animations when tab is hidden
@@ -23,10 +22,9 @@ export function Hero() {
     return () => document.removeEventListener('visibilitychange', onVis);
   }, []);
 
-  const wordVariants = reduce
-    ? { initial: { opacity: 0 }, animate: { opacity: 1 } }
-    : { initial: { opacity: 0, y: 18 }, animate: { opacity: 1, y: 0 } };
-
+  // Slogan rendered as INVISIBLE spaceholders behind the background banner —
+  // see the comment block on the <h1> below. The text content is preserved
+  // for the sr-only line so screen readers still hear it.
   const slogan = ['What', 'did', 'you', 'guys', 'eat', 'for', 'breakfast', 'today?'];
 
   return (
@@ -94,21 +92,23 @@ export function Hero() {
             <span className="text-base">🥞</span> Welcome to EMGamer731 · the breakfast HQ · iykyk
           </motion.div>
 
+          {/*
+            Hero title — kept as a SCREEN-READER ONLY h1 so SEO + a11y still work.
+            The visible foreground words used to overlap the gold "WHAT DID YOU EAT
+            FOR BREAKFAST?" banner that's already painted into the background photo.
+            We now render an invisible spaceholder block that preserves the same
+            vertical footprint (so the layout below — paragraph, CTAs, LiveHero —
+            doesn't shift up into the banner area) without painting any glyphs over
+            the artwork. Mobile keeps the same height; desktop keeps the same height.
+          */}
           <h1 id="hero-title" className="display text-display-xl text-cocoa mt-5 leading-[0.98]">
             <span className="sr-only">{SITE.slogan}</span>
-            <span aria-hidden className="flex flex-wrap gap-x-3 gap-y-1">
+            <span
+              aria-hidden
+              className="flex flex-wrap gap-x-3 gap-y-1 select-none pointer-events-none invisible"
+            >
               {slogan.map((w, i) => (
-                <motion.span
-                  key={i}
-                  variants={wordVariants}
-                  initial="initial"
-                  animate="animate"
-                  transition={{ delay: 0.06 * i + 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                  className={i === 6 ? 'text-syrup' : ''}
-                  style={{ textShadow: '0 1px 0 rgba(255,252,245,0.6)' }}
-                >
-                  {w}
-                </motion.span>
+                <span key={i}>{w}</span>
               ))}
             </span>
           </h1>
