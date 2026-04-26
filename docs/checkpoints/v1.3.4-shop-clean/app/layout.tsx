@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from 'next';
 import { Bricolage_Grotesque, Plus_Jakarta_Sans, JetBrains_Mono, Sniglet } from 'next/font/google';
 import { SiteHeader } from '@/components/layout/SiteHeader';
 import { SiteFooter } from '@/components/layout/SiteFooter';
-import { BackgroundProvider } from '@/components/layout/BackgroundProvider';
 import { LiveStatusProvider } from '@/components/live/LiveStatusProvider';
 import { SITE } from '@/lib/utils';
 import '@/styles/globals.css';
@@ -45,16 +44,9 @@ const cute = Sniglet({
 });
 
 export const viewport: Viewport = {
-  // Light theme color matches the cream `--bg`. We swap to a slightly deeper
-  // cream when the user is in dark-color-scheme so the iOS status bar reads.
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#FFFCF5' },
-    { media: '(prefers-color-scheme: dark)',  color: '#3B2A22' },
-  ],
+  themeColor: '#FFFCF5',
   width: 'device-width',
   initialScale: 1,
-  // Allow user pinch-zoom for accessibility (don't lock to 1.0).
-  maximumScale: 5,
   viewportFit: 'cover',
 };
 
@@ -81,43 +73,4 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: `${SITE.name} — ${SITE.slogan}`,
-    description: 'The cozy-glossy creator HQ for Roblox + breakfast + livestreaming.',
-    images: ['/social-preview/og-default.svg'],
-  },
-  icons: {
-    icon: [{ url: '/favicons/favicon.svg', type: 'image/svg+xml' }],
-    apple: '/favicons/apple-touch-icon.png',
-  },
-  manifest: '/manifest.json',
-  appleWebApp: {
-    capable: true,
-    title: 'EMGamer731',
-    statusBarStyle: 'default',
-  },
-  formatDetection: {
-    telephone: false,
-    email: false,
-    address: false,
-  },
-  robots: { index: true, follow: true },
-};
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html
-      lang="en"
-      className={`${display.variable} ${sans.variable} ${mono.variable} ${cute.variable}`}
-    >
-      <body>
-        <a href="#main" className="skip-link">Skip to content</a>
-        {/* Decorative bg for non-home routes (home owns its own banner photo). */}
-        <BackgroundProvider />
-        <LiveStatusProvider>
-          <SiteHeader />
-          <main id="main">{children}</main>
-          <SiteFooter />
-        </LiveStatusProvider>
-      </body>
-    </html>
-  );
-}
+    description: 'The cozy-glossy creator HQ for Roblox + bre

@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { SITE } from '@/lib/utils';
 import { LiveHero } from '@/components/live/LiveHero';
-import { BreakfastWorldHero } from '@/components/sections/BreakfastWorldHero';
 
 export function Hero() {
   const bgRef = useRef<HTMLDivElement>(null);
@@ -29,17 +28,26 @@ export function Hero() {
 
   return (
     <section className="relative overflow-hidden" aria-labelledby="hero-title">
-      {/* Layer 0 — animated SVG ambient (parallax pillars + sparkles + clouds) */}
-      <div ref={bgRef} className="absolute inset-0 z-0">
-        <BreakfastWorldHero />
-      </div>
+      {/*
+        Layer 0 was the BreakfastWorldHero SVG ambient (parallax pillars +
+        floating waffles + sparkles). It was painting OVER the real
+        breakfast-world banner photo on the live site even though the photo
+        had a higher z-index — same stacking context, last-paint wins.
+        v1.4.0 hotfix: drop the SVG ambient on home. The candy-city banner
+        photo is already rich and the user explicitly asked for it to be
+        visible. We keep `bgRef` declared so the visibility-pause useEffect
+        stays harmless (queries return null, the early-return triggers).
+      */}
+      <div ref={bgRef} aria-hidden />
 
       {/* Layer 1 — REAL hero photo: candy-city breakfast world with the
           "WHAT DID YOU EAT FOR BREAKFAST?" banner sky and the avatar.
-          Mobile uses the alternate centered crop; desktop uses the new banner image. */}
+          Mobile uses the alternate centered crop; desktop uses the new banner image.
+          IMG SOURCES are the optimized .webp files (~10× smaller than the source PNGs)
+          so LCP stays fast on mobile + retina without losing visual fidelity. */}
       <div className="absolute inset-0 z-[1] hero-photo-layer">
         <Image
-          src="/images/hero/breakfast-world-2.png"
+          src="/images/hero/breakfast-world-2.webp"
           alt="EMM in the breakfast world — pastel candy city with floating waffles, pancake stack, sunny egg, donut tower"
           fill
           priority
@@ -47,7 +55,7 @@ export function Hero() {
           className="object-cover object-center sm:hidden"
         />
         <Image
-          src="/images/hero/breakfast-world-banner.png"
+          src="/images/hero/breakfast-world-banner.webp"
           alt="EMM in the breakfast world — golden banner stretched across the sky reads What did you eat for breakfast"
           fill
           priority

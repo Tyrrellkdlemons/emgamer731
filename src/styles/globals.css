@@ -21,8 +21,12 @@
   --ease-stretch: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-html, body {
+html {
+  /* Solid cream is the canvas — visible on home and as a fallback if the
+     OtherPagesBackground image fails to load on inner routes. */
   background: var(--bg);
+}
+html, body {
   color: var(--text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -31,7 +35,13 @@ html, body {
   -webkit-tap-highlight-color: transparent;
   text-size-adjust: 100%;
   overflow-x: hidden;
+  /* iOS momentum scroll — feels native in standalone PWA mode. */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
 }
+/* Body is intentionally TRANSPARENT so the BackgroundProvider's photo can
+   show through on non-home routes. Home keeps the html cream + radial overlays. */
+body { background-color: transparent; }
 
 html { scroll-behavior: smooth; }
 
@@ -180,3 +190,54 @@ input, textarea, select { font-size: max(16px, 1rem); }
 ::-webkit-scrollbar { width: 12px; height: 12px; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 999px; border: 3px solid var(--bg); }
 ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   v1.4.0 — Mobile + PWA polish.
+   Goal: the site should feel like a native app when opened from the iOS/
+   Android home screen, while leaving the desktop layout untouched.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Standalone (PWA installed) — hide the Safari bottom nav padding and pull
+   content right up to the bezel. Only triggers when launched from the home
+   screen. */
+@media (display-mode: standalone) {
+  html, body { background-color: var(--bg); }
+  /* Subtle inset for the home indicator on bezel-less iPhones */
+  main#main { padding-bottom: max(env(safe-area-inset-bottom), 0px); }
+  /* Hide non-essential chrome elements only when running as installed app */
+  .pwa-hide { display: none !important; }
+}
+
+/* Mobile-only refinements — fire below 640px (Tailwind sm breakpoint). */
+@media (max-width: 639px) {
+  /* Buttons get a hair more vertical breathing on touch */
+  .btn-primary, .btn-ghost, .btn-live { padding-top: 0.85rem; padding-bottom: 0.85rem; }
+  /* Inputs get the iOS comfort treatment */
+  input, textarea, select {
+    border-radius: 14px;
+    padding: 0.85rem 1rem;
+    appearance: none;
+  }
+  /* Headings scale down a touch on the smallest screens so the slogan never
+     overflows the viewport */
+  .display { letter-spacing: -0.025em; }
+  /* Dim the floating breakfast emoji field so it never competes with content */
+  .opbg-float { opacity: 0.65 !important; }
+}
+
+/* Mobile horizontal scroll rails — momentum + snap so they feel iOS-native */
+.scroll-snap-x { scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+.scroll-snap-x > * { scroll-snap-align: start; }
+
+/* iOS standalone status-bar safe area for sticky headers */
+header { padding-top: max(env(safe-area-inset-top), 0px); }
+
+/* Skip-link helper — hidden until focused, jumps screen-reader users straight
+   to <main>. Required for WCAG 2.4.1. */
+.skip-link {
+  position: absolute; top: -40px; left: 0;
+  background: var(--text); color: #fff;
+  padding: 0.5rem 1rem; z-index: 9999;
+  border-radius: 0 0 0.75rem 0;
+}
+.skip-link:focus { top: 0; }
