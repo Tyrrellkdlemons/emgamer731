@@ -32,8 +32,8 @@ export function LatestContent() {
     <section className="container-soft py-12 sm:py-16" aria-labelledby="latest-title">
       <div className="flex items-end justify-between flex-wrap gap-3 mb-6">
         <div>
-          <h2 id="latest-title" className="display text-display-md text-cocoa">Latest from EMM</h2>
-          <p className="text-cocoa/70 mt-1">Streams, fits, and breakfast moments — auto-pulled from the channel.</p>
+          <h2 id="latest-title" className="display text-display-md text-cocoa">Latest from EMM · she ate</h2>
+          <p className="text-cocoa/70 mt-1">Streams, fits, and breakfast moments — auto-pulled from the channel. Sigma drops only.</p>
         </div>
         <Link href="/watch" className="text-sm font-semibold text-syrup hover:underline">
           Watch all →

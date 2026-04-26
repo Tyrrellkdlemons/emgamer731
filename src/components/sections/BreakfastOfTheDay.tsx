@@ -9,7 +9,7 @@ export function BreakfastOfTheDay() {
         <div className="relative grid gap-6 lg:grid-cols-[1.4fr_1fr] items-center">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full bg-cream ring-1 ring-creamShade px-3 py-1 text-xs font-semibold text-cocoa shadow-soft">
-              <span aria-hidden>🌅</span> Breakfast of the day
+              <span aria-hidden>🌅</span> Breakfast of the day · today&apos;s plate is bussin
             </div>
             <h2 id="botd-title" className="display text-display-lg text-cocoa mt-4">
               {pick.emoji} {pick.title}
@@ -18,8 +18,8 @@ export function BreakfastOfTheDay() {
             <p className="text-sm text-syrup font-semibold mt-4">Pair with: {pick.pairing}</p>
           </div>
           <div className="grid gap-2">
-            <a href="/community" className="btn-primary w-full justify-center">Tell us what you ate →</a>
-            <a href="/gallery?filter=breakfast" className="btn-ghost w-full justify-center">More breakfast ideas</a>
+            <a href="/community" className="btn-primary w-full justify-center">Tell us what you ate (slay) →</a>
+            <a href="/gallery?filter=breakfast" className="btn-ghost w-full justify-center">More plates · iykyk</a>
           </div>
         </div>
       </div>

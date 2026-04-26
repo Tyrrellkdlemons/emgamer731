@@ -2,6 +2,24 @@
 
 All notable changes are recorded here. Newest first.
 
+## [1.3.0] — 2026-04-26 — Giant theme upgrade · banner-sky hero · Avatar Fits rail · real merch listings · 67-slang copy
+
+### Added
+- New banner-sky hero photo (`breakfast-world-banner.png`) on desktop with the gold "WHAT DID YOU EAT FOR BREAKFAST?" banner across the sky. Mobile keeps the centered crop.
+- New `Avatar Fits` rail on the home page: 13 EMM avatar renders across 99 Nights, Met Gala, Celestial Moon, Demon Queen, Petit-déjeuner Couture, Breakfast Runway, LV Street Luxe, Princess Satin PJs, BRAINROT IS MY LOVE LANGUAGE, and the cereal sticker.
+- New `ProductPhoto` component + `heroCrop` field on `Product` — splits a single composite photo into many real product listings via CSS `background-position` math (no image processing required).
+- 14 new SKUs (p061–p074) wired to the four real composite product photos and the cereal sticker.
+- Gen-Z / 67-slang weave across all major copy spots (Hero, BreakfastOfTheDay, BreakfastQuestion, LatestContent, CollectionsRail, FeaturedMerch, LiveHero, 404).
+
+### Changed
+- `FeaturedMerch` now uses `ProductPhoto` so cropped composites render correctly when featured.
+- `ShopGrid` background changed from cream-shade to white for cleaner product photo display.
+- Pre-upgrade snapshot saved to `docs/checkpoints/v1.2.1-merch-real/`.
+
+### Workflow
+- Per TKDL TECH conventions: `LAUNCH-STATUS-v1-2-0`, `HEALTH-CHECK-v1-2-0`, `MANUAL-STEPS-v1-2-0`, `HANDOFF-v1-2-0` moved to `_archive/`. Fresh `LAUNCH-STATUS-v1-3-0.md` written.
+
+
 ## [1.2.0] — 2026-04-25 — Real assets · product expansion · logo overhaul · video integration · YouTube auto-pull · /eats
 
 ### Added — Inline video player + Watch overhaul

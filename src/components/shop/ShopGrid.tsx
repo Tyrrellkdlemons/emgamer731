@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Product, ProductCategory } from '@/data/products';
 import { formatPrice } from '@/lib/utils';
+import { ProductPhoto } from '@/components/shop/ProductPhoto';
 
 const CATEGORIES: Array<{ id: ProductCategory | 'all'; label: string }> = [
   { id: 'all',         label: 'All' },
@@ -59,9 +60,14 @@ export function ShopGrid({ products }: { products: Product[] }) {
               transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
               className="group rounded-3xl bg-cream ring-1 ring-creamShade overflow-hidden shadow-soft hover:shadow-lifted transition-all"
             >
-              <div className="relative aspect-square bg-creamShade overflow-hidden">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={p.hero} alt={p.name} className="w-full h-full object-cover transition-transform duration-500 ease-morning group-hover:scale-105" />
+              <div className="relative aspect-square bg-white overflow-hidden">
+                <ProductPhoto
+                  hero={p.hero}
+                  heroCrop={p.heroCrop}
+                  alt={p.name}
+                  className="transition-transform duration-500 ease-morning group-hover:scale-105"
+                  imgClassName="transition-transform duration-500 ease-morning group-hover:scale-105"
+                />
                 {p.badge && (
                   <span className="absolute top-2 left-2 rounded-full bg-cocoa text-eggshell px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">
                     {p.badge}

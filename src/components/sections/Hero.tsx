@@ -36,11 +36,10 @@ export function Hero() {
         <BreakfastWorldHero />
       </div>
 
-      {/* Layer 1 — REAL hero photo: the candy-city breakfast world with the avatar.
-          Mobile uses the centered-crop 2nd image for the avatar to read tall;
-          desktop uses the wide 1st image. Hidden on save-data networks. */}
+      {/* Layer 1 — REAL hero photo: candy-city breakfast world with the
+          "WHAT DID YOU EAT FOR BREAKFAST?" banner sky and the avatar.
+          Mobile uses the alternate centered crop; desktop uses the new banner image. */}
       <div className="absolute inset-0 z-[1] hero-photo-layer">
-        {/* Mobile/portrait — the alternate hero crop reads better on tall screens */}
         <Image
           src="/images/hero/breakfast-world-2.png"
           alt="EMM in the breakfast world — pastel candy city with floating waffles, pancake stack, sunny egg, donut tower"
@@ -49,15 +48,14 @@ export function Hero() {
           sizes="100vw"
           className="object-cover object-center sm:hidden"
         />
-        {/* sm+ — the wide hero, anchored right so the avatar shows */}
         <Image
-          src="/images/hero/breakfast-world-1.png"
-          alt=""
+          src="/images/hero/breakfast-world-banner.png"
+          alt="EMM in the breakfast world — golden banner stretched across the sky reads What did you eat for breakfast"
           fill
           priority
-          sizes="(max-width: 640px) 100vw, 100vw"
+          sizes="100vw"
           className="hidden sm:block object-cover"
-          style={{ objectPosition: '70% 50%' }}
+          style={{ objectPosition: '50% 35%' }}
         />
         {/* Soft fade gradient — vertical on mobile (text overlay top), horizontal on desktop (text overlay left) */}
         <div
@@ -93,7 +91,7 @@ export function Hero() {
             transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
             className="inline-flex items-center gap-2 rounded-full ring-1 ring-creamShade bg-cream/85 backdrop-blur px-3.5 py-1.5 text-xs font-semibold text-cocoa shadow-soft"
           >
-            <span className="text-base">🥞</span> Welcome to EMGamer731 · the breakfast HQ
+            <span className="text-base">🥞</span> Welcome to EMGamer731 · the breakfast HQ · iykyk
           </motion.div>
 
           <h1 id="hero-title" className="display text-display-xl text-cocoa mt-5 leading-[0.98]">
@@ -121,7 +119,7 @@ export function Hero() {
             transition={{ delay: 0.55, duration: 0.4 }}
             className="mt-6 max-w-xl text-cocoa/85 text-lg backdrop-blur-sm bg-cream/40 rounded-2xl px-4 py-3 -mx-4"
           >
-            EMM is your morning host — Roblox fits, breakfast plates, and the cozy stream the squad shows up for.
+            EMM is your morning host — Roblox fits with main-character aura, breakfast plates that ate, and the cozy stream the squad shows up for. No cap.
           </motion.p>
 
           <motion.div
@@ -130,9 +128,9 @@ export function Hero() {
             transition={{ delay: 0.7, duration: 0.4 }}
             className="mt-7 flex flex-wrap gap-3"
           >
-            <Link href="/live" className="btn-primary">▶ Watch live</Link>
-            <Link href="/shop" className="btn-ghost">Shop the merch</Link>
-            <Link href="/gallery" className="btn-ghost">Explore gallery</Link>
+            <Link href="/live" className="btn-primary">▶ Catch the live (it&apos;s giving)</Link>
+            <Link href="/shop" className="btn-ghost">Shop the merch · slay</Link>
+            <Link href="/gallery" className="btn-ghost">Explore the avatar fits</Link>
           </motion.div>
 
           <motion.div

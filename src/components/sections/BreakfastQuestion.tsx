@@ -22,7 +22,7 @@ export function BreakfastQuestion() {
           <h2 id="bq-title" className="display text-display-md text-cocoa">
             What did <span className="display-italic text-syrup">you</span> eat for breakfast?
           </h2>
-          <p className="text-cocoa/80 mt-2">Pick your morning vibe — totally anonymous, just for fun.</p>
+          <p className="text-cocoa/80 mt-2">Pick your morning vibe — totally anon, just main-character fun. Fr fr.</p>
         </div>
 
         <ul className="mt-6 grid grid-cols-3 sm:grid-cols-6 gap-3 max-w-3xl mx-auto">
@@ -58,7 +58,7 @@ export function BreakfastQuestion() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center text-cocoa mt-6 text-sm"
           >
-            <span className="display-italic text-syrup">Pulled up for {OPTIONS.find(o => o.id === picked)?.label}.</span> The squad's with you.
+            <span className="display-italic text-syrup">Ate that — {OPTIONS.find(o => o.id === picked)?.label} aura unlocked.</span> The squad pulled up. Bussin, no cap.
           </motion.p>
         )}
       </div>

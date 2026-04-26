@@ -4,14 +4,15 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { FEATURED_PRODUCTS } from '@/data/products';
 import { formatPrice } from '@/lib/utils';
+import { ProductPhoto } from '@/components/shop/ProductPhoto';
 
 export function FeaturedMerch() {
   return (
     <section className="container-soft py-12 sm:py-16" aria-labelledby="featured-title">
       <div className="flex items-end justify-between flex-wrap gap-3 mb-6">
         <div>
-          <h2 id="featured-title" className="display text-display-md text-cocoa">Spotlight merch</h2>
-          <p className="text-cocoa/70 mt-1">Soft fits, breakfast graphics, big plate energy.</p>
+          <h2 id="featured-title" className="display text-display-md text-cocoa">Spotlight merch — it&apos;s giving plate</h2>
+          <p className="text-cocoa/70 mt-1">Soft fits, breakfast graphics, big sigma aura. No cap, the cozy era.</p>
         </div>
         <Link href="/shop" className="text-sm font-semibold text-syrup hover:underline">Browse all merch →</Link>
       </div>
@@ -27,9 +28,14 @@ export function FeaturedMerch() {
             className="group rounded-3xl bg-cream ring-1 ring-creamShade overflow-hidden shadow-soft hover:shadow-lifted transition-all"
           >
             <Link href={`/shop#${p.slug}`} className="block">
-              <div className="relative aspect-square bg-creamShade overflow-hidden">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={p.hero} alt={p.name} className="w-full h-full object-cover transition-transform duration-500 ease-morning group-hover:scale-105" />
+              <div className="relative aspect-square bg-white overflow-hidden">
+                <ProductPhoto
+                  hero={p.hero}
+                  heroCrop={p.heroCrop}
+                  alt={p.name}
+                  className="transition-transform duration-500 ease-morning group-hover:scale-105"
+                  imgClassName="transition-transform duration-500 ease-morning group-hover:scale-105"
+                />
                 {p.badge && (
                   <span className="absolute top-2 left-2 rounded-full bg-cocoa text-eggshell px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">
                     {p.badge}

@@ -9,8 +9,8 @@ export function CollectionsRail() {
     <section className="py-12 sm:py-16" aria-labelledby="collections-title">
       <div className="container-soft flex items-end justify-between flex-wrap gap-3 mb-6">
         <div>
-          <h2 id="collections-title" className="display text-display-md text-cocoa">Breakfast collections</h2>
-          <p className="text-cocoa/70 mt-1">Ten worlds. One breakfast HQ.</p>
+          <h2 id="collections-title" className="display text-display-md text-cocoa">Breakfast collections · the rotation</h2>
+          <p className="text-cocoa/70 mt-1">Ten worlds. One breakfast HQ. Each drop ate, fr.</p>
         </div>
         <Link href="/shop" className="text-sm font-semibold text-syrup hover:underline">All merch →</Link>
       </div>

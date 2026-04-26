@@ -35,7 +35,7 @@ export function LiveHero() {
               <span className="text-xs text-muted">— playing inline below</span>
             </div>
             <h2 className="display text-2xl sm:text-3xl text-cocoa leading-tight">
-              {live.title ?? 'EMM is live — pull up a chair.'}
+              {live.title ?? 'EMM is live — pull up a chair, it’s giving stream era.'}
             </h2>
           </div>
           {/* INLINE PLAYER — no leaving the site */}
@@ -60,19 +60,19 @@ export function LiveHero() {
     >
       <div className="flex items-center gap-3">
         <span className="h-2.5 w-2.5 rounded-full bg-muted" />
-        <div className="text-sm font-semibold text-cocoa">EMM is offline right now</div>
+        <div className="text-sm font-semibold text-cocoa">EMM is offline rn — touching grass</div>
       </div>
       <p className="text-cocoa/70 mt-2">
         Roblox lives are mostly on{' '}
         <a href="https://www.tiktok.com/@eatsswithemm/live" target="_blank" rel="noopener noreferrer" className="text-syrup font-semibold hover:underline">
           TikTok @eatsswithemm
         </a>
-        . The banner above flips red the moment a stream starts — you'll be able to watch it inline right here.
+        . The banner above flips red the moment a stream starts — you&apos;ll be able to watch it inline right here, no cap.
       </p>
       <div className="mt-4 flex flex-wrap gap-2">
-        <Link href="/schedule" className="btn-primary">See schedule</Link>
-        <Link href="/watch" className="btn-ghost">Latest replay</Link>
-        <Link href="/eats" className="btn-ghost">Today's eats</Link>
+        <Link href="/schedule" className="btn-primary">See the sched (sigma drop)</Link>
+        <Link href="/watch" className="btn-ghost">Latest replay · she ate</Link>
+        <Link href="/eats" className="btn-ghost">Today&apos;s eats · bussin</Link>
       </div>
     </motion.div>
   );
