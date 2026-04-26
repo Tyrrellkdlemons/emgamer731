@@ -3,7 +3,7 @@ export const PRIMARY_NAV = [
   { href: '/live', label: 'Live' },
   { href: '/watch', label: 'Watch' },
   { href: '/eats', label: 'Eats' },
-  { href: '/gallery', label: 'Gallery' },
+  { href: '/gallery', label: 'Brainrots' },
   { href: '/shop', label: 'Merch' },
   { href: '/schedule', label: 'Schedule' },
   { href: '/about', label: 'About' },

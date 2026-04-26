@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { ContentCard } from '@/data/latest-content';
 import { VideoPlayer } from '@/components/watch/VideoPlayer';
+import { YouTubeLiveBanner } from '@/components/watch/YouTubeLiveBanner';
 import { relativeTime, cn } from '@/lib/utils';
 
 const TABS = [
@@ -29,6 +30,10 @@ export function WatchClient({ items: initial }: { items: ContentCard[] }) {
 
   return (
     <div className="container-soft py-12 sm:py-16">
+      {/* Auto-flips visible when EmGamer731's YouTube is broadcasting. Renders
+          nothing when offline so the layout stays put. */}
+      <YouTubeLiveBanner />
+
       <header className="mb-6 flex items-end justify-between flex-wrap gap-3">
         <div>
           <h1 className="display text-display-lg text-cocoa">Watch</h1>

@@ -9,7 +9,7 @@ export interface LiveStatus {
   startedAt?: string;
   viewerCount?: number;
   fetchedAt: string;
-  source: 'api' | 'manual' | 'webhook' | 'fallback';
+  source: 'api' | 'manual' | 'webhook' | 'autodetect' | 'fallback';
 }
 
 export interface LiveAdapter {

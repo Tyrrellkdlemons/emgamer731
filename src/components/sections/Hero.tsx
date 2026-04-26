@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { SITE } from '@/lib/utils';
 import { LiveHero } from '@/components/live/LiveHero';
+import { CatchTheLiveButton } from '@/components/live/CatchTheLiveButton';
 
 export function Hero() {
   const bgRef = useRef<HTMLDivElement>(null);
@@ -136,9 +137,9 @@ export function Hero() {
             transition={{ delay: 0.7, duration: 0.4 }}
             className="mt-7 flex flex-wrap gap-3"
           >
-            <Link href="/live" className="btn-primary">▶ Catch the live (it&apos;s giving)</Link>
+            <CatchTheLiveButton />
             <Link href="/shop" className="btn-ghost">Shop the merch · slay</Link>
-            <Link href="/gallery" className="btn-ghost">Explore the avatar fits</Link>
+            <Link href="/gallery" className="btn-ghost">67 brainrots · learn while you scroll</Link>
           </motion.div>
 
           <motion.div

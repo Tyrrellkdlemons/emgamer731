@@ -34,23 +34,7 @@ import { cn } from '@/lib/utils';
 import { useLiveStatus } from '@/components/live/LiveStatusProvider';
 import { LiveBadge } from '@/components/live/LiveBadge';
 import { Logo } from '@/components/layout/Logo';
-
-/* The "bacon" gradient — three stops of pink/red rind plus warm-cream
-   marbling lines. Used as a layered background-image. */
-const BACON_BG = `
-  linear-gradient(180deg, rgba(255,252,245,0.55), rgba(255,252,245,0.55)),
-  repeating-linear-gradient(
-    105deg,
-    #E76A6E 0px,
-    #E76A6E 14px,
-    #F4ECDC 14px,
-    #F4ECDC 22px,
-    #C44D58 22px,
-    #C44D58 36px,
-    #FFEFE0 36px,
-    #FFEFE0 44px
-  )
-`;
+import { BaconStrip } from '@/components/layout/BaconStrip';
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -76,25 +60,28 @@ export function SiteHeader() {
       style={{ paddingTop: 'max(env(safe-area-inset-top), 0.75rem)' }}
     >
       <div className="container-soft pointer-events-none">
-        {/* Outer floating capsule — the "bacon strip" */}
+        {/* Outer floating capsule — the "bacon strip" — now SVG-rendered
+            crispy bacon with animated syrup drizzle (see BaconStrip). */}
         <div
           className={cn(
-            'pointer-events-auto rounded-full transition-all duration-300 ease-morning',
+            'relative pointer-events-auto rounded-full transition-all duration-300 ease-morning',
             scrolled ? 'shadow-lifted' : 'shadow-soft',
           )}
           style={{
-            backgroundImage: BACON_BG,
-            border: '2px solid rgba(196,77,88,0.55)',
+            border: '2px solid rgba(74,20,20,0.65)',
             padding: '6px',
+            overflow: 'hidden',
           }}
         >
+          {/* Realistic SVG bacon as the capsule skin */}
+          <BaconStrip className="absolute inset-0" />
           {/* Inner cream backdrop — keeps text crisply readable on top of
-              the busy bacon stripes. */}
+              the busy bacon. */}
           <div
-            className="rounded-full backdrop-blur-xl"
+            className="relative rounded-full backdrop-blur-xl"
             style={{
               background:
-                'linear-gradient(180deg, rgba(255,252,245,0.92), rgba(255,248,238,0.85))',
+                'linear-gradient(180deg, rgba(255,252,245,0.93), rgba(255,248,238,0.88))',
             }}
           >
             <div className="flex items-center justify-between gap-2 px-3 sm:px-4 py-2">
@@ -164,14 +151,14 @@ export function SiteHeader() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.2, ease: [0.32, 0.72, 0, 1] }}
-              className="lg:hidden mt-2 pointer-events-auto rounded-3xl"
+              className="lg:hidden mt-2 pointer-events-auto rounded-3xl relative overflow-hidden"
               style={{
-                backgroundImage: BACON_BG,
-                border: '2px solid rgba(196,77,88,0.55)',
+                border: '2px solid rgba(74,20,20,0.65)',
                 padding: '6px',
               }}
             >
-              <div className="rounded-3xl bg-eggshell/95 backdrop-blur-xl">
+              <BaconStrip className="absolute inset-0" />
+              <div className="relative rounded-3xl bg-eggshell/95 backdrop-blur-xl">
                 <div className="grid grid-cols-2 gap-2 p-3">
                   {PRIMARY_NAV.map((item) => (
                     <Link
