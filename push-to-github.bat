@@ -36,7 +36,7 @@ for /f %%H in ('git status --porcelain ^| find /c /v ""') do set CHANGES=%%H
 if "%CHANGES%"=="0" (
   git diff --cached --quiet
   if errorlevel 1 (
-    git commit -m "feat: EMGamer731 v1.3.1 — hero hotfix: invisible slogan spaceholders so the gold sky banner is no longer blocked" >nul
+    git commit -m "feat: EMGamer731 v1.3.2 — TikTok inline embed on /eats + product catalog stripped to real-photo SKUs only" >nul
     echo [i] Local commit created.
   ) else (
     echo [i] No local changes to commit.
@@ -44,7 +44,7 @@ if "%CHANGES%"=="0" (
 ) else (
   REM There are working-tree changes; force-stage and commit
   git add -A
-  git commit -m "feat: EMGamer731 v1.3.1 — hero hotfix: invisible slogan spaceholders so the gold sky banner is no longer blocked" >nul 2>nul
+  git commit -m "feat: EMGamer731 v1.3.2 — TikTok inline embed on /eats + product catalog stripped to real-photo SKUs only" >nul 2>nul
   echo [i] Local commit created (forced stage of %CHANGES% files^).
 )
 
@@ -54,7 +54,7 @@ if not exist ".git" (
   git init
   git branch -M main
   git add -A
-  git commit -m "feat: EMGamer731 v1.3.1 hotfix"
+  git commit -m "feat: EMGamer731 v1.3.2"
 )
 
 REM 3. Set the remote
