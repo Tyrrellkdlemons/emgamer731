@@ -37,7 +37,10 @@ html, body {
   overflow-x: hidden;
   /* iOS momentum scroll — feels native in standalone PWA mode. */
   -webkit-overflow-scrolling: touch;
-  overscroll-behavior-y: contain;
+  /* NOTE: We do NOT set `overscroll-behavior-y` here. On desktop Chrome it
+     was breaking the mouse wheel inside scrollable elements (the wheel
+     events got swallowed by the html/body chain). Reduce-motion and PWA
+     concerns are handled per-section instead. */
 }
 /* Body is intentionally TRANSPARENT so the BackgroundProvider's photo can
    show through on non-home routes. Home keeps the html cream + radial overlays. */

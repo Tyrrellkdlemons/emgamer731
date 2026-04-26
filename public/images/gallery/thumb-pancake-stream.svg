@@ -1,6 +1,39 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" role="img" aria-label="Pancake Stream">
-  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FFD89C"/><stop offset="100%" stop-color="#FFFCF5"/></linearGradient></defs>
-  <rect width="1000" height="1000" fill="url(#g)"/>
-  <text x="500" y="460" font-family="ui-serif, Georgia, serif" font-size="360" text-anchor="middle" fill="#3B2A22" opacity="0.9">🥞</text>
-  <text x="500" y="540" font-family="ui-sans-serif, system-ui, sans-serif" font-weight="700" font-size="45" text-anchor="middle" fill="#3B2A22">Pancake Stream</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bg-ps" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFD89C"/>
+      <stop offset="1" stop-color="#E8A53C"/>
+    </linearGradient>
+    <radialGradient id="glow-ps" cx="0.7" cy="0.3" r="0.8">
+      <stop offset="0" stop-color="#FFFCF5" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#FFFCF5" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg-ps)"/>
+  <rect width="1280" height="720" fill="url(#glow-ps)"/>
+  <!-- LIVE replay chip -->
+  <g transform="translate(70 70)">
+    <rect x="0" y="0" width="220" height="56" rx="28" fill="#FF4757"/>
+    <circle cx="36" cy="28" r="10" fill="#FFFCF5"/>
+    <text x="64" y="38" font-family="system-ui,-apple-system,Segoe UI,sans-serif" font-size="26" font-weight="800" fill="#FFFCF5">REPLAY</text>
+  </g>
+  <!-- pancake stack -->
+  <g transform="translate(640 420)">
+    <ellipse cx="0" cy="120" rx="280" ry="30" fill="#3B2A22" opacity="0.22"/>
+    <!-- pancakes -->
+    <ellipse cx="0" cy="80" rx="240" ry="36" fill="#C97B3D"/>
+    <ellipse cx="0" cy="68" rx="240" ry="32" fill="#E8A53C"/>
+    <ellipse cx="0" cy="32" rx="234" ry="36" fill="#C97B3D"/>
+    <ellipse cx="0" cy="20" rx="234" ry="32" fill="#E8A53C"/>
+    <ellipse cx="0" cy="-16" rx="226" ry="36" fill="#C97B3D"/>
+    <ellipse cx="0" cy="-28" rx="226" ry="32" fill="#FFD89C"/>
+    <!-- butter -->
+    <rect x="-50" y="-72" width="100" height="40" rx="8" fill="#FFF5C2" stroke="#3B2A22" stroke-width="3"/>
+    <!-- syrup drip -->
+    <path d="M -160,-30 Q -160,40 -130,80 Q -100,40 -100,-30 Q -130,-50 -160,-30 Z" fill="#7B3A12" opacity="0.85"/>
+    <path d="M 130,-40 Q 130,30 160,90 Q 190,30 190,-40 Q 160,-60 130,-40 Z" fill="#7B3A12" opacity="0.85"/>
+  </g>
+  <!-- title plate -->
+  <rect x="60" y="588" width="700" height="80" rx="24" fill="#3B2A22" opacity="0.82"/>
+  <text x="84" y="640" font-family="system-ui,-apple-system,Segoe UI,sans-serif" font-size="36" font-weight="800" fill="#FFFCF5">SATURDAY PANCAKE STREAM · 1:32:11</text>
 </svg>

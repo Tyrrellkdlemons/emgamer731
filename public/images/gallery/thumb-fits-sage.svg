@@ -1,6 +1,42 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" role="img" aria-label="Sage Fits">
-  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#A8E6CF"/><stop offset="100%" stop-color="#FFFCF5"/></linearGradient></defs>
-  <rect width="1000" height="1000" fill="url(#g)"/>
-  <text x="500" y="460" font-family="ui-serif, Georgia, serif" font-size="360" text-anchor="middle" fill="#3B2A22" opacity="0.9">🧢</text>
-  <text x="500" y="540" font-family="ui-sans-serif, system-ui, sans-serif" font-weight="700" font-size="45" text-anchor="middle" fill="#3B2A22">Sage Fits</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bg-fs" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#B8D4A8"/>
+      <stop offset="0.5" stop-color="#A8E6CF"/>
+      <stop offset="1" stop-color="#F4ECDC"/>
+    </linearGradient>
+    <radialGradient id="glow-fs" cx="0.3" cy="0.4" r="0.7">
+      <stop offset="0" stop-color="#FFFCF5" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#FFFCF5" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg-fs)"/>
+  <rect width="1280" height="720" fill="url(#glow-fs)"/>
+  <!-- "NEW DROP" chip -->
+  <g transform="translate(70 70)">
+    <rect x="0" y="0" width="200" height="56" rx="28" fill="#FF9EC0"/>
+    <text x="28" y="38" font-family="system-ui,-apple-system,Segoe UI,sans-serif" font-size="22" font-weight="800" fill="#3B2A22">★ NEW DROP</text>
+  </g>
+  <!-- Hoodie silhouette -->
+  <g transform="translate(640 380)">
+    <!-- shadow -->
+    <ellipse cx="0" cy="220" rx="240" ry="22" fill="#3B2A22" opacity="0.18"/>
+    <!-- body -->
+    <path d="M -180,-160 Q -200,-180 -140,-210 L -60,-220 Q 0,-228 60,-220 L 140,-210 Q 200,-180 180,-160 L 200,40 Q 220,180 180,210 L -180,210 Q -220,180 -200,40 Z" fill="#B8D4A8" stroke="#3B2A22" stroke-width="5"/>
+    <!-- pocket -->
+    <path d="M -110,40 Q -110,120 0,130 Q 110,120 110,40 Z" fill="#A8C99A" stroke="#3B2A22" stroke-width="4"/>
+    <!-- hood -->
+    <path d="M -110,-200 Q 0,-260 110,-200 L 70,-150 L -70,-150 Z" fill="#A8C99A" stroke="#3B2A22" stroke-width="5"/>
+    <!-- drawstrings -->
+    <line x1="-30" y1="-180" x2="-30" y2="-100" stroke="#FFFCF5" stroke-width="4"/>
+    <line x1="30" y1="-180" x2="30" y2="-100" stroke="#FFFCF5" stroke-width="4"/>
+    <!-- "WDYEFB" front graphic -->
+    <text x="0" y="-30" text-anchor="middle" font-family="system-ui,-apple-system,Segoe UI,sans-serif" font-size="22" font-weight="800" fill="#3B2A22">WHAT DID YOU EAT</text>
+    <text x="0" y="0" text-anchor="middle" font-family="system-ui,-apple-system,Segoe UI,sans-serif" font-size="22" font-weight="800" fill="#3B2A22">FOR BREAKFAST?</text>
+    <!-- twin eggs -->
+    <g transform="translate(-40 70)"><ellipse rx="38" ry="28" fill="#FFFCF5" stroke="#3B2A22" stroke-width="3"/><circle r="14" fill="#F4D86A" stroke="#3B2A22" stroke-width="3"/></g>
+    <g transform="translate(40 70)"><ellipse rx="38" ry="28" fill="#FFFCF5" stroke="#3B2A22" stroke-width="3"/><circle r="14" fill="#F4D86A" stroke="#3B2A22" stroke-width="3"/></g>
+  </g>
+  <rect x="60" y="588" width="640" height="80" rx="24" fill="#3B2A22" opacity="0.82"/>
+  <text x="84" y="640" font-family="system-ui,-apple-system,Segoe UI,sans-serif" font-size="36" font-weight="800" fill="#FFFCF5">NEW AVATAR FITS · SAGE DROP</text>
 </svg>

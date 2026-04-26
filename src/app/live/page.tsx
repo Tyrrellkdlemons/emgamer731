@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { LiveHero } from '@/components/live/LiveHero';
+import { ReplaysGrid } from '@/components/live/ReplaysGrid';
 import { SCHEDULE } from '@/data/schedule';
 import { LATEST_CONTENT } from '@/data/latest-content';
 
@@ -42,21 +43,18 @@ export default function LivePage() {
       </section>
 
       <section className="mt-12">
-        <h2 className="display text-display-md text-cocoa mb-4">Latest replays</h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {LATEST_CONTENT.filter((c) => c.platform === 'youtube').map((c) => (
-            <a key={c.id} href={c.url} target="_blank" rel="noopener noreferrer" className="block rounded-2xl bg-cream ring-1 ring-creamShade overflow-hidden shadow-soft hover:shadow-lifted transition-all">
-              <div className="aspect-video bg-creamShade">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={c.thumbnail} alt="" className="w-full h-full object-cover" />
-              </div>
-              <div className="p-3">
-                <div className="font-semibold text-cocoa">{c.title}</div>
-                <div className="text-xs text-muted mt-1">{c.duration}</div>
-              </div>
-            </a>
-          ))}
+        <div className="flex items-end justify-between flex-wrap gap-3 mb-4">
+          <div>
+            <h2 className="display text-display-md text-cocoa">Latest replays · she ate</h2>
+            <p className="text-cocoa/70 text-sm mt-1">
+              Tap any card to watch inline on the site — no leaving for YouTube.
+            </p>
+          </div>
+          <a href="/watch" className="text-sm font-semibold text-syrup hover:underline">
+            All replays →
+          </a>
         </div>
+        <ReplaysGrid items={LATEST_CONTENT} />
       </section>
     </div>
   );
