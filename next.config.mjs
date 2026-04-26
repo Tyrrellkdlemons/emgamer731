@@ -2,6 +2,10 @@
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  // Lint is enforced by .github/workflows/ci.yml (and locally via `npm run lint`),
+  // but we don't want a single style-rule violation to fail a Netlify production deploy.
+  // TypeScript errors still block the build — only ESLint is bypassed here.
+  eslint: { ignoreDuringBuilds: true },
   images: {
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [360, 480, 640, 750, 828, 1080, 1200, 1440, 1920, 2560],
