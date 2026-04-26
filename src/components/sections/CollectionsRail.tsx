@@ -12,7 +12,7 @@ export function CollectionsRail() {
           <h2 id="collections-title" className="display text-display-md text-cocoa">Breakfast collections</h2>
           <p className="text-cocoa/70 mt-1">Ten worlds. One breakfast HQ.</p>
         </div>
-        <Link href="/shop" className="text-sm font-semibold text-syrup hover:underline">Shop all →</Link>
+        <Link href="/shop" className="text-sm font-semibold text-syrup hover:underline">All merch →</Link>
       </div>
 
       <div className="overflow-x-auto pb-3">

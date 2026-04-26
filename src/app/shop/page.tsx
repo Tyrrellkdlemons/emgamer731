@@ -4,15 +4,15 @@ import { PRODUCTS } from '@/data/products';
 import { ShopGrid } from '@/components/shop/ShopGrid';
 
 export const metadata: Metadata = {
-  title: 'Shop · The breakfast brand',
-  description: '40+ pieces across 10 collections — from the iconic mint slogan hoodie to limited avatar drops.',
+  title: 'Merch · The breakfast brand',
+  description: '60+ pieces across 10 collections — real photo-quality mockups, from the iconic mint slogan hoodie to limited avatar drops.',
 };
 
 export default function ShopPage() {
   return (
     <div className="container-soft py-12 sm:py-16">
       <header className="mb-8">
-        <h1 className="display text-display-lg text-cocoa">Shop</h1>
+        <h1 className="display text-display-lg text-cocoa">Merch</h1>
         <p className="text-cocoa/70 mt-2 max-w-2xl">
           Soft fits, breakfast graphics, big plate energy. Every drop is designed to wear before school, after stream, and basically forever.
         </p>

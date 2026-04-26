@@ -4,7 +4,7 @@ export const PRIMARY_NAV = [
   { href: '/watch', label: 'Watch' },
   { href: '/eats', label: 'Eats' },
   { href: '/gallery', label: 'Gallery' },
-  { href: '/shop', label: 'Shop' },
+  { href: '/shop', label: 'Merch' },
   { href: '/schedule', label: 'Schedule' },
   { href: '/about', label: 'About' },
 ] as const;

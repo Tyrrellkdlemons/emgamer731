@@ -131,7 +131,7 @@ export function Hero() {
             className="mt-7 flex flex-wrap gap-3"
           >
             <Link href="/live" className="btn-primary">▶ Watch live</Link>
-            <Link href="/shop" className="btn-ghost">Shop the brand</Link>
+            <Link href="/shop" className="btn-ghost">Shop the merch</Link>
             <Link href="/gallery" className="btn-ghost">Explore gallery</Link>
           </motion.div>
 

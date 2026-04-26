@@ -13,7 +13,7 @@ export function FeaturedMerch() {
           <h2 id="featured-title" className="display text-display-md text-cocoa">Spotlight merch</h2>
           <p className="text-cocoa/70 mt-1">Soft fits, breakfast graphics, big plate energy.</p>
         </div>
-        <Link href="/shop" className="text-sm font-semibold text-syrup hover:underline">Shop everything →</Link>
+        <Link href="/shop" className="text-sm font-semibold text-syrup hover:underline">Browse all merch →</Link>
       </div>
 
       <div className="grid gap-4 sm:gap-5 grid-cols-2 lg:grid-cols-4">

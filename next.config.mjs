@@ -16,6 +16,7 @@ const nextConfig = {
       { protocol: 'https', hostname: 'img.youtube.com' },
       { protocol: 'https', hostname: 'yt3.ggpht.com' },
       { protocol: 'https', hostname: 'p16-sign-va.tiktokcdn.com' },
+      { protocol: 'https', hostname: 'image.pollinations.ai' },
     ],
   },
   experimental: {
