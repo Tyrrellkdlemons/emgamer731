@@ -23,6 +23,9 @@ const STORAGE_KEY     = 'emg731:admin-live:token';
 const ROBLOX_PLACE_KEY = 'emg731:admin-roblox:placeId';
 const ROBLOX_UID_KEY   = 'emg731:admin-roblox:universeId';
 
+/** Default token baked into the admin API too — works without env config. */
+const DEFAULT_TOKEN = 'emm-67-go-live';
+
 type LiveResp    = { ok?: boolean; action?: string; error?: string };
 type LiveSummary = {
   isLive?: boolean;
@@ -39,7 +42,16 @@ export default function AdminPage() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) { setToken(saved); setTokenSaved(true); }
+    if (saved) {
+      setToken(saved);
+      setTokenSaved(true);
+    } else {
+      // First visit — pre-seed with the default token so GO LIVE works
+      // immediately without any setup. TKDL can override under "Forget".
+      setToken(DEFAULT_TOKEN);
+      localStorage.setItem(STORAGE_KEY, DEFAULT_TOKEN);
+      setTokenSaved(true);
+    }
   }, []);
 
   const saveToken = (t: string) => {

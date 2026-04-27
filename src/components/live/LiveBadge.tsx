@@ -19,19 +19,20 @@ export function LiveBadge({ summary, compact = false, className }: { summary?: L
         className={cn('inline-flex items-center', className)}
       >
         {isLive ? (
+          // v1.6.8 — link to OUR /live route (inline player) instead of
+          // the external TikTok URL. The toast-framed inline video plays
+          // there and visitors stay on emgamer731.netlify.app.
           <Link
-            href={summary?.primary?.watchUrl ?? '/live'}
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/live"
             className={cn(
-              'inline-flex items-center gap-2 rounded-full font-semibold text-white shadow-liveGlow',
+              'inline-flex items-center gap-2 rounded-full font-semibold text-white shadow-liveGlow transition-transform hover:scale-105 active:scale-95',
               compact ? 'px-3 py-1.5 text-xs' : 'px-5 py-3 text-sm',
             )}
             style={{ background: 'var(--live)' }}
-            aria-label={`EMM is live on ${summary?.primary?.platform ?? 'stream'}`}
+            aria-label={`EMM is live on ${summary?.primary?.platform ?? 'stream'} — watch inline`}
           >
             <span className="live-dot" aria-hidden />
-            <span>{compact ? 'LIVE' : `LIVE on ${summary?.primary?.platform?.toUpperCase()}`}</span>
+            <span>{compact ? 'LIVE' : `LIVE on ${summary?.primary?.platform?.toUpperCase()} — watch →`}</span>
             {!compact && summary?.primary?.title && (
               <span className="hidden md:inline opacity-80">— {truncate(summary.primary.title, 40)}</span>
             )}

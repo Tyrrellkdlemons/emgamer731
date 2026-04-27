@@ -36,7 +36,7 @@ for /f %%H in ('git status --porcelain ^| find /c /v ""') do set CHANGES=%%H
 if "%CHANGES%"=="0" (
   git diff --cached --quiet
   if errorlevel 1 (
-    git commit -m "feat: EMGamer731 v1.6.7 — Full admin command center at /admin/live: tabbed (Live Trigger / Roblox Mods / Site Tools), token-gated, phone-PWA-ready. Easter-egg admin access from /about (7 pancake taps OR 2s slogan long-press OR type emadmin). Butter-Toast video frame wraps the live player with caramel border + butter pat + animated syrup drips + crumbs. LikeAndSubscribeBar opens YT/TikTok actions in 480x720 popup so visitors stay on-site after subscribing. CONNECT-MY-TIKTOK.md walkthrough doc." >nul
+    git commit -m "feat: EMGamer731 v1.6.8 — admin auth fix: bake DEFAULT_SECRET=emm-67-go-live so /admin/live works WITHOUT setting Netlify env. First-time visit auto-saves the default token to localStorage. Header LIVE chip now links to OUR /live route (in-site inline player) instead of external TikTok URL — visitors stay on the site to watch." >nul
     echo [i] Local commit created.
   ) else (
     echo [i] No local changes to commit.
@@ -44,7 +44,7 @@ if "%CHANGES%"=="0" (
 ) else (
   REM There are working-tree changes; force-stage and commit
   git add -A
-  git commit -m "feat: EMGamer731 v1.6.7 — Full admin command center at /admin/live: tabbed (Live Trigger / Roblox Mods / Site Tools), token-gated, phone-PWA-ready. Easter-egg admin access from /about (7 pancake taps OR 2s slogan long-press OR type emadmin). Butter-Toast video frame wraps the live player with caramel border + butter pat + animated syrup drips + crumbs. LikeAndSubscribeBar opens YT/TikTok actions in 480x720 popup so visitors stay on-site after subscribing. CONNECT-MY-TIKTOK.md walkthrough doc." >nul 2>nul
+  git commit -m "feat: EMGamer731 v1.6.8 — admin auth fix: bake DEFAULT_SECRET=emm-67-go-live so /admin/live works WITHOUT setting Netlify env. First-time visit auto-saves the default token to localStorage. Header LIVE chip now links to OUR /live route (in-site inline player) instead of external TikTok URL — visitors stay on the site to watch." >nul 2>nul
   echo [i] Local commit created (forced stage of %CHANGES% files^).
 )
 
@@ -54,7 +54,7 @@ if not exist ".git" (
   git init
   git branch -M main
   git add -A
-  git commit -m "feat: EMGamer731 v1.6.7b"
+  git commit -m "feat: EMGamer731 v1.6.8b"
 )
 
 REM 3. Set the remote

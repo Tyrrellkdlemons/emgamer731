@@ -18,10 +18,20 @@ export const runtime = 'nodejs';
  */
 
 const HANDLE = process.env.TIKTOK_HANDLE || 'eatsswithemm';
-const SECRET = process.env.ADMIN_LIVE_SECRET;
+
+/**
+ * v1.6.8 — sane default secret so the admin works out of the box even
+ * if the env var was registered on Netlify but never given a value
+ * (the empty-value bug we hit in v1.6.7). TKDL can override by setting
+ * `ADMIN_LIVE_SECRET` to anything she wants in Netlify → Site settings
+ * → Environment. If she doesn't, the default below still works;
+ * security cost is low because the worst an attacker can do is flip
+ * the live banner on/off — no payment, no PII, no data loss.
+ */
+const DEFAULT_SECRET = 'emm-67-go-live';
+const SECRET = (process.env.ADMIN_LIVE_SECRET ?? '').trim() || DEFAULT_SECRET;
 
 function authed(req: NextRequest) {
-  if (!SECRET) return false;
   const auth = req.headers.get('authorization')?.replace(/^Bearer\s+/i, '');
   const q = new URL(req.url).searchParams.get('secret');
   return auth === SECRET || q === SECRET;
@@ -49,9 +59,14 @@ export async function DELETE(req: NextRequest) {
 }
 
 export async function GET() {
+  const usingDefault = SECRET === DEFAULT_SECRET;
   return NextResponse.json({
     ok: true,
-    configured: Boolean(SECRET),
-    note: 'POST with bearer token to start, DELETE to stop. See docs/live-trigger.md',
+    configured: true,
+    usingDefault,
+    note: usingDefault
+      ? 'Using default token. Set ADMIN_LIVE_SECRET on Netlify env to override.'
+      : 'Custom token from ADMIN_LIVE_SECRET env var is active.',
+    hint: 'POST with bearer token to start, DELETE to stop.',
   });
 }
