@@ -68,8 +68,8 @@ function buildDrops(count: number): Drop[] {
       duration: 14 + rand() * 14,           // 14–28s
       delay: -rand() * 28,                  // negative offsets so we start mid-stream
       rotate: Math.round((rand() - 0.5) * 720), // -360..360 deg
-      size: isTag ? 1.6 + rand() * 1.6 : 1.4 + rand() * 1.6, // 1.4–3.0rem (v1.6.3: bumped)
-      opacity: 0.35 + rand() * 0.30,        // 0.35–0.65 (v1.6.3: more visible)
+      size: isTag ? 1.4 + rand() * 1.4 : 1.2 + rand() * 1.4, // 1.2–2.6rem
+      opacity: 0.18 + rand() * 0.22,        // 0.18–0.40
     });
   }
   return list;

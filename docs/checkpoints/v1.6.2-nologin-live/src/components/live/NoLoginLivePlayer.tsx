@@ -108,21 +108,9 @@ export function NoLoginLivePlayer({ primary, secondary, className }: Props) {
 }
 
 /**
- * TikTok branch — v1.6.3 fix: when EMM is LIVE, render a dedicated LIVE
- * panel (NOT her profile feed). The previous behaviour rendered her profile
- * because TikTok doesn't expose a clean iframe-able live embed without
- * sign-in, so we have to be honest with the visitor: we can't iframe the
- * live stream legally + login-free, but we CAN give them three one-tap
- * paths to the actual Roblox gameplay:
- *
- *   1. YouTube simulcast (if EMM is also live there) — handled in the
- *      parent NoLoginLivePlayer; we never reach this branch in that case.
- *   2. Open the TikTok app via deeplink → straight into the live room.
- *   3. Join the Roblox experience directly → join the SAME Roblox session
- *      EMM is streaming. Real gameplay > a video of gameplay.
- *
- * Configure the Roblox experience link via NEXT_PUBLIC_ROBLOX_EXPERIENCE_URL
- * (place ID URL or universe link). When unset we hide the Roblox button.
+ * The TikTok branch. Tries the official embed first; if the iframe doesn't
+ * paint within 6 seconds (network block, ad-blocker, region restriction),
+ * we surface the no-login mirror + native-app deeplink.
  */
 function TikTokRouteWithFallback({
   videoId, watchUrl, title, className,
@@ -132,90 +120,76 @@ function TikTokRouteWithFallback({
   title: string;
   className?: string;
 }) {
-  const robloxUrl = process.env.NEXT_PUBLIC_ROBLOX_EXPERIENCE_URL || '';
+  const [embedFailed, setEmbedFailed] = useState(false);
+  const wrapper = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // 6s grace period — if the TikTok script never renders an iframe inside
+    // the blockquote, assume the user's network blocks it.
+    const t = setTimeout(() => {
+      const hasIframe = !!wrapper.current?.querySelector('iframe');
+      if (!hasIframe) setEmbedFailed(true);
+    }, 6000);
+    return () => clearTimeout(t);
+  }, [videoId]);
+
   const mirrorUrl = videoId
     ? `https://proxitok.pabloferreiro.es/@${TT_HANDLE}/video/${videoId}`
     : `https://proxitok.pabloferreiro.es/@${TT_HANDLE}/live`;
+
   const appDeeplink = videoId
     ? `snssdk1233://aweme/detail/${videoId}`
     : `snssdk1233://user/profile/${TT_HANDLE}`;
 
   return (
-    <div
-      className={
-        'relative rounded-2xl overflow-hidden ring-2 ring-liveRed/60 bg-gradient-to-br from-cocoa via-cocoa to-[#2a1611] text-eggshell ' +
-        (className ?? '')
-      }
-    >
-      {/* LIVE GAMEPLAY HERO ── shows the gameplay context, not the profile */}
-      <div className="relative aspect-video grid place-items-center px-5 sm:px-6 py-8">
-        {/* animated gradient glow */}
-        <div
-          aria-hidden
-          className="absolute inset-0 opacity-60"
-          style={{
-            background:
-              'radial-gradient(circle at 30% 30%, rgba(255,71,87,0.45), transparent 55%), radial-gradient(circle at 70% 70%, rgba(168,230,207,0.35), transparent 55%)',
-          }}
-        />
-        <div className="relative text-center max-w-xl">
-          <div className="inline-flex items-center gap-2 rounded-full bg-liveRed text-white px-3 py-1 text-xs font-extrabold shadow-liveGlow mb-3">
-            <span className="live-dot" /> LIVE NOW · ROBLOX GAMEPLAY
-          </div>
-          <h3 className="display text-2xl sm:text-3xl text-eggshell leading-tight">
-            {title || 'EMM is live — playing Roblox right now.'}
-          </h3>
-          <p className="text-eggshell/75 text-sm mt-2">
-            TikTok blocks login-free live embeds, so the squad watches in the app
-            or jumps straight into the Roblox session.
-          </p>
+    <div className={'relative ' + (className ?? '')}>
+      {!embedFailed && (
+        <div ref={wrapper} className="relative rounded-2xl overflow-hidden ring-1 ring-creamShade bg-cocoa">
+          <TikTokProfileEmbed
+            videoId={videoId}
+            handle={TT_HANDLE}
+          />
+          <PoweredByBadge platform="tiktok" />
+        </div>
+      )}
 
-          <div className="mt-5 grid sm:grid-cols-2 gap-2 text-left">
+      {embedFailed && (
+        <div className="rounded-2xl bg-cocoa text-eggshell p-5 sm:p-6 ring-1 ring-creamShade">
+          <div className="text-xs uppercase tracking-widest text-pancake font-bold mb-1">
+            Heads up
+          </div>
+          <h3 className="display text-2xl leading-tight">
+            Your network is blocking the TikTok embed.
+          </h3>
+          <p className="text-eggshell/85 mt-2 text-sm">
+            No problem — pick a no-login path below. None of these require an account.
+          </p>
+          <div className="mt-4 grid sm:grid-cols-2 gap-2">
+            <a
+              href={mirrorUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-2xl bg-mint text-cocoa px-4 py-3 text-sm font-bold text-center shadow-soft hover:shadow-lifted transition-all"
+            >
+              Watch on the no-login mirror →
+            </a>
             <a
               href={appDeeplink}
-              className="rounded-2xl bg-pancake text-cocoa px-4 py-3 text-sm font-extrabold shadow-soft hover:shadow-lifted transition-all flex items-center justify-between"
+              className="rounded-2xl bg-pancake text-cocoa px-4 py-3 text-sm font-bold text-center shadow-soft hover:shadow-lifted transition-all"
             >
-              <span>📱 Open live in TikTok app</span>
-              <span aria-hidden>→</span>
+              Open in TikTok app →
             </a>
-            {robloxUrl ? (
-              <a
-                href={robloxUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-2xl bg-mint text-cocoa px-4 py-3 text-sm font-extrabold shadow-soft hover:shadow-lifted transition-all flex items-center justify-between"
-              >
-                <span>🎮 Join the Roblox game</span>
-                <span aria-hidden>→</span>
-              </a>
-            ) : (
-              <a
-                href={mirrorUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-2xl bg-mint text-cocoa px-4 py-3 text-sm font-extrabold shadow-soft hover:shadow-lifted transition-all flex items-center justify-between"
-              >
-                <span>🪟 No-login web mirror</span>
-                <span aria-hidden>→</span>
-              </a>
-            )}
           </div>
-          <p className="text-[11px] text-eggshell/55 mt-3">
-            Want a smoother inline-watch experience next time?{' '}
-            <strong>Simulcast to YouTube</strong> — when YT is live, this player
-            embeds the gameplay stream directly with no sign-in.
-          </p>
           <a
             href={watchUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="block mt-2 text-xs text-eggshell/65 hover:text-pancake underline"
+            className="block mt-3 text-xs text-eggshell/70 hover:text-pancake underline text-center"
           >
-            Or open the original TikTok live page (may ask to log in)
+            Or open the original TikTok page (may ask to log in)
           </a>
         </div>
-        <PoweredByBadge platform="tiktok" />
-      </div>
+      )}
     </div>
   );
 }
