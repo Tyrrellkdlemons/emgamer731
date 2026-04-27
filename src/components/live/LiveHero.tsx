@@ -11,16 +11,15 @@ export function LiveHero() {
   const { summary } = useLiveStatus();
   const live = summary?.primary;
 
-  // v1.6.4 rule: only "pop" the inline gameplay player when EMM is
-  // specifically LIVE WITH ROBLOX (or YouTube live, which we always show).
-  // A generic chat-style TikTok live keeps the offline dialog so the home
-  // doesn't constantly flip to a gameplay panel for non-gaming streams.
-  const isRobloxLive =
-    summary?.isLive &&
-    !!live &&
-    (live.isRoblox === true || live.platform === 'youtube');
+  // v1.7.1: pop the inline player whenever EMM is live on ANY platform.
+  // (Was Roblox-only in v1.6.4, but with Restream simulcast in place every
+  // broadcast is meant to be watched — and TikTok's auto-generated title
+  // "...is LIVE - TikTok LIVE" never contains "roblox" so the old gate
+  // suppressed real streams. The DualPlatformLivePlayer + fallback chain
+  // already handles every surface gracefully.)
+  const isLiveNow = !!summary?.isLive && !!live;
 
-  if (isRobloxLive && live) {
+  if (isLiveNow && live) {
     // Pick a SECONDARY live status if a different platform is also live —
     // NoLoginLivePlayer prefers YouTube (zero login wall) when both are up.
     const secondary = summary?.all?.find((s) => s.isLive && s.platform !== live.platform);

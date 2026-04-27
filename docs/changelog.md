@@ -2,6 +2,12 @@
 
 All notable changes are recorded here. Newest first.
 
+## [1.7.1] — 2026-04-27 — Hotfix: live player shows for any platform (not Roblox-only)
+
+### Fixed
+- **`LiveHero` no longer filters lives by Roblox keyword.** v1.6.4 added an `isRobloxLive` gate that required `live.isRoblox === true` OR `platform === 'youtube'` to pop the inline player. Auto-detected TikTok titles like "eatsswithem (@eatsswithemm) is LIVE - TikTok LIVE" never contain "roblox" or "rblx", so the gate suppressed real broadcasts and showed the "EMM is offline" panel instead. Replaced with a simple `isLiveNow = isLive && !!live` check — every live broadcast now pops the butter-toast player. The DualPlatformLivePlayer + fallback chain (HLS m3u8 → 4-iframe race → CTA card) already handle every surface gracefully, so no other guard is needed.
+
+
 ## [1.7.0] — 2026-04-27 — Restream simulcast · dual-platform live picker
 
 ### Added

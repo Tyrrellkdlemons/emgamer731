@@ -36,7 +36,7 @@ for /f %%H in ('git status --porcelain ^| find /c /v ""') do set CHANGES=%%H
 if "%CHANGES%"=="0" (
   git diff --cached --quiet
   if errorlevel 1 (
-    git commit -m "feat: EMGamer731 v1.7.0 — Restream simulcast pipeline + dual-platform live picker. New DualPlatformLivePlayer wraps NoLoginLivePlayer; when both YouTube and TikTok are live (Restream pushes one broadcast to both), visitors see a YT/TikTok tab toggle plus open-in-TikTok-app deeplink. YouTube default for cleanest no-login embed. When only one is live, picker hides — zero regression. LiveHero updated 2 lines. All other features (butter-toast frame, like/subscribe popups, admin gems, HLS pipeline) untouched." >nul
+    git commit -m "fix: EMGamer731 v1.7.1 hotfix — drop Roblox-only gate in LiveHero so the inline player pops on ANY platform live, not just Roblox-titled streams. Auto-detected TikTok titles (e.g. 'eatsswithem is LIVE - TikTok LIVE') never contained 'roblox' so the v1.6.4 isRobloxLive filter was suppressing real broadcasts and showing the offline panel instead. Replaced with isLiveNow. DualPlatformLivePlayer + fallback chain handle every surface gracefully." >nul
     echo [i] Local commit created.
   ) else (
     echo [i] No local changes to commit.
@@ -44,7 +44,7 @@ if "%CHANGES%"=="0" (
 ) else (
   REM There are working-tree changes; force-stage and commit
   git add -A
-  git commit -m "feat: EMGamer731 v1.7.0 — Restream simulcast pipeline + dual-platform live picker. New DualPlatformLivePlayer wraps NoLoginLivePlayer; when both YouTube and TikTok are live (Restream pushes one broadcast to both), visitors see a YT/TikTok tab toggle plus open-in-TikTok-app deeplink. YouTube default for cleanest no-login embed. When only one is live, picker hides — zero regression. LiveHero updated 2 lines. All other features (butter-toast frame, like/subscribe popups, admin gems, HLS pipeline) untouched." >nul 2>nul
+  git commit -m "fix: EMGamer731 v1.7.1 hotfix — drop Roblox-only gate in LiveHero so the inline player pops on ANY platform live, not just Roblox-titled streams. Auto-detected TikTok titles (e.g. 'eatsswithem is LIVE - TikTok LIVE') never contained 'roblox' so the v1.6.4 isRobloxLive filter was suppressing real broadcasts and showing the offline panel instead. Replaced with isLiveNow. DualPlatformLivePlayer + fallback chain handle every surface gracefully." >nul 2>nul
   echo [i] Local commit created (forced stage of %CHANGES% files^).
 )
 
@@ -100,4 +100,4 @@ echo   Repo: https://github.com/Tyrrellkdlemons/emgamer731
 echo   Netlify will auto-deploy from this push if continuous deploys are enabled.
 echo ============================================
 pause
-REM v1.7.0 force-push trigger 1777270500
+REM v1.7.1 force-push trigger 1777275900
