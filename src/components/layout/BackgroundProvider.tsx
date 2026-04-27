@@ -14,11 +14,20 @@
 
 import { usePathname } from 'next/navigation';
 import { OtherPagesBackground } from './OtherPagesBackground';
+import { RainOverlay } from './RainOverlay';
 
 export function BackgroundProvider() {
   const pathname = usePathname();
-  // Home owns its own background — keep the breakfast-world banner photo
-  // exactly as it is. For every other route, layer the new bg + floats behind.
-  if (pathname === '/') return null;
-  return <OtherPagesBackground />;
+  const isHome = pathname === '/';
+
+  return (
+    <>
+      {/* OtherPagesBackground only on non-home routes (home owns its own
+          breakfast-world banner photo). */}
+      {!isHome && <OtherPagesBackground />}
+      {/* Raining breakfast pieces + "67" tags — global, always on, light
+          on home so it doesn't compete with the hero photo. */}
+      <RainOverlay density={isHome ? 12 : 18} />
+    </>
+  );
 }

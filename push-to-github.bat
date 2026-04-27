@@ -36,7 +36,7 @@ for /f %%H in ('git status --porcelain ^| find /c /v ""') do set CHANGES=%%H
 if "%CHANGES%"=="0" (
   git diff --cached --quiet
   if errorlevel 1 (
-    git commit -m "feat: EMGamer731 v1.6.0 — 23 sellable brainrot figures (avatars + chibi mascots) with multi-method monetization pipeline (Robux + Stripe + PayPal + free Subscribe-and-Watch unlock), reusable unlock-store ledger, polished BuyMethodSheet modal, SubscribeUnlockPanel funnel that promotes YT subs, /gallery old visual archive moved to new /breakfacts route, fixed nav to FRENCH-TOAST stick (visible 9px caramel rim with cinnamon stripes + syrup drips + shine sweep)" >nul
+    git commit -m "feat: EMGamer731 v1.6.1 — global RainOverlay: breakfast emojis + stylized 67 tags fall from the top of every page (12 drops on home, 18 on inner routes); CSS keyframes only, prefers-reduced-motion + reduced-data guards" >nul
     echo [i] Local commit created.
   ) else (
     echo [i] No local changes to commit.
@@ -44,7 +44,7 @@ if "%CHANGES%"=="0" (
 ) else (
   REM There are working-tree changes; force-stage and commit
   git add -A
-  git commit -m "feat: EMGamer731 v1.6.0 — 23 sellable brainrot figures (avatars + chibi mascots) with multi-method monetization pipeline (Robux + Stripe + PayPal + free Subscribe-and-Watch unlock), reusable unlock-store ledger, polished BuyMethodSheet modal, SubscribeUnlockPanel funnel that promotes YT subs, /gallery old visual archive moved to new /breakfacts route, fixed nav to FRENCH-TOAST stick (visible 9px caramel rim with cinnamon stripes + syrup drips + shine sweep)" >nul 2>nul
+  git commit -m "feat: EMGamer731 v1.6.1 — global RainOverlay: breakfast emojis + stylized 67 tags fall from the top of every page (12 drops on home, 18 on inner routes); CSS keyframes only, prefers-reduced-motion + reduced-data guards" >nul 2>nul
   echo [i] Local commit created (forced stage of %CHANGES% files^).
 )
 
@@ -54,7 +54,7 @@ if not exist ".git" (
   git init
   git branch -M main
   git add -A
-  git commit -m "feat: EMGamer731 v1.6.0"
+  git commit -m "feat: EMGamer731 v1.6.1"
 )
 
 REM 3. Set the remote
