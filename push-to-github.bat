@@ -36,7 +36,7 @@ for /f %%H in ('git status --porcelain ^| find /c /v ""') do set CHANGES=%%H
 if "%CHANGES%"=="0" (
   git diff --cached --quiet
   if errorlevel 1 (
-    git commit -m "feat: EMGamer731 v1.6.10 — admin password is now gems (memorable, on-brand). Token auto-saves on first visit, self-heals on 401, includes Reset button. Net effect: open /admin/live and just hit GO LIVE." >nul
+    git commit -m "feat: EMGamer731 v1.6.11 — wired admin HLS URL paste through to inline player. Pasting the m3u8 in /admin/live now SHORT-CIRCUITS the scraper: /api/tiktok-live-stream returns the stored URL, TikTokLiveHlsPlayer plays it via HLS.js inside the butter-toast frame. Net: paste once, instant inline TikTok-live playback regardless of TikTok login walls." >nul
     echo [i] Local commit created.
   ) else (
     echo [i] No local changes to commit.
@@ -44,7 +44,7 @@ if "%CHANGES%"=="0" (
 ) else (
   REM There are working-tree changes; force-stage and commit
   git add -A
-  git commit -m "feat: EMGamer731 v1.6.10 — admin password is now gems (memorable, on-brand). Token auto-saves on first visit, self-heals on 401, includes Reset button. Net effect: open /admin/live and just hit GO LIVE." >nul 2>nul
+  git commit -m "feat: EMGamer731 v1.6.11 — wired admin HLS URL paste through to inline player. Pasting the m3u8 in /admin/live now SHORT-CIRCUITS the scraper: /api/tiktok-live-stream returns the stored URL, TikTokLiveHlsPlayer plays it via HLS.js inside the butter-toast frame. Net: paste once, instant inline TikTok-live playback regardless of TikTok login walls." >nul 2>nul
   echo [i] Local commit created (forced stage of %CHANGES% files^).
 )
 
@@ -54,7 +54,7 @@ if not exist ".git" (
   git init
   git branch -M main
   git add -A
-  git commit -m "feat: EMGamer731 v1.6.10b"
+  git commit -m "feat: EMGamer731 v1.6.11b"
 )
 
 REM 3. Set the remote

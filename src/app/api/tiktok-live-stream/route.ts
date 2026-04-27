@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { getTikTokLive } from '@/lib/live-status/tiktok-store';
 
 /**
  * /api/tiktok-live-stream — server-side extractor that pulls EMM's TikTok
@@ -57,6 +58,21 @@ type Result = {
 
 export async function GET(): Promise<NextResponse<Result>> {
   const fetchedAt = new Date().toISOString();
+
+  // ── PRIORITY 1 — admin-pasted HLS URL (instant, deterministic) ──
+  // If TKDL pasted her HLS m3u8 in the admin form, use it directly.
+  // Skips the scraper entirely and gives instant inline playback.
+  const stored = getTikTokLive(HANDLE);
+  if (stored?.isLive && stored.hlsUrl) {
+    return NextResponse.json({
+      isLive: true,
+      hlsUrl: stored.hlsUrl,
+      title: stored.title,
+      fetchedAt,
+      source: 'live-page',
+    });
+  }
+
   try {
     const url = `https://www.tiktok.com/@${HANDLE}/live`;
     const res = await fetch(url, {

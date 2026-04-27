@@ -46,6 +46,9 @@ export async function POST(req: NextRequest) {
     isLive: true,
     title: typeof body.title === 'string' ? body.title : 'EMM is live on TikTok — Roblox',
     watchUrl: typeof body.url === 'string' ? body.url : undefined,
+    // v1.6.11: store the manually-pasted HLS m3u8 so /api/tiktok-live-stream
+    // can return it instead of (or before) the scraper attempt.
+    hlsUrl: typeof body.hlsUrl === 'string' && body.hlsUrl.trim() ? body.hlsUrl.trim() : undefined,
     startedAt: new Date().toISOString(),
     source: 'admin',
   });

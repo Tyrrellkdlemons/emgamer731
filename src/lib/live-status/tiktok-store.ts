@@ -13,6 +13,8 @@ export type TikTokLiveRecord = {
   isLive: boolean;
   title?: string;
   watchUrl?: string;
+  /** Manually-pasted HLS m3u8 URL — short-circuits the scraper. */
+  hlsUrl?: string;
   startedAt?: string;
   source: 'webhook' | 'admin';
   setAt: string;
