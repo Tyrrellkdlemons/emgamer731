@@ -4,8 +4,6 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useLiveStatus } from './LiveStatusProvider';
 import { NoLoginLivePlayer } from './NoLoginLivePlayer';
-import { ButterToastFrame } from './ButterToastFrame';
-import { LikeAndSubscribeBar } from './LikeAndSubscribeBar';
 
 export function LiveHero() {
   const { summary } = useLiveStatus();
@@ -49,15 +47,10 @@ export function LiveHero() {
               {live.title ?? 'EMM is live — pull up a chair, it’s giving stream era.'}
             </h2>
           </div>
-          {/* INLINE NO-LOGIN PLAYER wrapped in the BUTTER-TOAST frame —
-              breakfast-themed, the live video plays as the "toast surface"
-              with butter pat + animated syrup drips. */}
-          <ButterToastFrame>
-            <NoLoginLivePlayer primary={live} secondary={secondary} />
-          </ButterToastFrame>
-
-          {/* Like + Subscribe bar — popup windows so visitors stay on-site */}
-          <LikeAndSubscribeBar />
+          {/* INLINE NO-LOGIN PLAYER — picks the best surface that doesn't
+              require a TikTok/YouTube account, with mirror + app-deeplink
+              fallbacks if the embed is blocked. */}
+          <NoLoginLivePlayer primary={live} secondary={secondary} />
         </div>
       </motion.div>
     );
@@ -74,18 +67,4 @@ export function LiveHero() {
         <span className="h-2.5 w-2.5 rounded-full bg-muted" />
         <div className="text-sm font-semibold text-cocoa">EMM is offline rn — touching grass</div>
       </div>
-      <p className="text-cocoa/70 mt-2">
-        Roblox lives are mostly on{' '}
-        <a href="https://www.tiktok.com/@eatsswithemm/live" target="_blank" rel="noopener noreferrer" className="text-syrup font-semibold hover:underline">
-          TikTok @eatsswithemm
-        </a>
-        . The banner above flips red the moment a stream starts — you&apos;ll be able to watch it inline right here, no cap.
-      </p>
-      <div className="mt-4 flex flex-wrap gap-2">
-        <Link href="/schedule" className="btn-primary">See the sched (sigma drop)</Link>
-        <Link href="/watch" className="btn-ghost">Latest replay · she ate</Link>
-        <Link href="/eats" className="btn-ghost">Today&apos;s eats · bussin</Link>
-      </div>
-    </motion.div>
-  );
-}
+      <p className="text-cocoa/70 mt-

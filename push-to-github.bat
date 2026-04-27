@@ -36,7 +36,7 @@ for /f %%H in ('git status --porcelain ^| find /c /v ""') do set CHANGES=%%H
 if "%CHANGES%"=="0" (
   git diff --cached --quiet
   if errorlevel 1 (
-    git commit -m "feat: EMGamer731 v1.6.6 — TIKTOK LIVE TRULY INLINE via HLS extraction. New /api/tiktok-live-stream server route scrapes the public TikTok live page for the m3u8 pull URL (parses both __UNIVERSAL_DATA_FOR_REHYDRATION__ and SIGI_STATE blobs). New TikTokLiveHlsPlayer client plays it inline via HLS.js (loaded from CDN on demand, native HLS on Safari/iOS). TikTokLiveStage now tries HLS first, falls through to the iframe race then to the CTA card. NEXT-STEP-YT-SIMULCAST.md doc explains the bulletproof simulcast pipeline for next iteration." >nul
+    git commit -m "feat: EMGamer731 v1.6.7 — Full admin command center at /admin/live: tabbed (Live Trigger / Roblox Mods / Site Tools), token-gated, phone-PWA-ready. Easter-egg admin access from /about (7 pancake taps OR 2s slogan long-press OR type emadmin). Butter-Toast video frame wraps the live player with caramel border + butter pat + animated syrup drips + crumbs. LikeAndSubscribeBar opens YT/TikTok actions in 480x720 popup so visitors stay on-site after subscribing. CONNECT-MY-TIKTOK.md walkthrough doc." >nul
     echo [i] Local commit created.
   ) else (
     echo [i] No local changes to commit.
@@ -44,7 +44,7 @@ if "%CHANGES%"=="0" (
 ) else (
   REM There are working-tree changes; force-stage and commit
   git add -A
-  git commit -m "feat: EMGamer731 v1.6.6 — TIKTOK LIVE TRULY INLINE via HLS extraction. New /api/tiktok-live-stream server route scrapes the public TikTok live page for the m3u8 pull URL (parses both __UNIVERSAL_DATA_FOR_REHYDRATION__ and SIGI_STATE blobs). New TikTokLiveHlsPlayer client plays it inline via HLS.js (loaded from CDN on demand, native HLS on Safari/iOS). TikTokLiveStage now tries HLS first, falls through to the iframe race then to the CTA card. NEXT-STEP-YT-SIMULCAST.md doc explains the bulletproof simulcast pipeline for next iteration." >nul 2>nul
+  git commit -m "feat: EMGamer731 v1.6.7 — Full admin command center at /admin/live: tabbed (Live Trigger / Roblox Mods / Site Tools), token-gated, phone-PWA-ready. Easter-egg admin access from /about (7 pancake taps OR 2s slogan long-press OR type emadmin). Butter-Toast video frame wraps the live player with caramel border + butter pat + animated syrup drips + crumbs. LikeAndSubscribeBar opens YT/TikTok actions in 480x720 popup so visitors stay on-site after subscribing. CONNECT-MY-TIKTOK.md walkthrough doc." >nul 2>nul
   echo [i] Local commit created (forced stage of %CHANGES% files^).
 )
 
@@ -54,7 +54,7 @@ if not exist ".git" (
   git init
   git branch -M main
   git add -A
-  git commit -m "feat: EMGamer731 v1.6.6b"
+  git commit -m "feat: EMGamer731 v1.6.7b"
 )
 
 REM 3. Set the remote

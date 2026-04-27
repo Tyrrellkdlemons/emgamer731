@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { AdminEasterEgg } from '@/components/about/AdminEasterEgg';
 
 export const metadata: Metadata = {
   title: 'About EMM',
@@ -9,8 +8,6 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <div className="container-soft py-12 sm:py-16 max-w-3xl">
-      {/* Hidden admin portal — three reveal patterns documented in the component */}
-      <AdminEasterEgg />
       <h1 className="display text-display-lg text-cocoa">About EMM</h1>
       <div className="prose prose-lg mt-6 text-cocoa/85 max-w-none space-y-5">
         <p className="text-xl leading-relaxed">
