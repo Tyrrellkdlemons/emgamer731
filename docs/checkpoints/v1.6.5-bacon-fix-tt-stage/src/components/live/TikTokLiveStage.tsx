@@ -40,7 +40,6 @@
  */
 
 import { useEffect, useRef, useState } from 'react';
-import { TikTokLiveHlsPlayer } from './TikTokLiveHlsPlayer';
 
 const HANDLE = process.env.NEXT_PUBLIC_TIKTOK_HANDLE || 'eatsswithemm';
 const ROBLOX_URL = process.env.NEXT_PUBLIC_ROBLOX_EXPERIENCE_URL || '';
@@ -60,19 +59,12 @@ type Props = {
 };
 
 export function TikTokLiveStage({ title, className }: Props) {
-  // v1.6.6 — strategy stack:
-  //   1. HLS player (server-extracted m3u8 from public TikTok live page)
-  //   2. iframe race (4 sources, 4s timeout)
-  //   3. polished CTA card (last resort)
-  // Each tier sets its phase to 'failed' to advance.
-  const [hlsFailed, setHlsFailed] = useState(false);
   const [winner, setWinner] = useState<string | null>(null);
   const [probeDone, setProbeDone] = useState(false);
   const probesRef = useRef<HTMLDivElement>(null);
 
-  // Probe race — only kick off AFTER the HLS attempt has failed.
+  // Probe race — kick off when component mounts.
   useEffect(() => {
-    if (!hlsFailed) return;
     // Re-use sessionStorage cache so we don't re-probe across pages.
     try {
       const cached = sessionStorage.getItem('emg731:tt-live-winner');
@@ -118,32 +110,21 @@ export function TikTokLiveStage({ title, className }: Props) {
     cleanup.push(() => clearTimeout(t));
 
     return () => cleanup.forEach((fn) => fn());
-  }, [hlsFailed]);
+  }, []);
 
   const winningSrc = winner ? SOURCES.find((s) => s.id === winner)?.url : null;
 
   return (
     <div className={'relative ' + (className ?? '')}>
-      {/* TIER 1 — HLS player. Tries to extract the m3u8 URL from TikTok's
-          public live page and play it inline via HLS.js. This is the
-          cleanest legal path to inline TikTok-live playback. If it can't
-          extract the URL or playback fails, sets hlsFailed=true and the
-          iframe race kicks in. */}
-      {!hlsFailed && (
-        <TikTokLiveHlsPlayer
-          fallbackTitle={title}
-          onFallback={() => setHlsFailed(true)}
-        />
-      )}
-
-      {/* Hidden probe iframes — only mount AFTER HLS gave up. We race
-          them off-screen so visitors don't see flicker. */}
+      {/* Hidden probe iframes — we race them off-screen so visitors don't
+          see flicker. Once a winner is chosen, we render the visible
+          iframe at full size. */}
       <div
         ref={probesRef}
         aria-hidden
         style={{ position: 'absolute', inset: 0, opacity: 0, pointerEvents: 'none', overflow: 'hidden' }}
       >
-        {hlsFailed && !probeDone && SOURCES.map((s) => (
+        {!probeDone && SOURCES.map((s) => (
           <iframe
             key={s.id}
             data-id={s.id}
@@ -156,8 +137,8 @@ export function TikTokLiveStage({ title, className }: Props) {
         ))}
       </div>
 
-      {/* TIER 2 — Visible iframe player when probe race won */}
-      {hlsFailed && winner && winningSrc && (
+      {/* Visible player — only when probe succeeded */}
+      {winner && winningSrc && (
         <div className="relative rounded-2xl overflow-hidden ring-2 ring-liveRed/60 bg-cocoa aspect-video">
           <iframe
             src={winningSrc}
@@ -176,14 +157,14 @@ export function TikTokLiveStage({ title, className }: Props) {
         </div>
       )}
 
-      {/* TIER 3 — both HLS and iframe race failed → polished CTA card. */}
-      {hlsFailed && probeDone && !winner && (
+      {/* Probe failed → polished CTA hero card. We still pop something
+          loud and live-themed instead of a vague "she's offline" panel. */}
+      {probeDone && !winner && (
         <FallbackHero title={title} />
       )}
 
-      {/* Iframe-race in flight → loading shimmer (only between HLS-fail
-          and probe-resolution windows; HLS player has its own loading state) */}
-      {hlsFailed && !probeDone && (
+      {/* Probe in flight → loading shimmer */}
+      {!probeDone && (
         <div className="aspect-video rounded-2xl ring-2 ring-liveRed/60 bg-gradient-to-br from-cocoa via-[#3a1f17] to-cocoa overflow-hidden relative grid place-items-center">
           <div className="text-center text-eggshell/85">
             <div className="inline-flex items-center gap-2 rounded-full bg-liveRed text-white px-3 py-1 text-xs font-extrabold mb-3 shadow-liveGlow">

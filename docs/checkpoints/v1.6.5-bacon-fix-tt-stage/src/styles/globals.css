@@ -1,0 +1,227 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --bg: #FFFCF5;
+  --card: #FFF8EE;
+  --border: #F4ECDC;
+  --text: #3B2A22;
+  --text-muted: #5B4B43;
+  --accent: #A8E6CF;
+  --accent-hot: #FF9EC0;
+  --accent-warm: #FFD89C;
+  --accent-cool: #BDE3FF;
+  --accent-deep: #C97B3D;
+  --live: #FF4757;
+  --shadow-soft: 0 2px 0 rgba(59,42,34,0.06), 0 14px 28px rgba(59,42,34,0.06);
+  --shadow-lifted: 0 4px 0 rgba(59,42,34,0.06), 0 22px 44px rgba(59,42,34,0.10);
+  --ease-morning: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-stretch: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html {
+  /* Solid cream is the canvas — visible on home and as a fallback if the
+     OtherPagesBackground image fails to load on inner routes. */
+  background: var(--bg);
+}
+html, body {
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: 100%;       /* iOS: prevent zoom on landscape */
+  -webkit-tap-highlight-color: transparent;
+  text-size-adjust: 100%;
+  overflow-x: hidden;
+  /* iOS momentum scroll — feels native in standalone PWA mode. */
+  -webkit-overflow-scrolling: touch;
+  /* NOTE: We do NOT set `overscroll-behavior-y` here. On desktop Chrome it
+     was breaking the mouse wheel inside scrollable elements (the wheel
+     events got swallowed by the html/body chain). Reduce-motion and PWA
+     concerns are handled per-section instead. */
+}
+/* Body is intentionally TRANSPARENT so the BackgroundProvider's photo can
+   show through on non-home routes. Home keeps the html cream + radial overlays. */
+body { background-color: transparent; }
+
+html { scroll-behavior: smooth; }
+
+/* iOS safe area for notch / Dynamic Island / home indicator */
+body {
+  padding-top: env(safe-area-inset-top, 0);
+  padding-left: env(safe-area-inset-left, 0);
+  padding-right: env(safe-area-inset-right, 0);
+}
+@supports (padding: env(safe-area-inset-bottom)) {
+  footer { padding-bottom: env(safe-area-inset-bottom); }
+}
+
+body {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  /* Background gradients are now subtler — the RobloxWorldBackground component carries the
+     primary visual weight in the hero. The page-level wash just adds warmth below the fold. */
+  background-image:
+    radial-gradient(1400px 700px at 15% -10%, rgba(168,230,207,0.30), transparent 60%),
+    radial-gradient(1000px 600px at 110% 25%, rgba(255,158,192,0.18), transparent 60%),
+    radial-gradient(900px 600px at 50% 120%, rgba(255,216,156,0.24), transparent 60%);
+  background-attachment: fixed;
+}
+
+::selection { background: var(--accent); color: var(--text); }
+
+a { color: inherit; text-decoration: none; }
+
+/* Reusable component-ish primitives */
+@layer components {
+  .container-soft { @apply mx-auto w-full max-w-[1200px] px-5 sm:px-7 lg:px-10; }
+
+  .glass-card {
+    background: linear-gradient(180deg, rgba(255,252,245,0.8), rgba(255,248,238,0.6));
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    border: 1px solid rgba(244,236,220,0.9);
+    box-shadow: var(--shadow-soft);
+    border-radius: 22px;
+  }
+
+  .pill {
+    @apply inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-medium ring-1 ring-creamShade transition-all duration-200 ease-morning;
+    background: var(--card);
+    color: var(--text);
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center gap-2 rounded-full px-5 py-3 font-semibold text-cocoa shadow-soft transition-all duration-200 ease-morning;
+    background: var(--accent);
+    min-height: 44px;       /* Apple HIG + Material touch target */
+    min-width: 44px;
+    touch-action: manipulation;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: var(--shadow-lifted); }
+
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 rounded-full px-5 py-3 font-semibold transition-all duration-200 ease-morning;
+    color: var(--text);
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.5);
+    min-height: 44px;
+    min-width: 44px;
+    touch-action: manipulation;
+  }
+  .btn-ghost:hover { background: rgba(255,255,255,0.95); }
+
+  .btn-live {
+    @apply inline-flex items-center gap-2 rounded-full px-5 py-3 font-semibold text-white;
+    background: var(--live);
+    box-shadow: 0 0 0 4px rgba(255,71,87,0.20), 0 12px 28px rgba(255,71,87,0.35);
+  }
+
+  .display { font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif; font-weight: 800; letter-spacing: -0.03em; font-variation-settings: "wdth" 100, "opsz" 96; }
+  .display-italic { font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif; font-weight: 800; font-style: italic; letter-spacing: -0.02em; font-variation-settings: "wdth" 100, "opsz" 96; }
+  .display-tight { font-family: var(--font-display), ui-sans-serif, sans-serif; font-weight: 700; letter-spacing: -0.04em; font-variation-settings: "wdth" 75, "opsz" 96; }
+  .cute      { font-family: var(--font-cute), 'Comic Sans MS', sans-serif; }
+  .mono-tab  { font-family: var(--font-mono), ui-monospace, monospace; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+
+  /* Number polish — every price/time/viewer-count should breathe */
+  .num { font-family: var(--font-mono), ui-monospace, monospace; font-variant-numeric: tabular-nums; font-feature-settings: "ss01"; }
+}
+
+/* Decorative noise — subtle */
+.noise::after {
+  content: '';
+  position: absolute; inset: 0;
+  pointer-events: none;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3CfeColorMatrix values='0 0 0 0 0.23 0 0 0 0 0.16 0 0 0 0 0.13 0 0 0 0.5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  html { scroll-behavior: auto; }
+}
+
+/* Save data: skip background hero photo when on slow / metered networks */
+@media (prefers-reduced-data: reduce) {
+  .hero-photo-layer { display: none !important; }
+}
+
+/* Larger tap targets on coarse pointers (touch screens) */
+@media (pointer: coarse) {
+  .pill { min-height: 40px; padding-top: 0.5rem; padding-bottom: 0.5rem; }
+  nav.primary a { min-height: 40px; }
+}
+
+/* Safari small-viewport fix — use svh / dvh where available */
+@supports (height: 100svh) {
+  .min-h-svh { min-height: 100svh; }
+  .min-h-dvh { min-height: 100dvh; }
+}
+
+/* Prevent input zoom on iOS by enforcing 16px font on inputs */
+input, textarea, select { font-size: max(16px, 1rem); }
+
+/* Live pulse used by the badge */
+.live-dot { position: relative; width: 10px; height: 10px; border-radius: 999px; background: var(--live); }
+.live-dot::before {
+  content: '';
+  position: absolute; inset: -4px; border-radius: 999px; background: var(--live);
+  opacity: 0.45; transform-origin: center;
+  animation: livePulse 1.4s ease-out infinite;
+}
+@keyframes livePulse {
+  0%   { transform: scale(1);    opacity: 0.45; }
+  100% { transform: scale(2.2);  opacity: 0;    }
+}
+
+/* Floating breakfast motifs */
+.float-1 { animation: floatY 4.4s var(--ease-morning) infinite; }
+.float-2 { animation: floatY 5.2s var(--ease-morning) infinite; animation-delay: -1.2s; }
+.float-3 { animation: floatY 6.0s var(--ease-morning) infinite; animation-delay: -2.4s; }
+@keyframes floatY {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50%      { transform: translateY(-10px) rotate(2deg); }
+}
+
+/* Scrollbars */
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 999px; border: 3px solid var(--bg); }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   v1.4.0 — Mobile + PWA polish.
+   Goal: the site should feel like a native app when opened from the iOS/
+   Android home screen, while leaving the desktop layout untouched.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Standalone (PWA installed) — hide the Safari bottom nav padding and pull
+   content right up to the bezel. Only triggers when launched from the home
+   screen. */
+@media (display-mode: standalone) {
+  html, body { background-color: var(--bg); }
+  /* Subtle inset for the home indicator on bezel-less iPhones */
+  main#main { padding-bottom: max(env(safe-area-inset-bottom), 0px); }
+  /* Hide non-essential chrome elements only when running as installed app */
+  .pwa-hide { display: none !important; }
+}
+
+/* Mobile-only refinements — fire below 640px (Tailwind sm breakpoint). */
+@media (max-width: 639px) {
+  /* Buttons get a hair more vertical breathing on touch */
+  .btn-primary, .btn-ghost, .btn-live { padding-top: 0.85rem; padding-bottom: 0.85rem; }
+  /* Inputs get the iOS comfort treatment */
+  input, textarea, select {
+    border-radius: 14px;
+    padding: 0.85rem 1rem;
+    appearance: none;
+  }
+  /* Headings scale down a touch on the smallest screens so the slogan never
+     overflows the viewport */
+  .display { letter-spacing: -0.025em; }
+  /* Dim the floating breakfast emoji field so it never comp
