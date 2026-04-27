@@ -36,6 +36,7 @@
 import { useEffect, useRef, useState } from 'react';
 import type { LiveStatus } from '@/lib/live-status';
 import { TikTokProfileEmbed } from '@/components/watch/TikTokProfileEmbed';
+import { TikTokLiveStage } from './TikTokLiveStage';
 
 const YT_CHANNEL =
   process.env.NEXT_PUBLIC_YOUTUBE_CHANNEL_ID ||
@@ -91,14 +92,15 @@ export function NoLoginLivePlayer({ primary, secondary, className }: Props) {
     );
   }
 
-  // TikTok route — official embed first, fallbacks below.
+  // TikTok route — v1.6.5 racing iframe stage (4 sources in parallel) so
+  // we ACTIVELY try every login-free path before falling back to the
+  // CTA hero card. Whichever iframe loads first wins. This is the most
+  // aggressive thing we can do from a static site without a TikTok Live
+  // for Business partner account.
   if (tiktok) {
-    const videoId = extractTikTokVideoId(tiktok.watchUrl);
     return (
-      <TikTokRouteWithFallback
-        videoId={videoId}
-        watchUrl={tiktok.watchUrl}
-        title={tiktok.title ?? 'EMM live on TikTok'}
+      <TikTokLiveStage
+        title={tiktok.title}
         className={className}
       />
     );

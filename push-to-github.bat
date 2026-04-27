@@ -36,7 +36,7 @@ for /f %%H in ('git status --porcelain ^| find /c /v ""') do set CHANGES=%%H
 if "%CHANGES%"=="0" (
   git diff --cached --quiet
   if errorlevel 1 (
-    git commit -m "feat: EMGamer731 v1.6.4 — REAL bacon-photo nav (160KB webp, the actual artwork from the _add folder, with built-in pill cutouts and animated syrup drips). Roblox-specific live trigger: gameplay player ONLY pops when title contains roblox/99nights/dti/etc OR webhook flags isRoblox; chat-style lives keep the offline dialog. Stripped dev info copy across pages, replaced with rizz/67-slang nav pill rows. Cream wash dropped to 0.18-0.55 + rain z-index moved between bg and content so drops clearly read over the bg." >nul
+    git commit -m "feat: EMGamer731 v1.6.5 — TikTokLiveStage: races 4 iframe sources in parallel (TikTok embed/live, proxitok mirror, vxtiktok, direct TikTok URL) with 4s timeout, first one to load becomes the visible inline player. If all blocked, polished CTA hero card with TikTok-app deeplink + no-login mirror + Roblox session join. Most aggressive login-free TikTok-live attempt possible from a static site." >nul
     echo [i] Local commit created.
   ) else (
     echo [i] No local changes to commit.
@@ -44,7 +44,7 @@ if "%CHANGES%"=="0" (
 ) else (
   REM There are working-tree changes; force-stage and commit
   git add -A
-  git commit -m "feat: EMGamer731 v1.6.4 — REAL bacon-photo nav (160KB webp, the actual artwork from the _add folder, with built-in pill cutouts and animated syrup drips). Roblox-specific live trigger: gameplay player ONLY pops when title contains roblox/99nights/dti/etc OR webhook flags isRoblox; chat-style lives keep the offline dialog. Stripped dev info copy across pages, replaced with rizz/67-slang nav pill rows. Cream wash dropped to 0.18-0.55 + rain z-index moved between bg and content so drops clearly read over the bg." >nul 2>nul
+  git commit -m "feat: EMGamer731 v1.6.5 — TikTokLiveStage: races 4 iframe sources in parallel (TikTok embed/live, proxitok mirror, vxtiktok, direct TikTok URL) with 4s timeout, first one to load becomes the visible inline player. If all blocked, polished CTA hero card with TikTok-app deeplink + no-login mirror + Roblox session join. Most aggressive login-free TikTok-live attempt possible from a static site." >nul 2>nul
   echo [i] Local commit created (forced stage of %CHANGES% files^).
 )
 
@@ -54,7 +54,7 @@ if not exist ".git" (
   git init
   git branch -M main
   git add -A
-  git commit -m "feat: EMGamer731 v1.6.4"
+  git commit -m "feat: EMGamer731 v1.6.5"
 )
 
 REM 3. Set the remote
