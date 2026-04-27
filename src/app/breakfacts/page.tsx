@@ -74,23 +74,29 @@ export default function BreakfactsPage() {
           <span aria-hidden>🧠</span> Breakfacts · 67 educational drops
         </div>
         <h1 className="display text-display-lg sm:text-display-xl text-cocoa mt-4 leading-tight">
-          Brainrot, but it makes you smarter.
+          Brainrot, but it makes you smarter. fr.
         </h1>
         <p className="text-cocoa/85 mt-3">
           67 actually-extraordinary facts across <strong>culture, physics, tech, psychology, math,
           biology, philosophy, music, economics, history, and art</strong> — packaged in
           meme-shaped cards so the squad reads them. Same dopamine hit, real learning underneath.
+          It&apos;s giving aura.
         </p>
         <p className="text-sm text-cocoa/70 mt-2">
-          Each brainrot drops as a <strong>sticker + lock-screen wallpaper</strong> bundle.
-          Tap <em>Notify me</em> to claim a spot on the waitlist — checkout opens with v2.
+          Each fact drops as a <strong>sticker + lockscreen wallpaper</strong> bundle.
+          Tap <em>Notify me</em> to lock in your spot — first dibs when the bundles drop.
         </p>
-        <p className="text-sm text-cocoa/65 mt-2">
-          Want the collectible <strong>figures</strong> instead? Those live on{' '}
-          <a className="text-syrup font-semibold hover:underline" href="/gallery">
-            /gallery (Brainrots)
-          </a>.
-        </p>
+        <nav aria-label="Other surfaces" className="mt-3 flex flex-wrap gap-2 text-xs">
+          <a className="pill bg-pancake/50 hover:bg-pancake" href="/gallery">
+            🤖 67 Brot Figures · shop
+          </a>
+          <a className="pill bg-cream hover:bg-pancake/40" href="/lookbook">
+            📷 The Lookbook
+          </a>
+          <a className="pill bg-syrup/30 hover:bg-syrup/60" href="/live">
+            🔴 Catch the live
+          </a>
+        </nav>
       </header>
 
       <div
@@ -154,11 +160,6 @@ export default function BreakfactsPage() {
         </motion.ul>
       </AnimatePresence>
 
-      <p className="text-xs text-cocoa/60 mt-8 max-w-2xl">
-        Notify-me list is privacy-first — saved to your browser session only, never sent
-        anywhere. When checkout goes live (v2), tapping a notified card will surface the
-        actual product with one tap.
-      </p>
     </div>
   );
 }

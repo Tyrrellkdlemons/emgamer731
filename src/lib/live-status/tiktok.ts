@@ -27,6 +27,23 @@ const HANDLE = process.env.TIKTOK_HANDLE || 'eatsswithemm';
 
 const AUTODETECT_ENABLED = (process.env.TIKTOK_AUTODETECT ?? 'true') === 'true';
 
+/** Title contains Roblox (or common Roblox-game tokens) → mark as Roblox live. */
+function detectRoblox(title?: string): boolean {
+  if (!title) return false;
+  const t = title.toLowerCase();
+  return (
+    t.includes('roblox') ||
+    t.includes('rblx') ||
+    t.includes('99 nights') ||
+    t.includes('dress to impress') ||
+    t.includes('dti') ||
+    t.includes('adopt me') ||
+    t.includes('blox fruit') ||
+    t.includes('royale high') ||
+    /\bmm2\b/.test(t)
+  );
+}
+
 /**
  * Best-effort scrape of the public live room. Returns title + true if the
  * page renders the live-room shell (which only appears for an active stream).
@@ -81,29 +98,35 @@ export const tiktokAdapter: LiveAdapter = {
     // 1. Webhook / admin store (preferred — authoritative)
     const stored = getTikTokLive(HANDLE);
     if (stored?.isLive) {
+      const title = stored.title ?? 'EMM is live on TikTok';
       return {
         platform: 'tiktok',
         isLive: true,
-        title: stored.title ?? 'EMM is live on TikTok',
+        title,
         watchUrl: stored.watchUrl ?? watchUrl,
         startedAt: stored.startedAt,
         fetchedAt: new Date().toISOString(),
         source: stored.source === 'webhook' ? 'webhook' : 'manual',
+        isRoblox: detectRoblox(title),
       };
     }
 
-    // 2. Env-var manual override (legacy, still supported)
+    // 2. Env-var manual override (legacy, still supported). Force Roblox=true
+    //    via MANUAL_LIVE_ROBLOX=true so TKDL can pop the gameplay panel
+    //    when she manually toggles live on without a Roblox-tagged title.
     if (
       process.env.MANUAL_LIVE_OVERRIDE === 'true' &&
       (process.env.MANUAL_LIVE_PLATFORM ?? 'tiktok') === 'tiktok'
     ) {
+      const title = process.env.MANUAL_LIVE_TITLE ?? 'EMM is live on TikTok';
       return {
         platform: 'tiktok',
         isLive: true,
-        title: process.env.MANUAL_LIVE_TITLE ?? 'EMM is live on TikTok',
+        title,
         watchUrl: process.env.MANUAL_LIVE_URL ?? watchUrl,
         fetchedAt: new Date().toISOString(),
         source: 'manual',
+        isRoblox: process.env.MANUAL_LIVE_ROBLOX === 'true' || detectRoblox(title),
       };
     }
 
@@ -112,13 +135,15 @@ export const tiktokAdapter: LiveAdapter = {
     //    site flips to LIVE within ~60s of TikTok's edge cache catching up.
     const auto = await detectLiveByScrape();
     if (auto.live) {
+      const title = auto.title ?? 'EMM is live on TikTok';
       return {
         platform: 'tiktok',
         isLive: true,
-        title: auto.title ?? 'EMM is live on TikTok',
+        title,
         watchUrl,
         fetchedAt: new Date().toISOString(),
         source: 'autodetect',
+        isRoblox: detectRoblox(title),
       };
     }
 

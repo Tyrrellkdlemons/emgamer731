@@ -125,7 +125,8 @@ export function OtherPagesBackground() {
   return (
     <div
       aria-hidden
-      className="opbg-root pointer-events-none fixed inset-0 -z-10 overflow-hidden"
+      className="opbg-root pointer-events-none fixed inset-0 overflow-hidden"
+      style={{ zIndex: -50 }}
     >
       {/* Background photo — WebP first, JPG fallback for older browsers */}
       <picture>
@@ -146,14 +147,13 @@ export function OtherPagesBackground() {
         />
       </picture>
 
-      {/* Cream wash — v1.6.3 lightened so the RainOverlay drops are visible
-          floating over the bg instead of being washed out. Bottom remains a
-          touch heavier so footer text stays legible. */}
+      {/* Cream wash — v1.6.4 dialled even lighter so the bg photo + rain
+          read clearly. Bottom keeps a touch more cream for footer legibility. */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            'linear-gradient(180deg, rgba(255,252,245,0.55) 0%, rgba(255,252,245,0.35) 35%, rgba(255,252,245,0.45) 70%, rgba(255,252,245,0.72) 100%)',
+            'linear-gradient(180deg, rgba(255,252,245,0.32) 0%, rgba(255,252,245,0.18) 35%, rgba(255,252,245,0.28) 70%, rgba(255,252,245,0.55) 100%)',
         }}
       />
 

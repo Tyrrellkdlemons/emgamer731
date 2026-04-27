@@ -60,32 +60,33 @@ export function SiteHeader() {
       style={{ paddingTop: 'max(env(safe-area-inset-top), 0.75rem)' }}
     >
       <div className="container-soft pointer-events-none">
-        {/* Outer floating capsule — the "FRENCH-TOAST STICK" frame.
-            v1.6.0 fix: padding bumped to 9px (was 6) so the toast frame is
-            actually visible rim-around-cream. The BaconStrip lives BEHIND
-            the inner cream pill but the visible 9px ring proves the toast
-            colour at every viewport. */}
+        {/* Outer floating capsule — v1.6.4: the actual photographic BACON
+            STRIP from the user's _add folder is the skin. Its wavy edges
+            and built-in pill cutouts read as "this is a nav bar" without
+            any extra chrome. We don't clip with `rounded-full` here so the
+            organic bacon outline shows; the inner cream pill keeps its
+            capsule shape for text legibility. Drop-shadow comes from the
+            container so it tracks scroll state. */}
         <div
           className={cn(
-            'relative pointer-events-auto rounded-full transition-all duration-300 ease-morning',
+            'relative pointer-events-auto transition-all duration-300 ease-morning',
             scrolled ? 'shadow-lifted' : 'shadow-soft',
           )}
           style={{
-            border: '2px solid #7A4318',
-            padding: '9px',
-            overflow: 'hidden',
+            padding: '14px 18px',
+            // No border or border-radius — bacon photo provides its own edge.
           }}
         >
-          {/* French-toast painted skin (default). Pass skin="bacon" to
-              switch back to the red-meat aesthetic. */}
-          <BaconStrip className="absolute inset-0" skin="french-toast" />
-          {/* Inner cream pill — sits inset by `padding` so a visible rim
-              of toast shows around it. */}
+          {/* Real-photo bacon skin (covers the whole capsule shape) */}
+          <BaconStrip className="absolute inset-0" skin="bacon" />
+          {/* Inner cream pill — capsule-shaped for text legibility, sits
+              inside the bacon's natural pill-cutout area. */}
           <div
-            className="relative rounded-full backdrop-blur-xl"
+            className="relative rounded-full backdrop-blur-xl shadow-soft"
             style={{
               background:
-                'linear-gradient(180deg, rgba(255,252,245,0.94), rgba(255,248,238,0.88))',
+                'linear-gradient(180deg, rgba(255,252,245,0.96), rgba(255,248,238,0.92))',
+              border: '1px solid rgba(196,123,61,0.35)',
             }}
           >
             <div className="flex items-center justify-between gap-2 px-3 sm:px-4 py-2">
@@ -155,13 +156,10 @@ export function SiteHeader() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.2, ease: [0.32, 0.72, 0, 1] }}
-              className="lg:hidden mt-2 pointer-events-auto rounded-3xl relative overflow-hidden"
-              style={{
-                border: '2px solid #7A4318',
-                padding: '9px',
-              }}
+              className="lg:hidden mt-2 pointer-events-auto relative overflow-hidden"
+              style={{ padding: '14px 18px' }}
             >
-              <BaconStrip className="absolute inset-0" skin="french-toast" />
+              <BaconStrip className="absolute inset-0" skin="bacon" />
               <div className="relative rounded-3xl bg-eggshell/95 backdrop-blur-xl">
                 <div className="grid grid-cols-2 gap-2 p-3">
                   {PRIMARY_NAV.map((item) => (

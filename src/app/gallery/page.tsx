@@ -18,24 +18,28 @@ export default function BrainrotsPage() {
     <div className="container-soft py-12 sm:py-16">
       <header className="mb-6 max-w-3xl">
         <div className="inline-flex items-center gap-2 rounded-full bg-pancake/60 ring-1 ring-creamShade px-3 py-1 text-xs font-bold uppercase tracking-wider text-cocoa shadow-soft">
-          <span aria-hidden>🤖</span> 67 Brainrot Figures · drops + unlocks
+          <span aria-hidden>🤖</span> 67 Brot Figures · drops + unlocks
         </div>
         <h1 className="display text-display-lg sm:text-display-xl text-cocoa mt-4 leading-tight">
-          Collect the squad.
+          Collect the squad. No cap.
         </h1>
         <p className="text-cocoa/85 mt-3">
-          Sellable EMM brainrot characters — chibi mascots, Roblox avatar fits,
-          collector posters. Pay with <strong>Robux</strong>, <strong>card</strong>{' '}
-          (Apple Pay / Google Pay), or <strong>PayPal</strong> — or earn unlocks
-          for free by <strong>subscribing on YouTube + watching shorts</strong>.
+          Brot mascots, Roblox avatar fits, poster drops — every one of these is
+          giving collector energy. Pay <strong>Robux</strong>, <strong>card</strong>,
+          or <strong>PayPal</strong>. Or — even better — earn FREE unlocks by
+          <strong> subscribing on YT + watching shorts</strong>. Sigma move.
         </p>
-        <p className="text-sm text-cocoa/65 mt-2">
-          Want the educational drops (the 67 brainrot facts)? Those live on{' '}
-          <a className="text-syrup font-semibold hover:underline" href="/breakfacts">
-            /breakfacts
-          </a>{' '}
-          now.
-        </p>
+        <nav aria-label="Other surfaces" className="mt-3 flex flex-wrap gap-2 text-xs">
+          <a className="pill bg-mint/40 hover:bg-mint" href="/breakfacts">
+            🧠 Brainrot facts (67)
+          </a>
+          <a className="pill bg-pancake/40 hover:bg-pancake" href="/lookbook">
+            📷 The Lookbook
+          </a>
+          <a className="pill bg-syrup/30 hover:bg-syrup/60" href="/live">
+            🔴 Catch the live
+          </a>
+        </nav>
       </header>
 
       {/* The figures grid renders the SubscribeUnlockPanel at the top, then

@@ -10,6 +10,14 @@ export interface LiveStatus {
   viewerCount?: number;
   fetchedAt: string;
   source: 'api' | 'manual' | 'webhook' | 'autodetect' | 'fallback';
+  /**
+   * Whether THIS broadcast is specifically Roblox gameplay. Drives the
+   * inline "pop the player" behaviour on home/live — a generic chat live
+   * shouldn't auto-promote the gameplay panel. Detected from title (case-
+   * insensitive contains "roblox" or "rblx" or specific game names) OR
+   * forced by the webhook/admin override.
+   */
+  isRoblox?: boolean;
 }
 
 export interface LiveAdapter {

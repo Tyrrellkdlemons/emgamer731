@@ -51,23 +51,24 @@ export default function LookbookPage() {
           <span aria-hidden>📷</span> The Lookbook · visual archive
         </div>
         <h1 className="display text-display-lg sm:text-display-xl text-cocoa mt-4 leading-tight">
-          The whole vibe, in one feed.
+          The whole vibe, one feed. Slay.
         </h1>
         <p className="text-cocoa/85 mt-3">
-          Avatar art, breakfast worlds, hoodie mockups, wallpapers, stickers,
-          stream overlays — the eye-candy archive of the EMM cinematic universe.
-          Tap any download chip to save the file directly.
+          Avatar fits, breakfast worlds, hoodie mockups, wallpapers, sticker
+          packs, stream overlays — the EMM cinematic universe in one scroll.
+          Tap the save chip to download any piece. Iykyk.
         </p>
-        <p className="text-sm text-cocoa/65 mt-2">
-          Looking for something else?{' '}
-          <a className="text-syrup font-semibold hover:underline" href="/gallery">
-            Brainrot figures →
-          </a>{' '}
-          ·{' '}
-          <a className="text-syrup font-semibold hover:underline" href="/breakfacts">
-            67 educational drops →
+        <nav aria-label="Other surfaces" className="mt-3 flex flex-wrap gap-2 text-xs">
+          <a className="pill bg-pancake/50 hover:bg-pancake" href="/gallery">
+            🤖 67 Brot Figures
           </a>
-        </p>
+          <a className="pill bg-mint/40 hover:bg-mint" href="/breakfacts">
+            🧠 67 Brainrot Facts
+          </a>
+          <a className="pill bg-syrup/30 hover:bg-syrup/60" href="/live">
+            🔴 Catch the live
+          </a>
+        </nav>
       </header>
 
       {/* Category chips — slim, snap-scrollable on mobile */}

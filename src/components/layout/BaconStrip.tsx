@@ -1,141 +1,98 @@
 'use client';
 
 /**
- * BaconStrip — v2 (now actually visible).
+ * BaconStrip — v3 (real bacon photo skin).
  *
- * v1.5.0 painted SVG bacon as a `position:absolute` layer behind a near-
- * opaque cream pill — net visible bacon = 0%. v1.6.0 fix: render the
- * "bacon" as a thick visible BORDER FRAME around the cream pill (i.e.
- * the bacon IS the border, the cream nav sits inside it). This makes it
- * read at every viewport without needing the inner backdrop to be
- * transparent (which would hurt text legibility).
+ * v1.6.4 swap: replaces the painted CSS-gradient bacon with the actual
+ * `navbar insp bacon.png` artwork (optimized to a 160KB WebP). The image
+ * is a wavy crispy bacon strip with cream-coloured pill cutouts — perfect
+ * frame for our floating nav. We use it as a `<picture>` background;
+ * the real interactive nav (logo + links + LiveBadge) sits on top inside
+ * the cream pill the SiteHeader renders.
  *
- * Per creator: "it could even be a long french toast stick since it
- * matches the color scheme better." The default skin is now FRENCH TOAST
- * (golden caramel with cinnamon dust + glossy syrup drips) because it
- * harmonises with the cream/syrup palette of the rest of the site. A
- * `skin="bacon"` prop flips back to the original red-meat aesthetic.
+ * Three skins available via prop, all optimized to ~160-195KB:
+ *   - "bacon"        (default)  red wavy strip with pill cutouts
+ *   - "french-toast" golden caramel slab with butter + syrup
+ *   - "waffle"       golden waffle with syrup drips
  *
- * Both skins:
- *   - render two slim animated syrup drip beads (top + bottom edges)
- *   - have a slow shine sweep
- *   - respect prefers-reduced-motion
+ * The animated syrup drip beads stay (CSS keyframes, GPU-only) so even
+ * the realistic-photo skin feels alive. Reduced-motion guarded.
  */
 
 type Props = {
   className?: string;
-  skin?: 'french-toast' | 'bacon';
+  skin?: 'bacon' | 'french-toast' | 'waffle';
   static?: boolean;
 };
 
-export function BaconStrip({ className, skin = 'french-toast', static: isStatic }: Props) {
-  const palette =
-    skin === 'french-toast'
-      ? {
-          // golden caramel toast crust + cinnamon dust + syrup glaze
-          base:
-            'repeating-linear-gradient(135deg, #C97B3D 0px, #C97B3D 14px, #E8A53C 14px, #E8A53C 30px, #B86A2D 30px, #B86A2D 44px, #FFD89C 44px, #FFD89C 58px)',
-          edge:  '#7A4318',
-          shine: 'rgba(255,252,245,0.55)',
-          drip:  '#A66B1B',
-        }
-      : {
-          base:
-            'repeating-linear-gradient(105deg, #E66060 0px, #E66060 14px, #F5DEB7 14px, #F5DEB7 24px, #C0364A 24px, #C0364A 38px, #FFEFE0 38px, #FFEFE0 46px)',
-          edge:  '#4A1414',
-          shine: 'rgba(255,252,245,0.4)',
-          drip:  '#FBC65A',
-        };
+const SKIN_PATH: Record<NonNullable<Props['skin']>, string> = {
+  'bacon': '/images/nav/bacon-strip.webp',
+  'french-toast': '/images/nav/french-toast-stick.webp',
+  'waffle': '/images/nav/waffle-stick.webp',
+};
+
+const SKIN_DRIP: Record<NonNullable<Props['skin']>, string> = {
+  'bacon': '#FBC65A',         // honey syrup over bacon
+  'french-toast': '#A66B1B',  // dark caramel
+  'waffle': '#A66B1B',        // dark caramel
+};
+
+export function BaconStrip({ className, skin = 'bacon', static: isStatic }: Props) {
+  const drip = SKIN_DRIP[skin];
+  const path = SKIN_PATH[skin];
 
   return (
-    <div className={'bs-root relative w-full h-full ' + (className ?? '')} aria-hidden>
-      {/* The actual bacon/toast painted gradient — fills parent. The inner
-          cream pill is rendered by the SiteHeader on top of this; we keep a
-          ~6px visible rim around it via the parent's `padding`. */}
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage: palette.base,
-          borderRadius: 'inherit',
-        }}
-      />
-      {/* Crispy edge — slightly darker rim hugging the inner cream pill */}
-      <div
-        className="absolute inset-1 rounded-[inherit]"
-        style={{
-          boxShadow: `inset 0 0 0 1px ${palette.edge}`,
-          borderRadius: 'inherit',
-        }}
+    <div className={'bs-root relative w-full h-full overflow-hidden ' + (className ?? '')} aria-hidden>
+      {/* Real-photo skin — covers the whole capsule. `object-fill` stretches
+          to match the floating nav width; on a wavy bacon strip this gives
+          us a continuous "ribbon" look at any width. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={path}
+        alt=""
+        className="absolute inset-0 w-full h-full"
+        style={{ objectFit: 'fill' }}
+        loading="eager"
+        decoding="async"
       />
 
-      {/* Shine sweep — moves L→R every 7s */}
-      {!isStatic && (
-        <div
-          className="bs-shine absolute inset-0 overflow-hidden pointer-events-none"
-          style={{ borderRadius: 'inherit' }}
-        >
-          <div
-            className="bs-shine__bar absolute top-0 bottom-0"
-            style={{
-              left: '-30%',
-              width: '30%',
-              background: `linear-gradient(95deg, transparent, ${palette.shine}, transparent)`,
-            }}
-          />
-        </div>
-      )}
-
-      {/* Syrup drip beads — top + bottom edges, animated falling */}
+      {/* Animated syrup drip beads — lightweight CSS-only highlights so even
+          the photographic skin feels alive without re-encoding video. */}
       {!isStatic && (
         <>
           <span
-            className="bs-drip bs-drip--top absolute"
-            style={{ left: '24%', top: '-3px', width: '7px', height: '7px', borderRadius: '999px', background: palette.drip }}
+            className="bs-drip bs-drip--1 absolute"
+            style={{ left: '24%', bottom: '-4px', width: '7px', height: '7px', borderRadius: '999px', background: drip }}
           />
           <span
-            className="bs-drip bs-drip--top bs-drip--top-2 absolute"
-            style={{ left: '70%', top: '-3px', width: '6px', height: '6px', borderRadius: '999px', background: palette.drip }}
+            className="bs-drip bs-drip--2 absolute"
+            style={{ left: '54%', bottom: '-4px', width: '8px', height: '8px', borderRadius: '999px', background: drip }}
           />
           <span
-            className="bs-drip bs-drip--bot absolute"
-            style={{ left: '40%', bottom: '-4px', width: '8px', height: '8px', borderRadius: '999px', background: palette.drip }}
+            className="bs-drip bs-drip--3 absolute"
+            style={{ left: '78%', bottom: '-4px', width: '6px', height: '6px', borderRadius: '999px', background: drip }}
           />
         </>
       )}
 
       <style jsx>{`
-        .bs-shine__bar {
-          animation: bsShine 7s linear infinite;
-          transform: skewX(-12deg);
-        }
         .bs-drip {
           opacity: 0;
-          box-shadow: 0 0 4px rgba(0,0,0,0.12);
+          box-shadow: 0 0 4px rgba(0,0,0,0.25);
         }
-        .bs-drip--top    { animation: dripFromTop 4.2s ease-in-out infinite; }
-        .bs-drip--top-2  { animation: dripFromTop 5.6s ease-in-out 1.4s infinite; }
-        .bs-drip--bot    { animation: dripFromBot 5.0s ease-in-out 2.1s infinite; }
+        .bs-drip--1 { animation: bsDrip 4.4s ease-in-out 0.1s infinite; }
+        .bs-drip--2 { animation: bsDrip 5.2s ease-in-out 1.2s infinite; }
+        .bs-drip--3 { animation: bsDrip 3.8s ease-in-out 2.0s infinite; }
 
-        @keyframes bsShine {
-          0%   { transform: translateX(0)     skewX(-12deg); }
-          100% { transform: translateX(420%)  skewX(-12deg); }
-        }
-        @keyframes dripFromTop {
-          0%   { transform: translateY(-2px); opacity: 0; }
-          15%  { opacity: 0.95; }
-          85%  { opacity: 0.95; }
-          100% { transform: translateY(14px); opacity: 0; }
-        }
-        @keyframes dripFromBot {
-          0%   { transform: translateY(2px);  opacity: 0; }
-          20%  { opacity: 0.95; }
-          85%  { opacity: 0.95; }
-          100% { transform: translateY(-14px); opacity: 0; }
+        @keyframes bsDrip {
+          0%   { transform: translateY(0);   opacity: 0; }
+          25%  { opacity: 0.95; }
+          80%  { opacity: 0.95; }
+          100% { transform: translateY(16px); opacity: 0; }
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .bs-shine__bar, .bs-drip { animation: none !important; }
-          .bs-drip { opacity: 0.6; }
+          .bs-drip { animation: none !important; opacity: 0.7; }
         }
       `}</style>
     </div>

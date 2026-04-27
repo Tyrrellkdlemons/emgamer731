@@ -84,10 +84,15 @@ export function RainOverlay({ density = 18 }: Props) {
   const drops = useMemo(() => buildDrops(density), [density]);
   const dropsMobile = useMemo(() => buildDrops(Math.max(6, Math.round(density / 2))), [density]);
 
+  // v1.6.4: rain sits ABOVE the bg image + cream wash (at z=-50/-10) but
+  // BELOW page content (default z=auto/0). z=-5 hits the sweet spot.
+  // pointer-events: none keeps clicks pass-through. With the lighter cream
+  // wash + bumped opacity, drops now read clearly drifting over the bg.
   return (
     <div
       aria-hidden
-      className="rain-root pointer-events-none fixed inset-0 -z-[1] overflow-hidden"
+      className="rain-root pointer-events-none fixed inset-0 overflow-hidden"
+      style={{ zIndex: -5 }}
     >
       {/* Desktop / tablet density */}
       <div className="rain-desktop hidden sm:block absolute inset-0">

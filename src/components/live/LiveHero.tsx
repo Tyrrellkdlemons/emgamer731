@@ -9,10 +9,19 @@ export function LiveHero() {
   const { summary } = useLiveStatus();
   const live = summary?.primary;
 
-  if (summary?.isLive && live) {
+  // v1.6.4 rule: only "pop" the inline gameplay player when EMM is
+  // specifically LIVE WITH ROBLOX (or YouTube live, which we always show).
+  // A generic chat-style TikTok live keeps the offline dialog so the home
+  // doesn't constantly flip to a gameplay panel for non-gaming streams.
+  const isRobloxLive =
+    summary?.isLive &&
+    !!live &&
+    (live.isRoblox === true || live.platform === 'youtube');
+
+  if (isRobloxLive && live) {
     // Pick a SECONDARY live status if a different platform is also live —
     // NoLoginLivePlayer prefers YouTube (zero login wall) when both are up.
-    const secondary = summary.all?.find((s) => s.isLive && s.platform !== live.platform);
+    const secondary = summary?.all?.find((s) => s.isLive && s.platform !== live.platform);
     return (
       <motion.div
         initial={{ opacity: 0, y: 12 }}
