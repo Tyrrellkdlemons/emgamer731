@@ -36,7 +36,7 @@ for /f %%H in ('git status --porcelain ^| find /c /v ""') do set CHANGES=%%H
 if "%CHANGES%"=="0" (
   git diff --cached --quiet
   if errorlevel 1 (
-    git commit -m "fix: EMGamer731 v1.7.1 hotfix — drop Roblox-only gate in LiveHero so the inline player pops on ANY platform live, not just Roblox-titled streams. Auto-detected TikTok titles (e.g. 'eatsswithem is LIVE - TikTok LIVE') never contained 'roblox' so the v1.6.4 isRobloxLive filter was suppressing real broadcasts and showing the offline panel instead. Replaced with isLiveNow. DualPlatformLivePlayer + fallback chain handle every surface gracefully." >nul
+    git commit -m "fix: EMGamer731 v1.7.2 hotfix — remove dead TikTok mirrors causing 'Due to a legal request, this service is no longer available' takedown notice. proxitok.pabloferreiro.es was taken down legally and serves the takedown HTML at HTTP 200, so its onload fired and won the iframe race — visitors saw the takedown text instead of the stream. SOURCES trimmed to TikTok's own surfaces; FallbackHero CTAs updated to TikTok web URL + Restream simulcast story; sessionStorage cache key bumped to v2 to invalidate stale 'proxitok' winners from prior visits." >nul
     echo [i] Local commit created.
   ) else (
     echo [i] No local changes to commit.
@@ -44,7 +44,7 @@ if "%CHANGES%"=="0" (
 ) else (
   REM There are working-tree changes; force-stage and commit
   git add -A
-  git commit -m "fix: EMGamer731 v1.7.1 hotfix — drop Roblox-only gate in LiveHero so the inline player pops on ANY platform live, not just Roblox-titled streams. Auto-detected TikTok titles (e.g. 'eatsswithem is LIVE - TikTok LIVE') never contained 'roblox' so the v1.6.4 isRobloxLive filter was suppressing real broadcasts and showing the offline panel instead. Replaced with isLiveNow. DualPlatformLivePlayer + fallback chain handle every surface gracefully." >nul 2>nul
+  git commit -m "fix: EMGamer731 v1.7.2 hotfix — remove dead TikTok mirrors causing 'Due to a legal request, this service is no longer available' takedown notice. proxitok.pabloferreiro.es was taken down legally and serves the takedown HTML at HTTP 200, so its onload fired and won the iframe race — visitors saw the takedown text instead of the stream. SOURCES trimmed to TikTok's own surfaces; FallbackHero CTAs updated to TikTok web URL + Restream simulcast story; sessionStorage cache key bumped to v2 to invalidate stale 'proxitok' winners from prior visits." >nul 2>nul
   echo [i] Local commit created (forced stage of %CHANGES% files^).
 )
 
@@ -100,4 +100,4 @@ echo   Repo: https://github.com/Tyrrellkdlemons/emgamer731
 echo   Netlify will auto-deploy from this push if continuous deploys are enabled.
 echo ============================================
 pause
-REM v1.7.1 force-push trigger 1777275900
+REM v1.7.2 force-push trigger 1777276200

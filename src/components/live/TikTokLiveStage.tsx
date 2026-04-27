@@ -47,9 +47,13 @@ const ROBLOX_URL = process.env.NEXT_PUBLIC_ROBLOX_EXPERIENCE_URL || '';
 
 const SOURCES = [
   // Each candidate URL we'll race. Order = priority for fallback chain.
+  // v1.7.2: dead mirrors removed — proxitok.pabloferreiro.es was taken down
+  // ("Due to a legal request, this service is no longer available") and was
+  // winning the race because its takedown HTML returns HTTP 200 → onload fires.
+  // vxtiktok similarly serves a generic landing page that's not the live feed.
+  // We now race ONLY TikTok's own surfaces; if both are blocked the race
+  // times out → FallbackHero kicks in (which now CTAs the YouTube simulcast).
   { id: 'tt-embed',  url: `https://www.tiktok.com/embed/@${HANDLE}/live` },
-  { id: 'proxitok', url: `https://proxitok.pabloferreiro.es/@${HANDLE}/live` },
-  { id: 'vxtiktok', url: `https://vxtiktok.com/@${HANDLE}` },
   { id: 'tt-direct', url: `https://www.tiktok.com/@${HANDLE}/live` },
 ];
 
@@ -75,7 +79,7 @@ export function TikTokLiveStage({ title, className }: Props) {
     if (!hlsFailed) return;
     // Re-use sessionStorage cache so we don't re-probe across pages.
     try {
-      const cached = sessionStorage.getItem('emg731:tt-live-winner');
+      const cached = sessionStorage.getItem('emg731:tt-live-winner:v2');
       if (cached) {
         setWinner(cached === 'NONE' ? null : cached);
         setProbeDone(true);
@@ -100,7 +104,7 @@ export function TikTokLiveStage({ title, className }: Props) {
         resolved = true;
         setWinner(id);
         setProbeDone(true);
-        try { sessionStorage.setItem('emg731:tt-live-winner', id); } catch {}
+        try { sessionStorage.setItem('emg731:tt-live-winner:v2', id); } catch {}
       };
       frame.addEventListener('load', onLoad);
       cleanup.push(() => frame.removeEventListener('load', onLoad));
@@ -112,7 +116,7 @@ export function TikTokLiveStage({ title, className }: Props) {
         resolved = true;
         setWinner(null);
         setProbeDone(true);
-        try { sessionStorage.setItem('emg731:tt-live-winner', 'NONE'); } catch {}
+        try { sessionStorage.setItem('emg731:tt-live-winner:v2', 'NONE'); } catch {}
       }
     }, 4000);
     cleanup.push(() => clearTimeout(t));
@@ -214,8 +218,13 @@ export function TikTokLiveStage({ title, className }: Props) {
 
 function FallbackHero({ title }: { title?: string }) {
   // Animated gradient + three CTAs — the "if iframe fails, still flex" panel.
+  // v1.7.2: dead proxitok mirror removed; "no-login mirror" link replaced
+  // with TikTok web URL (still no login required for casual viewing on most
+  // browsers, and at least it's not a takedown page). The big upgrade: the
+  // text now points to YouTube via Restream simulcast as the "true inline"
+  // path — that pipeline is now live as of v1.7.0.
   const appDeeplink = `snssdk1233://user/profile/${HANDLE}`;
-  const mirrorUrl = `https://proxitok.pabloferreiro.es/@${HANDLE}/live`;
+  const tiktokWebUrl = `https://www.tiktok.com/@${HANDLE}/live`;
   return (
     <div className="rounded-2xl overflow-hidden ring-2 ring-liveRed/60 relative bg-gradient-to-br from-cocoa via-[#3a1f17] to-cocoa text-eggshell">
       <div
@@ -248,12 +257,12 @@ function FallbackHero({ title }: { title?: string }) {
               <span aria-hidden>→</span>
             </a>
             <a
-              href={mirrorUrl}
+              href={tiktokWebUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-2xl bg-eggshell text-cocoa px-4 py-3 text-sm font-extrabold shadow-soft hover:shadow-lifted transition-all flex items-center justify-between"
             >
-              <span>🌐 No-login mirror</span>
+              <span>↗ Open TikTok web</span>
               <span aria-hidden>→</span>
             </a>
             {ROBLOX_URL ? (
@@ -280,8 +289,8 @@ function FallbackHero({ title }: { title?: string }) {
           </div>
           <p className="text-[11px] text-eggshell/55 mt-3">
             Want true inline playback?{' '}
-            <strong>Simulcast to YouTube</strong> via OBS / StreamLabs — when YT is
-            live, this card auto-swaps to the iframe player which never asks to log in.
+            <strong>Start your Restream broadcast</strong> — once YT is live, the
+            page auto-swaps to the YouTube embed which plays inline with zero login.
           </p>
         </div>
       </div>

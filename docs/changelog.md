@@ -2,6 +2,15 @@
 
 All notable changes are recorded here. Newest first.
 
+## [1.7.2] — 2026-04-27 — Hotfix: dead TikTok mirror was showing takedown notice
+
+### Fixed
+- **Removed `proxitok.pabloferreiro.es` and `vxtiktok.com`** from the TikTokLiveStage iframe race. proxitok was taken down via a legal request and now serves a takedown HTML page at HTTP 200 — its `onload` event fired, "winning" the race, and visitors saw "Due to a legal request, this service is no longer available." instead of the stream. Race now uses TikTok's own surfaces only (`tiktok.com/embed/@<handle>/live` and `tiktok.com/@<handle>/live`).
+- **`FallbackHero` mirror CTA → TikTok web URL.** "🌐 No-login mirror" button replaced with "↗ Open TikTok web" pointing at TikTok's actual live page.
+- **`sessionStorage` cache key bumped to `v2`.** Existing visitors who had `proxitok` cached as the winner from before the fix get re-probed cleanly.
+- **Help-text copy updated** to reference Restream simulcast as the path to true inline playback (now real as of v1.7.0).
+
+
 ## [1.7.1] — 2026-04-27 — Hotfix: live player shows for any platform (not Roblox-only)
 
 ### Fixed
