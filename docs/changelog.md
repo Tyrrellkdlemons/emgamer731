@@ -2,6 +2,22 @@
 
 All notable changes are recorded here. Newest first.
 
+## [1.7.4] — 2026-04-27 — TOS-guard layer on the Cloudflare Worker + one-click deploy
+
+### Added — TOS protection on the Worker
+- **Circuit breaker** — if TikTok returns 429 or 403 three times in a 5-minute window, the Worker stops probing for 30 minutes and serves cached "not live" responses. We honour their "stop hitting us" signal.
+- **Per-IP rate limit** — max 30 req/min per requester IP. Defends the Worker from being discovered and used as a free public TikTok scraper.
+- **Cache TTL bumped 60 s → 120 s** — TikTok HLS URLs are valid for several minutes; less aggressive scraping = better neighbour.
+- **Honest identification** (opt-in via `IDENTIFY_SOURCE=true`, on by default in `wrangler.toml`) — adds `X-EMGamer731-Source` and `X-EMGamer731-Purpose` headers so a TikTok engineer reading their logs can identify who we are without breaking anti-bot detection. Custom X- headers aren't part of browser fingerprinting.
+- **Public-content-only guarantee** — Worker only ever hits `tiktok.com/@<handle>/live`, the page any logged-out browser can see. Never touches authenticated APIs, never decrypts anything, never scrapes private content or other users.
+
+### Added — Deploy automation
+- **`deploy-cloudflare-worker.bat`** — double-click to install Wrangler if missing, kick off Cloudflare OAuth (opens browser), then deploy. Subsequent runs skip the auth step.
+
+### Notes
+- These guards put us at the most defensible end of the gray-area scraping spectrum: respectful, identifiable, public-content-only, self-throttling. Doesn't make scraping "TOS-approved" (TikTok TOS prohibits all automated access), but it minimises real-world risk and signals good-faith use.
+
+
 ## [1.7.3] — 2026-04-27 — Cloudflare Workers TikTok scraper upgrade
 
 ### Added

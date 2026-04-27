@@ -7,6 +7,11 @@ compatibility_date = "2026-04-27"
 
 [vars]
 TIKTOK_HANDLE = "eatsswithemm"
+# v1.7.4 TOS-guard: identify ourselves to TikTok via custom X-header so a
+# TikTok engineer can see who we are if they audit logs. Doesn't break
+# anti-bot detection (custom X- headers aren't part of browser fingerprinting).
+# Set to "false" if you'd rather stay fully anonymous.
+IDENTIFY_SOURCE = "true"
 
 # To deploy:
 #   1. npm install -g wrangler

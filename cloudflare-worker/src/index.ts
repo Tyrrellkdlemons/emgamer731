@@ -1,6 +1,6 @@
 /**
  * EMGamer731 — TikTok Live Scraper (Cloudflare Worker)
- * v1.7.3
+ * v1.7.4
  *
  * Why this exists:
  *   The Next.js function at /api/tiktok-live-stream runs on Netlify and
@@ -10,12 +10,41 @@
  *
  *     1. Picks a fresh User-Agent from a real-Chrome/Safari/Firefox pool
  *     2. Sends realistic Accept-Language + Sec-CH-UA + Referer headers
- *     3. Caches the result in CF cache for 60 s (stays under free tier)
+ *     3. Caches the result in CF cache for 120 s (stays under free tier)
  *     4. Returns JSON in the SAME SHAPE the site already expects
  *
  *   The site reads `process.env.TIKTOK_SCRAPER_WORKER_URL` — if set, it
  *   proxies through this Worker; otherwise it falls back to the existing
  *   Netlify function. Zero downtime, zero regression.
+ *
+ * v1.7.4 — TOS-PROTECTION LAYER
+ *   We're scraping TikTok's PUBLIC live page (no auth, no DRM). The page
+ *   is publicly viewable in any browser, so legally this is no different
+ *   than a `<video>` tag pointing at a public CDN URL. But we want to be
+ *   GOOD CITIZENS — scrape politely, identify ourselves, and back off if
+ *   TikTok signals they don't want us hitting them. To that end:
+ *
+ *     - HONEST IDENTIFICATION: optional `X-EMGamer731-Source` header on
+ *       the outbound request lets a manual TikTok admin tell who we are
+ *       without breaking anti-bot detection. Toggle via env var
+ *       IDENTIFY_SOURCE=true.
+ *     - CIRCUIT BREAKER: if TikTok returns 429 or 403 N times in a row
+ *       within a short window, we STOP probing for 30 minutes. Prevents
+ *       us from hammering when they're already telling us no.
+ *     - LONGER CACHE TTL: bumped from 60s → 120s. TikTok HLS URLs are
+ *       valid for several minutes; no need to re-fetch every 30s.
+ *     - PER-IP RATE LIMIT: prevents anyone discovering this Worker URL
+ *       from using it as a free public TikTok scraper. Max 30 req/min
+ *       per requester IP. Site polling at 30s/tab is well under cap.
+ *     - RESPECTS PUBLIC-CONTENT-ONLY: we ONLY hit /@<handle>/live, the
+ *       page that any logged-out browser can see. We never touch the
+ *       authenticated API, never decrypt anything, never scrape private
+ *       content or other users.
+ *
+ *   These don't make scraping "officially TOS-approved" (TikTok TOS says
+ *   no automated access of any kind), but they put us at the most
+ *   defensible end of the gray area: respectful, identifiable, public-
+ *   content-only, and self-throttling.
  *
  * Deploy:
  *   1.  npm install -g wrangler
@@ -34,7 +63,23 @@
 export interface Env {
   // No bindings required — pure fetch + edge cache.
   TIKTOK_HANDLE?: string;
+  /** Set to "true" to add an X-EMGamer731-Source header to outbound requests
+   *  so a TikTok ops person can identify who we are without breaking anti-bot. */
+  IDENTIFY_SOURCE?: string;
 }
+
+/** Cache TTL for successful + not-live responses. v1.7.4 bumped 60s → 120s. */
+const CACHE_TTL_S = 120;
+
+/** Circuit breaker — if we see this many 429/403 in a short window, back off. */
+const CB_THRESHOLD = 3;
+const CB_WINDOW_MS = 5 * 60 * 1000;       // 5 min observation window
+const CB_BACKOFF_MS = 30 * 60 * 1000;     // 30 min cool-down on trip
+const CB_KEY = 'tiktok-cb-state';
+
+/** Per-IP rate limit — defends our Worker against being used as a public scraper. */
+const RATE_PER_MIN = 30;
+const RATE_WINDOW_MS = 60 * 1000;
 
 const DEFAULT_HANDLE = 'eatsswithemm';
 
@@ -108,12 +153,26 @@ export default {
       env.TIKTOK_HANDLE ||
       DEFAULT_HANDLE;
 
-    // ── Edge cache: 60s TTL keyed by handle ──
+    // ── TOS GUARD 1: per-IP rate limit (defends Worker from public abuse) ──
+    const ip = request.headers.get('cf-connecting-ip') || 'unknown';
+    if (!await checkRateLimit(ip)) {
+      return jsonResponse(
+        {
+          isLive: false,
+          fetchedAt: new Date().toISOString(),
+          source: 'none',
+          error: 'rate-limited',
+          via: 'cf-worker',
+        },
+        { status: 429 },
+      );
+    }
+
+    // ── Edge cache: 120s TTL keyed by handle ──
     const cache = caches.default;
     const cacheKey = new Request(`${url.origin}/cache/${handle}`, request);
     const cached = await cache.match(cacheKey);
     if (cached) {
-      // Stamp the response so DevTools shows it came from cache
       const body = await cached.text();
       try {
         const parsed = JSON.parse(body);
@@ -124,27 +183,36 @@ export default {
       }
     }
 
+    // ── TOS GUARD 2: circuit breaker — if TikTok told us NO recently, honor it ──
+    const cbState = await getCircuitBreaker(url.origin);
+    if (cbState.tripped) {
+      return jsonResponse({
+        isLive: false,
+        fetchedAt: new Date().toISOString(),
+        source: 'none',
+        error: `circuit-breaker tripped (cooling until ${cbState.cooldownUntil})`,
+        via: 'cf-worker',
+      });
+    }
+
     const fetchedAt = new Date().toISOString();
 
     try {
-      const result = await scrapeTikTokLive(handle);
+      const result = await scrapeTikTokLive(handle, env, ctx, url.origin);
       const payload: Result = {
         ...result,
         fetchedAt,
         via: 'cf-worker',
       };
 
-      const res = jsonResponse(payload);
-      // Cache successful and "not live" responses for 60s — TikTok rotates
-      // their HLS URLs every few minutes anyway.
       const cacheableRes = new Response(JSON.stringify(payload), {
         headers: {
           'content-type': 'application/json; charset=utf-8',
-          'cache-control': 'public, max-age=60, s-maxage=60',
+          'cache-control': `public, max-age=${CACHE_TTL_S}, s-maxage=${CACHE_TTL_S}`,
         },
       });
       ctx.waitUntil(cache.put(cacheKey, cacheableRes));
-      return res;
+      return jsonResponse(payload);
     } catch (e) {
       return jsonResponse({
         isLive: false,
@@ -157,7 +225,81 @@ export default {
   },
 };
 
-async function scrapeTikTokLive(handle: string): Promise<Omit<Result, 'fetchedAt' | 'via'>> {
+/* ── TOS-GUARD HELPERS ──────────────────────────────────────────────── */
+
+/** In-memory token bucket per IP. Map persists across requests in same worker
+ *  isolate; resets on cold-start. Good enough for our use case (defending vs
+ *  someone using us as a free TikTok scraper). */
+const rateBuckets = new Map<string, { count: number; resetAt: number }>();
+
+async function checkRateLimit(ip: string): Promise<boolean> {
+  const now = Date.now();
+  const bucket = rateBuckets.get(ip);
+  if (!bucket || bucket.resetAt < now) {
+    rateBuckets.set(ip, { count: 1, resetAt: now + RATE_WINDOW_MS });
+    return true;
+  }
+  if (bucket.count >= RATE_PER_MIN) return false;
+  bucket.count += 1;
+  return true;
+}
+
+type CBState = { tripped: boolean; cooldownUntil?: string; failures: number; firstFailureAt?: number };
+
+async function getCircuitBreaker(origin: string): Promise<CBState> {
+  // Use the edge cache as a poor-man's KV — survives across requests.
+  const cache = caches.default;
+  const r = await cache.match(new Request(`${origin}/${CB_KEY}`));
+  if (!r) return { tripped: false, failures: 0 };
+  try {
+    const s = (await r.json()) as CBState;
+    if (s.cooldownUntil && new Date(s.cooldownUntil).getTime() > Date.now()) {
+      return { ...s, tripped: true };
+    }
+    return { ...s, tripped: false };
+  } catch {
+    return { tripped: false, failures: 0 };
+  }
+}
+
+async function recordFailure(origin: string, ctx: ExecutionContext): Promise<void> {
+  const current = await getCircuitBreaker(origin);
+  const now = Date.now();
+  const within = current.firstFailureAt && (now - current.firstFailureAt) < CB_WINDOW_MS;
+  const next: CBState = {
+    tripped: false,
+    failures: within ? current.failures + 1 : 1,
+    firstFailureAt: within ? current.firstFailureAt : now,
+  };
+  if (next.failures >= CB_THRESHOLD) {
+    next.tripped = true;
+    next.cooldownUntil = new Date(now + CB_BACKOFF_MS).toISOString();
+  }
+  const payload = JSON.stringify(next);
+  const cacheableRes = new Response(payload, {
+    headers: {
+      'content-type': 'application/json',
+      'cache-control': `public, max-age=${Math.ceil(CB_BACKOFF_MS / 1000)}`,
+    },
+  });
+  ctx.waitUntil(caches.default.put(new Request(`${origin}/${CB_KEY}`), cacheableRes));
+}
+
+async function recordSuccess(origin: string, ctx: ExecutionContext): Promise<void> {
+  // Reset the breaker on success
+  const cleanState: CBState = { tripped: false, failures: 0 };
+  const r = new Response(JSON.stringify(cleanState), {
+    headers: { 'content-type': 'application/json', 'cache-control': 'public, max-age=60' },
+  });
+  ctx.waitUntil(caches.default.put(new Request(`${origin}/${CB_KEY}`), r));
+}
+
+async function scrapeTikTokLive(
+  handle: string,
+  env: Env,
+  ctx: ExecutionContext,
+  origin: string,
+): Promise<Omit<Result, 'fetchedAt' | 'via'>> {
   const ua = pick(USER_AGENTS);
   const acceptLang = pick(ACCEPT_LANGUAGES);
   const isMobile = /iPhone|Android/.test(ua);
@@ -185,10 +327,27 @@ async function scrapeTikTokLive(handle: string): Promise<Omit<Result, 'fetchedAt
     'priority': 'u=0, i',
   };
 
+  // ── TOS GUARD 3: honest identification (opt-in) ──
+  // Adds a custom X- header so a TikTok engineer reading their logs can see
+  // who we are. Doesn't break anti-bot (custom X- headers aren't part of
+  // browser fingerprinting), but does the right thing if anyone asks.
+  if (env.IDENTIFY_SOURCE === 'true') {
+    headers['x-emgamer731-source'] = 'personal-creator-site (https://emgamer731.netlify.app)';
+    headers['x-emgamer731-purpose'] = 'embed-own-public-live-stream-on-personal-site';
+  }
+
   const res = await fetch(targetUrl, { headers, redirect: 'follow' });
+
+  // ── TOS GUARD 4: respect TikTok's blocking signals — trip the breaker ──
+  if (res.status === 429 || res.status === 403) {
+    await recordFailure(origin, ctx);
+    return { isLive: false, source: 'none', error: `tiktok ${res.status} (breaker incremented)` };
+  }
   if (!res.ok) {
     return { isLive: false, source: 'none', error: `tiktok ${res.status}` };
   }
+  // Successful fetch — reset breaker
+  await recordSuccess(origin, ctx);
 
   const html = await res.text();
 
@@ -310,12 +469,14 @@ function pickString(v: unknown): string | undefined {
   return typeof v === 'string' && v.length > 0 ? v : undefined;
 }
 
-function jsonResponse(payload: unknown): Response {
+function jsonResponse(payload: unknown, init: ResponseInit = {}): Response {
   return new Response(JSON.stringify(payload), {
+    ...init,
     headers: {
       'content-type': 'application/json; charset=utf-8',
       'access-control-allow-origin': '*',
       'cache-control': 'public, max-age=30, s-maxage=60',
+      ...(init.headers ?? {}),
     },
   });
 }

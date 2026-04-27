@@ -36,7 +36,7 @@ for /f %%H in ('git status --porcelain ^| find /c /v ""') do set CHANGES=%%H
 if "%CHANGES%"=="0" (
   git diff --cached --quiet
   if errorlevel 1 (
-    git commit -m "feat: EMGamer731 v1.7.3 — Cloudflare Workers TikTok scraper upgrade. New cloudflare-worker/ directory with deployable Worker (rotating UA pool, realistic Sec-CH-UA + Referer + Accept-Language headers, 60s edge cache, free tier 100k req/day). /api/tiktok-live-stream now optionally proxies through the Worker via TIKTOK_SCRAPER_WORKER_URL env var with 8s timeout + local-scrape fallback (zero downtime). Local Netlify scraper ALSO upgraded with same UA rotation techniques as immediate-win even before Worker deploys. Includes wrangler.toml, package.json, tsconfig.json, README with 3-command deploy." >nul
+    git commit -m "feat: EMGamer731 v1.7.4 — TOS-guard layer on the Cloudflare Worker + one-click deploy bat. Worker now: (1) circuit breaker that stops scraping for 30min if TikTok 429/403 three times in 5min window, (2) per-IP rate limit of 30 req/min defending vs Worker abuse, (3) cache TTL bumped 60s to 120s for politer scraping, (4) opt-in honest identification via X-EMGamer731-Source headers (IDENTIFY_SOURCE=true in wrangler.toml by default — doesn't break anti-bot since custom X- headers aren't fingerprinted but is honest if TikTok ops audits logs), (5) public-content-only guarantee documented. New deploy-cloudflare-worker.bat handles npm/wrangler install + login + deploy in one double-click." >nul
     echo [i] Local commit created.
   ) else (
     echo [i] No local changes to commit.
@@ -44,7 +44,7 @@ if "%CHANGES%"=="0" (
 ) else (
   REM There are working-tree changes; force-stage and commit
   git add -A
-  git commit -m "feat: EMGamer731 v1.7.3 — Cloudflare Workers TikTok scraper upgrade. New cloudflare-worker/ directory with deployable Worker (rotating UA pool, realistic Sec-CH-UA + Referer + Accept-Language headers, 60s edge cache, free tier 100k req/day). /api/tiktok-live-stream now optionally proxies through the Worker via TIKTOK_SCRAPER_WORKER_URL env var with 8s timeout + local-scrape fallback (zero downtime). Local Netlify scraper ALSO upgraded with same UA rotation techniques as immediate-win even before Worker deploys. Includes wrangler.toml, package.json, tsconfig.json, README with 3-command deploy." >nul 2>nul
+  git commit -m "feat: EMGamer731 v1.7.4 — TOS-guard layer on the Cloudflare Worker + one-click deploy bat. Worker now: (1) circuit breaker that stops scraping for 30min if TikTok 429/403 three times in 5min window, (2) per-IP rate limit of 30 req/min defending vs Worker abuse, (3) cache TTL bumped 60s to 120s for politer scraping, (4) opt-in honest identification via X-EMGamer731-Source headers (IDENTIFY_SOURCE=true in wrangler.toml by default — doesn't break anti-bot since custom X- headers aren't fingerprinted but is honest if TikTok ops audits logs), (5) public-content-only guarantee documented. New deploy-cloudflare-worker.bat handles npm/wrangler install + login + deploy in one double-click." >nul 2>nul
   echo [i] Local commit created (forced stage of %CHANGES% files^).
 )
 
@@ -100,4 +100,4 @@ echo   Repo: https://github.com/Tyrrellkdlemons/emgamer731
 echo   Netlify will auto-deploy from this push if continuous deploys are enabled.
 echo ============================================
 pause
-REM v1.7.3 force-push trigger 1777276900
+REM v1.7.4 force-push trigger 1777277500
