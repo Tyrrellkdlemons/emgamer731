@@ -36,7 +36,7 @@ for /f %%H in ('git status --porcelain ^| find /c /v ""') do set CHANGES=%%H
 if "%CHANGES%"=="0" (
   git diff --cached --quiet
   if errorlevel 1 (
-    git commit -m "feat: EMGamer731 v1.7.4 — TOS-guard layer on the Cloudflare Worker + one-click deploy bat. Worker now: (1) circuit breaker that stops scraping for 30min if TikTok 429/403 three times in 5min window, (2) per-IP rate limit of 30 req/min defending vs Worker abuse, (3) cache TTL bumped 60s to 120s for politer scraping, (4) opt-in honest identification via X-EMGamer731-Source headers (IDENTIFY_SOURCE=true in wrangler.toml by default — doesn't break anti-bot since custom X- headers aren't fingerprinted but is honest if TikTok ops audits logs), (5) public-content-only guarantee documented. New deploy-cloudflare-worker.bat handles npm/wrangler install + login + deploy in one double-click." >nul
+    git commit -m "feat: EMGamer731 v1.7.5 — multi-platform LIVE pills + skip dead TikTok iframe race + checkpoint. LiveHero now renders ONE pill per actively-live platform side-by-side (LIVE on YOUTUBE next to LIVE on TIKTOK when both are simulcasting via Restream); junk-title sanitizer filters scrape artifacts (__probe__, login walls, etc) before the H2. TikTokLiveStage simplified to 2 tiers (HLS → FallbackHero CTA) — old iframe race deleted because TikTok X-Frame-Options DENY meant onload fired but rendered content was blocked, leaving visitors with empty dark frames. Removed: probe iframes, sessionStorage cache, race timeout, loading shimmer. Saved checkpoint at docs/checkpoints/v1.7.5-cf-worker-stable/." >nul
     echo [i] Local commit created.
   ) else (
     echo [i] No local changes to commit.
@@ -44,7 +44,7 @@ if "%CHANGES%"=="0" (
 ) else (
   REM There are working-tree changes; force-stage and commit
   git add -A
-  git commit -m "feat: EMGamer731 v1.7.4 — TOS-guard layer on the Cloudflare Worker + one-click deploy bat. Worker now: (1) circuit breaker that stops scraping for 30min if TikTok 429/403 three times in 5min window, (2) per-IP rate limit of 30 req/min defending vs Worker abuse, (3) cache TTL bumped 60s to 120s for politer scraping, (4) opt-in honest identification via X-EMGamer731-Source headers (IDENTIFY_SOURCE=true in wrangler.toml by default — doesn't break anti-bot since custom X- headers aren't fingerprinted but is honest if TikTok ops audits logs), (5) public-content-only guarantee documented. New deploy-cloudflare-worker.bat handles npm/wrangler install + login + deploy in one double-click." >nul 2>nul
+  git commit -m "feat: EMGamer731 v1.7.5 — multi-platform LIVE pills + skip dead TikTok iframe race + checkpoint. LiveHero now renders ONE pill per actively-live platform side-by-side (LIVE on YOUTUBE next to LIVE on TIKTOK when both are simulcasting via Restream); junk-title sanitizer filters scrape artifacts (__probe__, login walls, etc) before the H2. TikTokLiveStage simplified to 2 tiers (HLS → FallbackHero CTA) — old iframe race deleted because TikTok X-Frame-Options DENY meant onload fired but rendered content was blocked, leaving visitors with empty dark frames. Removed: probe iframes, sessionStorage cache, race timeout, loading shimmer. Saved checkpoint at docs/checkpoints/v1.7.5-cf-worker-stable/." >nul 2>nul
   echo [i] Local commit created (forced stage of %CHANGES% files^).
 )
 
@@ -100,4 +100,4 @@ echo   Repo: https://github.com/Tyrrellkdlemons/emgamer731
 echo   Netlify will auto-deploy from this push if continuous deploys are enabled.
 echo ============================================
 pause
-REM v1.7.4 force-push trigger 1777277500
+REM v1.7.5 force-push trigger 1777278200

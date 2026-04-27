@@ -1,3 +1,3 @@
-// v1.7.4 — TOS-guard layer on the CF Worker (circuit breaker + rate limit + honest ID)
+// v1.7.5 — multi-platform pills · skip dead TikTok iframe race · sanitized titles · checkpoint
 // Released: 2026-04-27
-// Deploy via deploy-cloudflare-worker.bat (one double-click). See changelog for details.
+// See docs/checkpoints/v1.7.5-cf-worker-stable/CHECKPOINT.md for green-state snapshot.

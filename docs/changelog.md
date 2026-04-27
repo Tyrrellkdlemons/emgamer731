@@ -2,6 +2,21 @@
 
 All notable changes are recorded here. Newest first.
 
+## [1.7.5] — 2026-04-27 — Multi-platform pills · skip dead TikTok iframe race · sanitized titles
+
+### Changed
+- **`LiveHero`** now renders ONE pill per actively-live platform side-by-side. When EMM is simulcasting via Restream, viewers see both `LIVE on YOUTUBE` (red) and `LIVE on TIKTOK` (red) pills instead of a single primary-platform badge. Sub-text adapts: "— pick a platform below" when 2+ are live, "— playing inline below" when one.
+- **`LiveHero` title sanitizer** — filters out scrape-junk titles before they reach the H2. Patterns blocked: `__probe__` iframe leaks, `probe-tt-direct`, `Log in | TikTok` (login-wall page titles), too-short strings, `New Tab`, etc. Falls back to the friendly default ("EMM is live — pull up a chair…").
+- **`TikTokLiveStage` simplified to 2 tiers** — HLS player → FallbackHero CTA card. The 2-iframe race (tt-embed, tt-direct) was REMOVED entirely because TikTok serves all live pages with `X-Frame-Options: DENY`, so the iframe `onload` fires for the HTTP response but the rendered content is blocked by the browser. Visitors saw an empty dark frame stamped "VIA TT-DIRECT" instead of the polished CTA card. Removed dead code: probe iframes, sessionStorage cache, race timeout, loading shimmer.
+
+### Fixed
+- The "`__probe__`" heading visible in `/live` when scrape returned junk title.
+- The empty/broken player frame after HLS extraction failed — now shows polished CTA card with "Open in TikTok app" deeplink immediately.
+
+### Workflow
+- Saved checkpoint snapshot at `docs/checkpoints/v1.7.5-cf-worker-stable/`.
+
+
 ## [1.7.4] — 2026-04-27 — TOS-guard layer on the Cloudflare Worker + one-click deploy
 
 ### Added — TOS protection on the Worker
