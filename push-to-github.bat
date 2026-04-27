@@ -36,7 +36,7 @@ for /f %%H in ('git status --porcelain ^| find /c /v ""') do set CHANGES=%%H
 if "%CHANGES%"=="0" (
   git diff --cached --quiet
   if errorlevel 1 (
-    git commit -m "feat: EMGamer731 v1.6.5 — TikTokLiveStage: races 4 iframe sources in parallel (TikTok embed/live, proxitok mirror, vxtiktok, direct TikTok URL) with 4s timeout, first one to load becomes the visible inline player. If all blocked, polished CTA hero card with TikTok-app deeplink + no-login mirror + Roblox session join. Most aggressive login-free TikTok-live attempt possible from a static site." >nul
+    git commit -m "feat: EMGamer731 v1.6.5 — TikTokLiveStage races 4 iframe sources for inline TikTok-live playback + bacon nav fix: two-layer skin (CSS-painted gradient base ALWAYS visible + photographic overlay multiply-blended) so the bacon look never disappears. Restored rounded-full clip + 2px deep-cherry border + 10px padding so visible bacon rim wraps the cream pill at every viewport." >nul
     echo [i] Local commit created.
   ) else (
     echo [i] No local changes to commit.
@@ -44,7 +44,7 @@ if "%CHANGES%"=="0" (
 ) else (
   REM There are working-tree changes; force-stage and commit
   git add -A
-  git commit -m "feat: EMGamer731 v1.6.5 — TikTokLiveStage: races 4 iframe sources in parallel (TikTok embed/live, proxitok mirror, vxtiktok, direct TikTok URL) with 4s timeout, first one to load becomes the visible inline player. If all blocked, polished CTA hero card with TikTok-app deeplink + no-login mirror + Roblox session join. Most aggressive login-free TikTok-live attempt possible from a static site." >nul 2>nul
+  git commit -m "feat: EMGamer731 v1.6.5 — TikTokLiveStage races 4 iframe sources for inline TikTok-live playback + bacon nav fix: two-layer skin (CSS-painted gradient base ALWAYS visible + photographic overlay multiply-blended) so the bacon look never disappears. Restored rounded-full clip + 2px deep-cherry border + 10px padding so visible bacon rim wraps the cream pill at every viewport." >nul 2>nul
   echo [i] Local commit created (forced stage of %CHANGES% files^).
 )
 
@@ -54,7 +54,7 @@ if not exist ".git" (
   git init
   git branch -M main
   git add -A
-  git commit -m "feat: EMGamer731 v1.6.5"
+  git commit -m "feat: EMGamer731 v1.6.5b"
 )
 
 REM 3. Set the remote

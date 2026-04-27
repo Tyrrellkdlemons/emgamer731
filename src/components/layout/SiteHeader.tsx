@@ -60,21 +60,19 @@ export function SiteHeader() {
       style={{ paddingTop: 'max(env(safe-area-inset-top), 0.75rem)' }}
     >
       <div className="container-soft pointer-events-none">
-        {/* Outer floating capsule — v1.6.4: the actual photographic BACON
-            STRIP from the user's _add folder is the skin. Its wavy edges
-            and built-in pill cutouts read as "this is a nav bar" without
-            any extra chrome. We don't clip with `rounded-full` here so the
-            organic bacon outline shows; the inner cream pill keeps its
-            capsule shape for text legibility. Drop-shadow comes from the
-            container so it tracks scroll state. */}
+        {/* Outer floating capsule — v1.6.5 fix: rounded-full + overflow-
+            hidden so the bacon skin is clipped to a clean pill shape and
+            the inner cream area sits cleanly inside. The BaconStrip now
+            has a guaranteed-visible CSS-painted base so the bacon look
+            never disappears even if the photo overlay fails to load. */}
         <div
           className={cn(
-            'relative pointer-events-auto transition-all duration-300 ease-morning',
+            'relative pointer-events-auto rounded-full overflow-hidden transition-all duration-300 ease-morning',
             scrolled ? 'shadow-lifted' : 'shadow-soft',
           )}
           style={{
-            padding: '14px 18px',
-            // No border or border-radius — bacon photo provides its own edge.
+            padding: '10px',
+            border: '2px solid #4A1414',
           }}
         >
           {/* Real-photo bacon skin (covers the whole capsule shape) */}
@@ -85,8 +83,8 @@ export function SiteHeader() {
             className="relative rounded-full backdrop-blur-xl shadow-soft"
             style={{
               background:
-                'linear-gradient(180deg, rgba(255,252,245,0.96), rgba(255,248,238,0.92))',
-              border: '1px solid rgba(196,123,61,0.35)',
+                'linear-gradient(180deg, rgba(255,252,245,0.97), rgba(255,248,238,0.93))',
+              border: '1px solid rgba(74,20,20,0.4)',
             }}
           >
             <div className="flex items-center justify-between gap-2 px-3 sm:px-4 py-2">
@@ -156,8 +154,8 @@ export function SiteHeader() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.2, ease: [0.32, 0.72, 0, 1] }}
-              className="lg:hidden mt-2 pointer-events-auto relative overflow-hidden"
-              style={{ padding: '14px 18px' }}
+              className="lg:hidden mt-2 pointer-events-auto relative overflow-hidden rounded-3xl"
+              style={{ padding: '10px', border: '2px solid #4A1414' }}
             >
               <BaconStrip className="absolute inset-0" skin="bacon" />
               <div className="relative rounded-3xl bg-eggshell/95 backdrop-blur-xl">
