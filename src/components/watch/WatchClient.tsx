@@ -77,7 +77,16 @@ export function WatchClient({ items: initial }: { items: ContentCard[] }) {
               title={active.title}
               thumbnail={active.thumbnail}
             />
-            <h2 className="display text-display-md text-cocoa mt-4">{active.title}</h2>
+            <div className="flex items-center gap-2 mt-4 flex-wrap">
+              {isPastLive(active) && (
+                <span className="inline-flex items-center gap-1 rounded-full bg-syrup text-eggshell px-2.5 py-1 text-[11px] font-extrabold uppercase tracking-wider shadow-soft">
+                  ▶ Replay · not currently live
+                </span>
+              )}
+            </div>
+            <h2 className="display text-display-md text-cocoa mt-2">
+              {isPastLive(active) ? cleanReplayTitle(active.title) : active.title}
+            </h2>
             <div className="text-sm text-muted mt-1">
               {active.platform.toUpperCase()} · {relativeTime(active.publishedAt)}{active.duration ? ` · ${active.duration}` : ''}
             </div>
@@ -150,6 +159,15 @@ export function WatchClient({ items: initial }: { items: ContentCard[] }) {
                     short
                   </span>
                 )}
+                {/* v1.7.6: REPLAY badge so past lives are clearly distinguished
+                    from the actively-live banner up top (YouTubeLiveBanner).
+                    Triggered on category='live' OR auto-named "X is live!" titles
+                    that YouTube generates for past live broadcasts. */}
+                {!c.isShort && isPastLive(c) && (
+                  <span className="absolute top-2 right-2 inline-flex items-center gap-1 rounded-full bg-syrup text-eggshell px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider shadow-soft">
+                    ▶ Replay
+                  </span>
+                )}
                 {c.duration && (
                   <span className="absolute bottom-2 right-2 rounded bg-cocoa/85 text-eggshell px-1.5 py-0.5 text-xs font-mono">
                     {c.duration}
@@ -173,4 +191,26 @@ export function WatchClient({ items: initial }: { items: ContentCard[] }) {
       </AnimatePresence>
     </div>
   );
+}
+
+/* ── v1.7.6 helpers ───────────────────────────────────────────────────
+ * Past-live detection + title cleanup. YouTube auto-names past live
+ * broadcasts with the channel-name template "<ChannelName> is live!" — when
+ * those auto-pull into the feed they look confusingly like the CURRENT live
+ * stream (which is already shown in the YouTubeLiveBanner above the grid).
+ * We tag them as REPLAY and clean the title for display. */
+
+function isPastLive(c: ContentCard): boolean {
+  if (c.category === 'live') return true;
+  // Anything with a duration AND a title matching the auto-live template
+  if (c.duration && /\bis live!?$/i.test((c.title ?? '').trim())) return true;
+  return false;
+}
+
+function cleanReplayTitle(t: string): string {
+  // Strip the auto-live suffix and replace with a cleaner one
+  const trimmed = (t ?? '').trim();
+  const cleaned = trimmed.replace(/\s+is live!?$/i, '');
+  if (!cleaned || cleaned === trimmed) return trimmed; // not the template; leave alone
+  return `${cleaned} — past stream`;
 }

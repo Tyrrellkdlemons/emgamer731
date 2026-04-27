@@ -1,3 +1,3 @@
-// v1.7.5 — multi-platform pills · skip dead TikTok iframe race · sanitized titles · checkpoint
+// v1.7.6 — YT live detection without API key + REPLAY badges on past lives
 // Released: 2026-04-27
-// See docs/checkpoints/v1.7.5-cf-worker-stable/CHECKPOINT.md for green-state snapshot.
+// Admin /admin/live now correctly detects YouTube live; past-live videos clearly badged.

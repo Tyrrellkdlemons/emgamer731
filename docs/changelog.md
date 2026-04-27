@@ -2,6 +2,16 @@
 
 All notable changes are recorded here. Newest first.
 
+## [1.7.6] — 2026-04-27 — YT live detection without API key · REPLAY badges on past lives
+
+### Fixed
+- **YouTube live detection now works WITHOUT a `YOUTUBE_API_KEY` env var.** New PATH B in `youtubeAdapter` scrapes `youtube.com/channel/<id>/live` and follows the redirect — when YouTube redirects to `/watch?v=<videoId>`, the channel is currently live. Confirms with HTML signal (`"isLive":true`, `"isLiveContent":true`, `"isLiveNow":true`) before reporting live. Extracts title + thumbnail from page meta tags. Hardcoded `UCnSbDaREAHiITX2UPjE44fA` (EmGamer731) used when `YOUTUBE_CHANNEL_ID` env not set. Adapter is now `enabled: true` always — admin `/admin/live` panel will correctly show ON when YouTube live starts via Restream simulcast.
+- **Past-live YouTube videos no longer look like current live.** YouTube auto-names past broadcasts with the template `<ChannelName> is live!` — when those autopull into the /watch feed, viewers saw "EmGamer731 is live!" with a play/pause progress bar, which was indistinguishable from the actively-live banner up top. Now tagged with a **▶ Replay** badge (top-right of card) and the featured player shows a **▶ Replay · not currently live** pill. Auto-titled past-live names get rewritten as `<ChannelName> — past stream`.
+
+### Added
+- `isPastLive()` + `cleanReplayTitle()` helpers in `WatchClient` — detects past lives by `category === 'live'` OR auto-template title pattern.
+
+
 ## [1.7.5] — 2026-04-27 — Multi-platform pills · skip dead TikTok iframe race · sanitized titles
 
 ### Changed

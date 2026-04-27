@@ -36,7 +36,7 @@ for /f %%H in ('git status --porcelain ^| find /c /v ""') do set CHANGES=%%H
 if "%CHANGES%"=="0" (
   git diff --cached --quiet
   if errorlevel 1 (
-    git commit -m "feat: EMGamer731 v1.7.5 — multi-platform LIVE pills + skip dead TikTok iframe race + checkpoint. LiveHero now renders ONE pill per actively-live platform side-by-side (LIVE on YOUTUBE next to LIVE on TIKTOK when both are simulcasting via Restream); junk-title sanitizer filters scrape artifacts (__probe__, login walls, etc) before the H2. TikTokLiveStage simplified to 2 tiers (HLS → FallbackHero CTA) — old iframe race deleted because TikTok X-Frame-Options DENY meant onload fired but rendered content was blocked, leaving visitors with empty dark frames. Removed: probe iframes, sessionStorage cache, race timeout, loading shimmer. Saved checkpoint at docs/checkpoints/v1.7.5-cf-worker-stable/." >nul
+    git commit -m "fix: EMGamer731 v1.7.6 — YT live detection without API key + REPLAY badges. youtubeAdapter now ALWAYS attempts live detection (enabled:true) via two paths: PATH A uses YOUTUBE_API_KEY when present, PATH B (new) scrapes channel/<id>/live redirect — when YouTube redirects to /watch?v=<id>, channel is live. Confirms via 'isLive':true/'isLiveContent':true/'isLiveNow':true HTML signals before reporting. Extracts title/thumb from page meta. Hardcoded UCnSbDaREAHiITX2UPjE44fA fallback for EmGamer731. Admin /admin/live now correctly shows ON when YT live via Restream. WatchClient: REPLAY badges on past-live cards + featured player chip distinguishes past lives from current LIVE banner; auto-titled 'X is live!' templates rewritten as 'X — past stream'." >nul
     echo [i] Local commit created.
   ) else (
     echo [i] No local changes to commit.
@@ -44,7 +44,7 @@ if "%CHANGES%"=="0" (
 ) else (
   REM There are working-tree changes; force-stage and commit
   git add -A
-  git commit -m "feat: EMGamer731 v1.7.5 — multi-platform LIVE pills + skip dead TikTok iframe race + checkpoint. LiveHero now renders ONE pill per actively-live platform side-by-side (LIVE on YOUTUBE next to LIVE on TIKTOK when both are simulcasting via Restream); junk-title sanitizer filters scrape artifacts (__probe__, login walls, etc) before the H2. TikTokLiveStage simplified to 2 tiers (HLS → FallbackHero CTA) — old iframe race deleted because TikTok X-Frame-Options DENY meant onload fired but rendered content was blocked, leaving visitors with empty dark frames. Removed: probe iframes, sessionStorage cache, race timeout, loading shimmer. Saved checkpoint at docs/checkpoints/v1.7.5-cf-worker-stable/." >nul 2>nul
+  git commit -m "fix: EMGamer731 v1.7.6 — YT live detection without API key + REPLAY badges. youtubeAdapter now ALWAYS attempts live detection (enabled:true) via two paths: PATH A uses YOUTUBE_API_KEY when present, PATH B (new) scrapes channel/<id>/live redirect — when YouTube redirects to /watch?v=<id>, channel is live. Confirms via 'isLive':true/'isLiveContent':true/'isLiveNow':true HTML signals before reporting. Extracts title/thumb from page meta. Hardcoded UCnSbDaREAHiITX2UPjE44fA fallback for EmGamer731. Admin /admin/live now correctly shows ON when YT live via Restream. WatchClient: REPLAY badges on past-live cards + featured player chip distinguishes past lives from current LIVE banner; auto-titled 'X is live!' templates rewritten as 'X — past stream'." >nul 2>nul
   echo [i] Local commit created (forced stage of %CHANGES% files^).
 )
 
@@ -100,4 +100,4 @@ echo   Repo: https://github.com/Tyrrellkdlemons/emgamer731
 echo   Netlify will auto-deploy from this push if continuous deploys are enabled.
 echo ============================================
 pause
-REM v1.7.5 force-push trigger 1777278200
+REM v1.7.6 force-push trigger 1777278900
