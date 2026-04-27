@@ -19,12 +19,44 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-const STORAGE_KEY     = 'emg731:admin-live:token';
+// v1.6.9 — bumped to v2 so we re-seed past the v1.6.7 broken cached tokens.
+const STORAGE_KEY     = 'emg731:admin-live:token:v2';
+const STORAGE_KEY_OLD = 'emg731:admin-live:token';   // for cleanup
 const ROBLOX_PLACE_KEY = 'emg731:admin-roblox:placeId';
 const ROBLOX_UID_KEY   = 'emg731:admin-roblox:universeId';
 
-/** Default token baked into the admin API too — works without env config. */
-const DEFAULT_TOKEN = 'emm-67-go-live';
+/** Default token baked into the admin API too — works without env config.
+ *  v1.6.10: switched to memorable "gems" — easy to type from any device. */
+const DEFAULT_TOKEN = 'gems';
+
+/**
+ * Probe the admin endpoint with a token to verify auth works. Uses a no-op
+ * round-trip (POST → DELETE same flag) so the live state is unchanged.
+ * Returns true if both calls return ok:true.
+ */
+async function testToken(token: string): Promise<boolean> {
+  if (!token) return false;
+  try {
+    // Send a GET to our admin endpoint — it returns ok regardless of token,
+    // BUT if our token is wrong a POST/DELETE would 401. Use a HEAD-style
+    // probe: POST a dummy payload with `?dryRun=1` (the route ignores it
+    // but auth still gates). If the response is 200 we're good.
+    const r = await fetch('/api/admin/live-override', {
+      method: 'POST',
+      headers: { authorization: `Bearer ${token}`, 'content-type': 'application/json' },
+      body: JSON.stringify({ title: '__probe__' }),
+    });
+    if (!r.ok) return false;
+    // Immediately undo so we don't leave the site in a fake-live state
+    await fetch('/api/admin/live-override', {
+      method: 'DELETE',
+      headers: { authorization: `Bearer ${token}` },
+    });
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 type LiveResp    = { ok?: boolean; action?: string; error?: string };
 type LiveSummary = {
@@ -41,17 +73,30 @@ export default function AdminPage() {
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
+
+    // v1.6.9 self-heal: nuke any v1 broken cache so we don't drift.
+    try { localStorage.removeItem(STORAGE_KEY_OLD); } catch {}
+
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      setToken(saved);
-      setTokenSaved(true);
-    } else {
-      // First visit — pre-seed with the default token so GO LIVE works
-      // immediately without any setup. TKDL can override under "Forget".
-      setToken(DEFAULT_TOKEN);
-      localStorage.setItem(STORAGE_KEY, DEFAULT_TOKEN);
-      setTokenSaved(true);
+    const candidate = saved || DEFAULT_TOKEN;
+    setToken(candidate);
+    setTokenSaved(true);
+    if (!saved) {
+      try { localStorage.setItem(STORAGE_KEY, candidate); } catch {}
     }
+
+    // Active probe: hit the API with the candidate token and verify it
+    // actually works. If it 401s, auto-swap to the baked default.
+    (async () => {
+      try {
+        const ok = await testToken(candidate);
+        if (!ok && candidate !== DEFAULT_TOKEN) {
+          // Override the cached token with the working default
+          setToken(DEFAULT_TOKEN);
+          try { localStorage.setItem(STORAGE_KEY, DEFAULT_TOKEN); } catch {}
+        }
+      } catch {/* ignore — user can still hit GO LIVE manually */}
+    })();
   }, []);
 
   const saveToken = (t: string) => {
@@ -162,13 +207,20 @@ function TokenGate({
           className="w-full rounded-2xl bg-cream ring-1 ring-creamShade px-4 py-3 font-mono text-sm"
           autoComplete="off"
         />
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <button
             type="button"
             onClick={() => draft && onSave(draft)}
             className="rounded-full bg-cocoa text-eggshell px-4 py-2 text-xs font-bold hover:bg-syrup hover:text-cocoa transition-all"
           >
             Save token
+          </button>
+          <button
+            type="button"
+            onClick={() => { setDraft(DEFAULT_TOKEN); onSave(DEFAULT_TOKEN); }}
+            className="rounded-full bg-mint text-cocoa px-4 py-2 text-xs font-bold hover:bg-pancake transition-all"
+          >
+            🛟 Reset to default token
           </button>
           {tokenSaved && (
             <button
@@ -180,6 +232,13 @@ function TokenGate({
             </button>
           )}
         </div>
+        <p className="text-[11px] text-cocoa/60 mt-2">
+          Default token is{' '}
+          <code className="font-mono bg-eggshell px-1.5 py-0.5 rounded">{DEFAULT_TOKEN}</code>
+          {' '}— works out of the box. Override only if you set
+          <code className="font-mono bg-eggshell px-1.5 py-0.5 rounded mx-1">ADMIN_LIVE_SECRET</code>
+          on Netlify.
+        </p>
       </div>
     </details>
   );

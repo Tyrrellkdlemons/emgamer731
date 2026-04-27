@@ -36,7 +36,7 @@ for /f %%H in ('git status --porcelain ^| find /c /v ""') do set CHANGES=%%H
 if "%CHANGES%"=="0" (
   git diff --cached --quiet
   if errorlevel 1 (
-    git commit -m "feat: EMGamer731 v1.6.8 — admin auth fix: bake DEFAULT_SECRET=emm-67-go-live so /admin/live works WITHOUT setting Netlify env. First-time visit auto-saves the default token to localStorage. Header LIVE chip now links to OUR /live route (in-site inline player) instead of external TikTok URL — visitors stay on the site to watch." >nul
+    git commit -m "feat: EMGamer731 v1.6.10 — admin password is now gems (memorable, on-brand). Token auto-saves on first visit, self-heals on 401, includes Reset button. Net effect: open /admin/live and just hit GO LIVE." >nul
     echo [i] Local commit created.
   ) else (
     echo [i] No local changes to commit.
@@ -44,7 +44,7 @@ if "%CHANGES%"=="0" (
 ) else (
   REM There are working-tree changes; force-stage and commit
   git add -A
-  git commit -m "feat: EMGamer731 v1.6.8 — admin auth fix: bake DEFAULT_SECRET=emm-67-go-live so /admin/live works WITHOUT setting Netlify env. First-time visit auto-saves the default token to localStorage. Header LIVE chip now links to OUR /live route (in-site inline player) instead of external TikTok URL — visitors stay on the site to watch." >nul 2>nul
+  git commit -m "feat: EMGamer731 v1.6.10 — admin password is now gems (memorable, on-brand). Token auto-saves on first visit, self-heals on 401, includes Reset button. Net effect: open /admin/live and just hit GO LIVE." >nul 2>nul
   echo [i] Local commit created (forced stage of %CHANGES% files^).
 )
 
@@ -54,7 +54,7 @@ if not exist ".git" (
   git init
   git branch -M main
   git add -A
-  git commit -m "feat: EMGamer731 v1.6.8b"
+  git commit -m "feat: EMGamer731 v1.6.10b"
 )
 
 REM 3. Set the remote
@@ -100,3 +100,4 @@ echo   Repo: https://github.com/Tyrrellkdlemons/emgamer731
 echo   Netlify will auto-deploy from this push if continuous deploys are enabled.
 echo ============================================
 pause
+REM v1.6.9 force-push trigger 1777270367

@@ -28,7 +28,7 @@ const HANDLE = process.env.TIKTOK_HANDLE || 'eatsswithemm';
  * security cost is low because the worst an attacker can do is flip
  * the live banner on/off — no payment, no PII, no data loss.
  */
-const DEFAULT_SECRET = 'emm-67-go-live';
+const DEFAULT_SECRET = 'gems';
 const SECRET = (process.env.ADMIN_LIVE_SECRET ?? '').trim() || DEFAULT_SECRET;
 
 function authed(req: NextRequest) {
