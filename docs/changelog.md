@@ -2,6 +2,24 @@
 
 All notable changes are recorded here. Newest first.
 
+## [1.7.0] — 2026-04-27 — Restream simulcast · dual-platform live picker
+
+### Added
+- **`DualPlatformLivePlayer`** component — when EMM is simulcasting via Restream.io to both YouTube and TikTok, visitors see a tab control to pick which surface to watch on (YouTube default — cleanest no-login embed). Includes a "📱 Open in TikTok app" deeplink and a TikTok web link.
+- Restream.io account paired with YouTube channel **EmGamer731** + TikTok **eatsswithem(m)**. Both destinations toggled on; one Restream broadcast → both platforms.
+
+### Changed
+- `LiveHero` swapped `NoLoginLivePlayer` → `DualPlatformLivePlayer` (2-line change). Butter-toast frame and Like/Subscribe bar untouched.
+- When only one platform is live, the picker hides itself and behaviour is identical to v1.6.x — no regressions.
+
+### Workflow
+- Per TKDL workflow: `LAUNCH-STATUS-v1-3-0`, `NEXT-STEP-YT-SIMULCAST`, `CONNECT-MY-TIKTOK`, `CHECKPOINT_2026-04-25` moved to `_archive/`. Fresh `LAUNCH-STATUS-v1-7-0.md` written.
+
+### Notes
+- TikTok destination may show as "pending" on Restream's side after first connect; the picker simply doesn't appear until both are active. YouTube embed plays solo in the meantime.
+- Admin `/admin/live` (token: `gems`) still flips the manual banner if you want to go live before Restream activates.
+
+
 ## [1.3.0] — 2026-04-26 — Giant theme upgrade · banner-sky hero · Avatar Fits rail · real merch listings · 67-slang copy
 
 ### Added

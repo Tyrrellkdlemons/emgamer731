@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useLiveStatus } from './LiveStatusProvider';
-import { NoLoginLivePlayer } from './NoLoginLivePlayer';
+import { DualPlatformLivePlayer } from './DualPlatformLivePlayer';
 import { ButterToastFrame } from './ButterToastFrame';
 import { LikeAndSubscribeBar } from './LikeAndSubscribeBar';
 
@@ -51,9 +51,11 @@ export function LiveHero() {
           </div>
           {/* INLINE NO-LOGIN PLAYER wrapped in the BUTTER-TOAST frame —
               breakfast-themed, the live video plays as the "toast surface"
-              with butter pat + animated syrup drips. */}
+              with butter pat + animated syrup drips. v1.7.0: now uses
+              DualPlatformLivePlayer so visitors can choose YouTube or TikTok
+              when EMM is simulcasting both via Restream. */}
           <ButterToastFrame>
-            <NoLoginLivePlayer primary={live} secondary={secondary} />
+            <DualPlatformLivePlayer primary={live} secondary={secondary} />
           </ButterToastFrame>
 
           {/* Like + Subscribe bar — popup windows so visitors stay on-site */}

@@ -36,7 +36,7 @@ for /f %%H in ('git status --porcelain ^| find /c /v ""') do set CHANGES=%%H
 if "%CHANGES%"=="0" (
   git diff --cached --quiet
   if errorlevel 1 (
-    git commit -m "feat: EMGamer731 v1.6.11 — wired admin HLS URL paste through to inline player. Pasting the m3u8 in /admin/live now SHORT-CIRCUITS the scraper: /api/tiktok-live-stream returns the stored URL, TikTokLiveHlsPlayer plays it via HLS.js inside the butter-toast frame. Net: paste once, instant inline TikTok-live playback regardless of TikTok login walls." >nul
+    git commit -m "feat: EMGamer731 v1.7.0 — Restream simulcast pipeline + dual-platform live picker. New DualPlatformLivePlayer wraps NoLoginLivePlayer; when both YouTube and TikTok are live (Restream pushes one broadcast to both), visitors see a YT/TikTok tab toggle plus open-in-TikTok-app deeplink. YouTube default for cleanest no-login embed. When only one is live, picker hides — zero regression. LiveHero updated 2 lines. All other features (butter-toast frame, like/subscribe popups, admin gems, HLS pipeline) untouched." >nul
     echo [i] Local commit created.
   ) else (
     echo [i] No local changes to commit.
@@ -44,7 +44,7 @@ if "%CHANGES%"=="0" (
 ) else (
   REM There are working-tree changes; force-stage and commit
   git add -A
-  git commit -m "feat: EMGamer731 v1.6.11 — wired admin HLS URL paste through to inline player. Pasting the m3u8 in /admin/live now SHORT-CIRCUITS the scraper: /api/tiktok-live-stream returns the stored URL, TikTokLiveHlsPlayer plays it via HLS.js inside the butter-toast frame. Net: paste once, instant inline TikTok-live playback regardless of TikTok login walls." >nul 2>nul
+  git commit -m "feat: EMGamer731 v1.7.0 — Restream simulcast pipeline + dual-platform live picker. New DualPlatformLivePlayer wraps NoLoginLivePlayer; when both YouTube and TikTok are live (Restream pushes one broadcast to both), visitors see a YT/TikTok tab toggle plus open-in-TikTok-app deeplink. YouTube default for cleanest no-login embed. When only one is live, picker hides — zero regression. LiveHero updated 2 lines. All other features (butter-toast frame, like/subscribe popups, admin gems, HLS pipeline) untouched." >nul 2>nul
   echo [i] Local commit created (forced stage of %CHANGES% files^).
 )
 
@@ -100,4 +100,4 @@ echo   Repo: https://github.com/Tyrrellkdlemons/emgamer731
 echo   Netlify will auto-deploy from this push if continuous deploys are enabled.
 echo ============================================
 pause
-REM v1.6.9 force-push trigger 1777270367
+REM v1.7.0 force-push trigger 1777270500
