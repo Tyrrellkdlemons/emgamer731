@@ -1,0 +1,51 @@
+{
+  "name": "EMGamer731 — what did you eat for breakfast today?",
+  "short_name": "EMGamer731",
+  "description": "EMM's creator HQ. Roblox fits, breakfast plates, and the cozy stream the squad shows up for.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#FFFCF5",
+  "theme_color": "#FFFCF5",
+  "categories": ["entertainment", "lifestyle", "shopping"],
+  "lang": "en",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/favicons/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicons/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Live",
+      "short_name": "Live",
+      "description": "Catch the live stream",
+      "url": "/live",
+      "icons": [{ "src": "/favicons/favicon.svg", "sizes": "any" }]
+    },
+    {
+      "name": "Eats",
+      "short_name": "Eats",
+      "description": "TikTok food picks",
+      "url": "/eats",
+      "icons": [{ "src": "/favicons/favicon.svg", "sizes": "any" }]
+    },
+    {
+      "name": "Merch",
+      "short_name": "Merch",
+      "description": "Shop the breakfast brand",
+      "url": "/shop",
+      "icons": [{ "src": "/favicons/favicon.svg", "sizes": "any" }]
+    }
+  ]
+}

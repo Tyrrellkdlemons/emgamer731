@@ -3,16 +3,19 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useLiveStatus } from './LiveStatusProvider';
-import { NoLoginLivePlayer } from './NoLoginLivePlayer';
+import { VideoPlayer } from '@/components/watch/VideoPlayer';
+
+function extractYouTubeId(url: string): string | undefined {
+  const m = url.match(/[?&]v=([^&]+)/) || url.match(/youtu\.be\/([^?&]+)/) || url.match(/embed\/([^?&]+)/);
+  return m?.[1];
+}
 
 export function LiveHero() {
   const { summary } = useLiveStatus();
   const live = summary?.primary;
 
   if (summary?.isLive && live) {
-    // Pick a SECONDARY live status if a different platform is also live —
-    // NoLoginLivePlayer prefers YouTube (zero login wall) when both are up.
-    const secondary = summary.all?.find((s) => s.isLive && s.platform !== live.platform);
+    const embedId = live.platform === 'youtube' ? extractYouTubeId(live.watchUrl) : undefined;
     return (
       <motion.div
         initial={{ opacity: 0, y: 12 }}
@@ -25,12 +28,9 @@ export function LiveHero() {
       >
         <div className="flex flex-col gap-5">
           <div>
-            <div className="flex items-center gap-2 mb-3 flex-wrap">
+            <div className="flex items-center gap-2 mb-3">
               <span className="inline-flex items-center gap-2 rounded-full bg-liveRed text-white px-2.5 py-1 text-xs font-bold shadow-liveGlow">
                 <span className="live-dot" aria-hidden /> LIVE on {live.platform.toUpperCase()}
-              </span>
-              <span className="inline-flex items-center gap-1 rounded-full bg-mint text-cocoa px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider">
-                ✓ no login needed
               </span>
               <span className="text-xs text-muted">— playing inline below</span>
             </div>
@@ -38,10 +38,14 @@ export function LiveHero() {
               {live.title ?? 'EMM is live — pull up a chair, it’s giving stream era.'}
             </h2>
           </div>
-          {/* INLINE NO-LOGIN PLAYER — picks the best surface that doesn't
-              require a TikTok/YouTube account, with mirror + app-deeplink
-              fallbacks if the embed is blocked. */}
-          <NoLoginLivePlayer primary={live} secondary={secondary} />
+          {/* INLINE PLAYER — no leaving the site */}
+          <VideoPlayer
+            platform={live.platform === 'tiktok' ? 'tiktok' : 'youtube'}
+            embedId={embedId}
+            url={live.watchUrl}
+            title={live.title ?? 'EMM is live'}
+            thumbnail={live.thumbnail}
+          />
         </div>
       </motion.div>
     );
@@ -67,9 +71,4 @@ export function LiveHero() {
       </p>
       <div className="mt-4 flex flex-wrap gap-2">
         <Link href="/schedule" className="btn-primary">See the sched (sigma drop)</Link>
-        <Link href="/watch" className="btn-ghost">Latest replay · she ate</Link>
-        <Link href="/eats" className="btn-ghost">Today&apos;s eats · bussin</Link>
-      </div>
-    </motion.div>
-  );
-}
+        <Link href="/watch" c
