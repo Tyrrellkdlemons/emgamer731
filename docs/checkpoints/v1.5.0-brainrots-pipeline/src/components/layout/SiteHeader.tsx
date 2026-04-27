@@ -60,32 +60,28 @@ export function SiteHeader() {
       style={{ paddingTop: 'max(env(safe-area-inset-top), 0.75rem)' }}
     >
       <div className="container-soft pointer-events-none">
-        {/* Outer floating capsule — the "FRENCH-TOAST STICK" frame.
-            v1.6.0 fix: padding bumped to 9px (was 6) so the toast frame is
-            actually visible rim-around-cream. The BaconStrip lives BEHIND
-            the inner cream pill but the visible 9px ring proves the toast
-            colour at every viewport. */}
+        {/* Outer floating capsule — the "bacon strip" — now SVG-rendered
+            crispy bacon with animated syrup drizzle (see BaconStrip). */}
         <div
           className={cn(
             'relative pointer-events-auto rounded-full transition-all duration-300 ease-morning',
             scrolled ? 'shadow-lifted' : 'shadow-soft',
           )}
           style={{
-            border: '2px solid #7A4318',
-            padding: '9px',
+            border: '2px solid rgba(74,20,20,0.65)',
+            padding: '6px',
             overflow: 'hidden',
           }}
         >
-          {/* French-toast painted skin (default). Pass skin="bacon" to
-              switch back to the red-meat aesthetic. */}
-          <BaconStrip className="absolute inset-0" skin="french-toast" />
-          {/* Inner cream pill — sits inset by `padding` so a visible rim
-              of toast shows around it. */}
+          {/* Realistic SVG bacon as the capsule skin */}
+          <BaconStrip className="absolute inset-0" />
+          {/* Inner cream backdrop — keeps text crisply readable on top of
+              the busy bacon. */}
           <div
             className="relative rounded-full backdrop-blur-xl"
             style={{
               background:
-                'linear-gradient(180deg, rgba(255,252,245,0.94), rgba(255,248,238,0.88))',
+                'linear-gradient(180deg, rgba(255,252,245,0.93), rgba(255,248,238,0.88))',
             }}
           >
             <div className="flex items-center justify-between gap-2 px-3 sm:px-4 py-2">
@@ -114,71 +110,4 @@ export function SiteHeader() {
                       {active && (
                         <motion.span
                           layoutId="nav-active"
-                          className="absolute inset-0 rounded-full bg-mint/70"
-                          transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                        />
-                      )}
-                      <span className="relative">{item.label}</span>
-                    </Link>
-                  );
-                })}
-              </nav>
-
-              <div className="flex items-center gap-2">
-                <LiveBadge compact summary={summary} />
-                <button
-                  type="button"
-                  aria-label={open ? 'Close menu' : 'Open menu'}
-                  aria-expanded={open}
-                  onClick={() => setOpen((v) => !v)}
-                  className="lg:hidden inline-flex h-10 w-10 items-center justify-center rounded-full ring-1 ring-creamShade bg-cream"
-                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
-                    {open ? (
-                      <path d="M6 6l12 12M18 6L6 18" stroke="#3B2A22" strokeWidth="2" strokeLinecap="round" />
-                    ) : (
-                      <path d="M4 7h16M4 12h16M4 17h16" stroke="#3B2A22" strokeWidth="2" strokeLinecap="round" />
-                    )}
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile dropdown sheet — also wrapped in a small bacon strip for
-            visual continuity */}
-        <AnimatePresence>
-          {open && (
-            <motion.div
-              initial={{ opacity: 0, y: -8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.2, ease: [0.32, 0.72, 0, 1] }}
-              className="lg:hidden mt-2 pointer-events-auto rounded-3xl relative overflow-hidden"
-              style={{
-                border: '2px solid #7A4318',
-                padding: '9px',
-              }}
-            >
-              <BaconStrip className="absolute inset-0" skin="french-toast" />
-              <div className="relative rounded-3xl bg-eggshell/95 backdrop-blur-xl">
-                <div className="grid grid-cols-2 gap-2 p-3">
-                  {PRIMARY_NAV.map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className="rounded-2xl bg-cream px-4 py-3 text-cocoa font-semibold ring-1 ring-creamShade text-center"
-                    >
-                      {item.label}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </header>
-  );
-}
+            

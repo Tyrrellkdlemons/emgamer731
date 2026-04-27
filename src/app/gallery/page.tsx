@@ -28,6 +28,7 @@ import {
   type Brainrot,
   type BrainrotCategory,
 } from '@/data/brainrots';
+import { FiguresGrid } from '@/components/brainrot/FiguresGrid';
 
 // ─── Monetization defaults ────────────────────────────────────────
 const DEFAULT_PRICE_CENTS = 199; // $1.99 per drop
@@ -161,6 +162,9 @@ export default function BrainrotsPage() {
         anywhere. When checkout goes live (v2), tapping a notified card will surface the
         actual product with one tap.
       </p>
+
+      {/* ─── 67 BRAINROT FIGURES (sellable) ─── */}
+      <FiguresGrid />
     </div>
   );
 }
