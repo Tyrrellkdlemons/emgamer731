@@ -2,6 +2,22 @@
 
 All notable changes are recorded here. Newest first.
 
+## [1.7.3] — 2026-04-27 — Cloudflare Workers TikTok scraper upgrade
+
+### Added
+- **`cloudflare-worker/`** — new directory with a deployable Cloudflare Worker that scrapes TikTok's public live page with rotating User-Agents, realistic browser headers (Sec-CH-UA, Accept-Language, Sec-Fetch-*, Referer), and 60 s edge cache. CF's massive IP pool delivers a much higher hit rate against TikTok's anti-bot than a single-region Netlify function. Free tier: 100 000 req/day. Includes `wrangler.toml`, `package.json`, `tsconfig.json`, README with 3-command deploy.
+
+### Changed
+- **`/api/tiktok-live-stream` Netlify route** now optionally proxies through the Cloudflare Worker if `TIKTOK_SCRAPER_WORKER_URL` env is set. Worker call has an 8 s timeout; on error the route falls through to the local scrape — zero downtime, zero regression.
+- **Local scrape upgraded with same techniques** as the Worker — rotating UA pool (5 real Chrome/Safari/Firefox/iPhone UAs), randomized Accept-Language, full Sec-CH-UA browser-hint headers, Referer header. Even without deploying the Worker, hit rate against TikTok improves immediately.
+
+### Workflow
+- Site keeps working with Netlify-only scrape today. To activate the Worker:
+  1. `cd cloudflare-worker && wrangler login && wrangler deploy`
+  2. Add `TIKTOK_SCRAPER_WORKER_URL = <worker URL>` to Netlify env
+  3. Trigger redeploy. Site auto-switches to Worker; admin override + fallbacks unaffected.
+
+
 ## [1.7.2] — 2026-04-27 — Hotfix: dead TikTok mirror was showing takedown notice
 
 ### Fixed

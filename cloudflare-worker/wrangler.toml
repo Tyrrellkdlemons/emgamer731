@@ -1,0 +1,17 @@
+name = "emgamer731-tiktok-scraper"
+main = "src/index.ts"
+compatibility_date = "2026-04-27"
+
+# No KV / Durable Objects needed — uses CF's edge cache.
+# Free tier: 100,000 requests/day, no credit card required.
+
+[vars]
+TIKTOK_HANDLE = "eatsswithemm"
+
+# To deploy:
+#   1. npm install -g wrangler
+#   2. wrangler login         (opens browser, sign in to Cloudflare)
+#   3. wrangler deploy        (one shot — prints your worker URL)
+#
+# Then on Netlify, add env var:
+#   TIKTOK_SCRAPER_WORKER_URL = https://emgamer731-tiktok-scraper.<your-subdomain>.workers.dev

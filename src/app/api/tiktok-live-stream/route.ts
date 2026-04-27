@@ -39,9 +39,34 @@ export const dynamic = 'force-dynamic';
 
 const HANDLE = process.env.TIKTOK_HANDLE || 'eatsswithemm';
 
-const UA =
-  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 ' +
-  '(KHTML, like Gecko) Chrome/124.0 Safari/537.36';
+/**
+ * v1.7.3 — when TIKTOK_SCRAPER_WORKER_URL is set on Netlify env, proxy
+ * through to the Cloudflare Worker (see /cloudflare-worker/). The Worker
+ * has a much higher hit rate against TikTok's anti-bot due to CF's IP
+ * pool diversity. Falls back to local scrape if env var is unset OR the
+ * worker call fails — zero downtime.
+ */
+const WORKER_URL = (process.env.TIKTOK_SCRAPER_WORKER_URL ?? '').trim();
+
+/** Rotating User-Agent pool — same techniques as the CF Worker, applied
+ *  to the Netlify fallback path so the local scrape is also less detectable. */
+const USER_AGENTS = [
+  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36',
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36',
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.2 Safari/605.1.15',
+  'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:134.0) Gecko/20100101 Firefox/134.0',
+  'Mozilla/5.0 (iPhone; CPU iPhone OS 18_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.2 Mobile/15E148 Safari/604.1',
+];
+
+const ACCEPT_LANGUAGES = [
+  'en-US,en;q=0.9',
+  'en-US,en;q=0.9,es;q=0.8',
+  'en-GB,en;q=0.9',
+];
+
+function pick<T>(arr: T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
 
 type Result = {
   isLive: boolean;
@@ -73,14 +98,51 @@ export async function GET(): Promise<NextResponse<Result>> {
     });
   }
 
+  // ── PRIORITY 2 — proxy through Cloudflare Worker if configured (v1.7.3) ──
+  // Worker has CF's IP pool diversity → much higher TikTok hit rate. If the
+  // worker call errors or times out, we fall through to the local scrape.
+  if (WORKER_URL) {
+    try {
+      const wRes = await fetch(`${WORKER_URL}?handle=${encodeURIComponent(HANDLE)}`, {
+        next: { revalidate: 30 },
+        signal: AbortSignal.timeout(8000),
+      });
+      if (wRes.ok) {
+        const data = (await wRes.json()) as Result;
+        if (data.isLive && data.hlsUrl) {
+          return NextResponse.json({ ...data, fetchedAt });
+        }
+        // Worker says not-live → trust it, no need for local scrape
+        return NextResponse.json({ ...data, fetchedAt });
+      }
+    } catch {
+      /* fall through to local scrape */
+    }
+  }
+
   try {
     const url = `https://www.tiktok.com/@${HANDLE}/live`;
+    const ua = pick(USER_AGENTS);
+    const isMobile = /iPhone|Android/.test(ua);
     const res = await fetch(url, {
       next: { revalidate: 30 },
       headers: {
-        'user-agent': UA,
-        'accept-language': 'en-US,en;q=0.9',
-        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'user-agent': ua,
+        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+        'accept-language': pick(ACCEPT_LANGUAGES),
+        'accept-encoding': 'gzip, deflate, br',
+        'referer': `https://www.tiktok.com/@${HANDLE}`,
+        'upgrade-insecure-requests': '1',
+        'sec-fetch-dest': 'document',
+        'sec-fetch-mode': 'navigate',
+        'sec-fetch-site': 'same-origin',
+        'sec-fetch-user': '?1',
+        'sec-ch-ua': '"Google Chrome";v="134", "Chromium";v="134", "Not?A_Brand";v="24"',
+        'sec-ch-ua-mobile': isMobile ? '?1' : '?0',
+        'sec-ch-ua-platform': isMobile
+          ? (ua.includes('iPhone') ? '"iOS"' : '"Android"')
+          : (ua.includes('Macintosh') ? '"macOS"' : '"Windows"'),
+        'cache-control': 'max-age=0',
       },
     });
     if (!res.ok) {

@@ -36,7 +36,7 @@ for /f %%H in ('git status --porcelain ^| find /c /v ""') do set CHANGES=%%H
 if "%CHANGES%"=="0" (
   git diff --cached --quiet
   if errorlevel 1 (
-    git commit -m "fix: EMGamer731 v1.7.2 hotfix — remove dead TikTok mirrors causing 'Due to a legal request, this service is no longer available' takedown notice. proxitok.pabloferreiro.es was taken down legally and serves the takedown HTML at HTTP 200, so its onload fired and won the iframe race — visitors saw the takedown text instead of the stream. SOURCES trimmed to TikTok's own surfaces; FallbackHero CTAs updated to TikTok web URL + Restream simulcast story; sessionStorage cache key bumped to v2 to invalidate stale 'proxitok' winners from prior visits." >nul
+    git commit -m "feat: EMGamer731 v1.7.3 — Cloudflare Workers TikTok scraper upgrade. New cloudflare-worker/ directory with deployable Worker (rotating UA pool, realistic Sec-CH-UA + Referer + Accept-Language headers, 60s edge cache, free tier 100k req/day). /api/tiktok-live-stream now optionally proxies through the Worker via TIKTOK_SCRAPER_WORKER_URL env var with 8s timeout + local-scrape fallback (zero downtime). Local Netlify scraper ALSO upgraded with same UA rotation techniques as immediate-win even before Worker deploys. Includes wrangler.toml, package.json, tsconfig.json, README with 3-command deploy." >nul
     echo [i] Local commit created.
   ) else (
     echo [i] No local changes to commit.
@@ -44,7 +44,7 @@ if "%CHANGES%"=="0" (
 ) else (
   REM There are working-tree changes; force-stage and commit
   git add -A
-  git commit -m "fix: EMGamer731 v1.7.2 hotfix — remove dead TikTok mirrors causing 'Due to a legal request, this service is no longer available' takedown notice. proxitok.pabloferreiro.es was taken down legally and serves the takedown HTML at HTTP 200, so its onload fired and won the iframe race — visitors saw the takedown text instead of the stream. SOURCES trimmed to TikTok's own surfaces; FallbackHero CTAs updated to TikTok web URL + Restream simulcast story; sessionStorage cache key bumped to v2 to invalidate stale 'proxitok' winners from prior visits." >nul 2>nul
+  git commit -m "feat: EMGamer731 v1.7.3 — Cloudflare Workers TikTok scraper upgrade. New cloudflare-worker/ directory with deployable Worker (rotating UA pool, realistic Sec-CH-UA + Referer + Accept-Language headers, 60s edge cache, free tier 100k req/day). /api/tiktok-live-stream now optionally proxies through the Worker via TIKTOK_SCRAPER_WORKER_URL env var with 8s timeout + local-scrape fallback (zero downtime). Local Netlify scraper ALSO upgraded with same UA rotation techniques as immediate-win even before Worker deploys. Includes wrangler.toml, package.json, tsconfig.json, README with 3-command deploy." >nul 2>nul
   echo [i] Local commit created (forced stage of %CHANGES% files^).
 )
 
@@ -100,4 +100,4 @@ echo   Repo: https://github.com/Tyrrellkdlemons/emgamer731
 echo   Netlify will auto-deploy from this push if continuous deploys are enabled.
 echo ============================================
 pause
-REM v1.7.2 force-push trigger 1777276200
+REM v1.7.3 force-push trigger 1777276900
